@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity">
+    tools:context=".MenuActivity"
+    tools:visibility="visible">
 
     <Button
         android:id="@+id/multiplayer"
@@ -64,6 +65,7 @@
         android:layout_width="81dp"
         android:layout_height="68dp"
         android:backgroundTint="@color/primary_color"
+        android:contentDescription="@string/settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/scoreboard"
         app:layout_constraintHorizontal_bias="0.878"
@@ -71,14 +73,14 @@
         app:layout_constraintTop_toBottomOf="@+id/multiplayer"
         app:layout_constraintVertical_bias="0.198"
         app:srcCompat="@android:drawable/ic_menu_manage"
-        app:tint="#FFFFFF"
-        android:contentDescription="@string/settings" />
+        app:tint="#FFFFFF" />
 
     <ImageButton
         android:id="@+id/scoreboard"
         android:layout_width="81dp"
         android:layout_height="68dp"
         android:backgroundTint="@color/primary_color"
+        android:contentDescription="@string/scoreboard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.642"
@@ -86,6 +88,5 @@
         app:layout_constraintTop_toBottomOf="@+id/multiplayer"
         app:layout_constraintVertical_bias="0.198"
         app:srcCompat="?attr/actionModePasteDrawable"
-        app:tint="#FFFFFF"
-        android:contentDescription="@string/scoreboard" />
+        app:tint="#FFFFFF" />
 </androidx.constraintlayout.widget.ConstraintLayout>

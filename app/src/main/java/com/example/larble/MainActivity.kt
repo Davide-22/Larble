@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     private var login: Button? = null
@@ -18,9 +19,13 @@ class MainActivity : AppCompatActivity() {
 
         login?.setOnClickListener {
             val email: EditText = findViewById(R.id.editTextTextEmailAddress)
-            intent = Intent(this, MenuActivity::class.java)
-            intent.putExtra("email",email.text.toString())
-            startActivity(intent)
+            if (email.text.toString() != ""){
+                intent = Intent(this, MenuActivity::class.java)
+                intent.putExtra("email",email.text.toString())
+                startActivity(intent)
+            }else{
+                Toast.makeText(applicationContext, "Insert a valid email and password", Toast.LENGTH_LONG).show()
+            }
         }
 
         signUp?.setOnClickListener {
