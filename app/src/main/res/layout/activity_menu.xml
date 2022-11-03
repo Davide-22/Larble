@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/singleplayer"
+        app:layout_constraintTop_toBottomOf="@+id/single_player"
         app:layout_constraintVertical_bias="0.1" />
 
     <TextView
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.079" />
 
     <Button
-        android:id="@+id/singleplayer"
+        android:id="@+id/single_player"
         android:layout_width="177dp"
         android:layout_height="72dp"
         android:text="@string/single_player"
@@ -53,7 +53,7 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/singleplayer"
+        app:layout_constraintBottom_toTopOf="@+id/single_player"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"

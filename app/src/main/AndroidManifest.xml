@@ -79,11 +79,51 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity"
+        <activity android:name=".ExistedGameActivity"
             android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intenr.action.GAME" />
+
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".ScoreboardActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intenr.action.SCOREBOARD" />
+
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".SinglePlayerGameActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intenr.action.SINGLEPLAYERGAME" />
+
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".MultiPlayerGameActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intenr.action.MULTIPLAYERGAME" />
+
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".SettingsActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intenr.action.SETTINGS" />
 
                 <category android:name="android.intent.cateogyr.LAUNCHER" />
 

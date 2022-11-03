@@ -6,23 +6,21 @@ import android.os.Bundle
 import android.widget.Button
 
 class MultiPlayerActivity : AppCompatActivity() {
-    private var newGame: Button? = null
-    private var game: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multiplayer)
 
-        newGame = findViewById(R.id.newgame)
-        game = findViewById(R.id.game)
+        val newGame: Button = findViewById(R.id.new_game)
+        val existedGame: Button = findViewById(R.id.existed_game)
 
 
-        newGame?.setOnClickListener {
+        newGame.setOnClickListener {
             intent = Intent(this, NewGameActivity::class.java)
             startActivity(intent)
         }
 
-        game?.setOnClickListener {
-            intent = Intent(this, GameActivity::class.java)
+        existedGame.setOnClickListener {
+            intent = Intent(this, ExistedGameActivity::class.java)
             startActivity(intent)
         }
     }
