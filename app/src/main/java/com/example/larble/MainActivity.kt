@@ -3,6 +3,7 @@ package com.example.larble
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -19,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         login?.setOnClickListener {
             val email: EditText = findViewById(R.id.editTextTextEmailAddress)
-            if (email.text.toString() != ""){
+            val password: EditText = findViewById(R.id.editTextTextPassword)
+            if (Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches() && password.text.isNotEmpty()){
                 intent = Intent(this, MenuActivity::class.java)
                 intent.putExtra("email",email.text.toString())
                 startActivity(intent)
