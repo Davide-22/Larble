@@ -42,10 +42,10 @@ class SignUpActivity : AppCompatActivity() {
                             call: Call<SignUpResponseClass>,
                             response: Response<SignUpResponseClass>
                         ){
-                            if(response.message().toString()=="ok"){
+                            if(response.body()!!.status=="true"){
                                 startActivity(intent)
                             }else{
-                                Toast.makeText(this@SignUpActivity, response.message().toString(), Toast.LENGTH_LONG)
+                                Toast.makeText(this@SignUpActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                     .show()
                             }
                         }
