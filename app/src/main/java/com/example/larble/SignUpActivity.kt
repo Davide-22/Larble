@@ -11,6 +11,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Response
+import retrofit2.Call
+import retrofit2.Callback
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -30,7 +33,29 @@ class SignUpActivity : AppCompatActivity() {
         signUp.setOnClickListener {
             if(check1.visibility==View.VISIBLE && check2.visibility==View.VISIBLE && check3.visibility==View.VISIBLE && check4.visibility==View.VISIBLE){
                 intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                val requestModel = SignUpRequestModel(username.text.toString(),email.text.toString(),password.text.toString())
+
+                val response = ServiceBuilder.buildService(APIInterface::class.java)
+                response.requestSignUp(requestModel).enqueue(
+                    object: Callback<SignUpResponseClass>{
+                        override fun onResponse(
+                            call: Call<SignUpResponseClass>,
+                            response: Response<SignUpResponseClass>
+                        ){
+                            if(response.message().toString()=="ok"){
+                                startActivity(intent)
+                            }else{
+                                Toast.makeText(this@SignUpActivity, response.message().toString(), Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
+                        override fun onFailure(call: Call<SignUpResponseClass>, t: Throwable) {
+                            Toast.makeText(this@SignUpActivity, t.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                )
+
             }else if(password.text.toString() != confirmPassword.text.toString()){
                 Toast.makeText(applicationContext, "Password different from Confirm password", Toast.LENGTH_LONG).show()
             } else{
