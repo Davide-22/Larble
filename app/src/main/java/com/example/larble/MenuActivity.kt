@@ -17,7 +17,7 @@ class MenuActivity : AppCompatActivity() {
         val scoreboard: ImageButton = findViewById(R.id.scoreboard)
 
         val text: TextView = findViewById(R.id.name)
-        val passedData:String = intent.getStringExtra("email").toString()
+        val passedData:String = intent.getStringExtra("username").toString()
         val name = "Ciao $passedData"
         text.text = name
 
