@@ -25,13 +25,13 @@ class SignUpActivity : AppCompatActivity() {
         val email: EditText = findViewById(R.id.editTextTextEmailAddress2)
         val password: EditText = findViewById(R.id.editTextTextPassword2)
         val confirmPassword: EditText = findViewById(R.id.editTextTextPassword3)
-        val check1: ImageView = findViewById(R.id.check1)
-        val check2: ImageView = findViewById(R.id.check2)
-        val check3: ImageView = findViewById(R.id.check3)
-        val check4: ImageView = findViewById(R.id.check4)
+        val checkUsername: ImageView = findViewById(R.id.checkUsername)
+        val checkEmail: ImageView = findViewById(R.id.checkEmail)
+        val checkConfirmPassword: ImageView = findViewById(R.id.checkConfirmPassword)
+        val checkPassword: ImageView = findViewById(R.id.checkPassword)
 
         signUp.setOnClickListener {
-            if(check1.visibility==View.VISIBLE && check2.visibility==View.VISIBLE && check3.visibility==View.VISIBLE && check4.visibility==View.VISIBLE){
+            if(checkUsername.visibility==View.VISIBLE && checkEmail.visibility==View.VISIBLE && checkConfirmPassword.visibility==View.VISIBLE && checkPassword.visibility==View.VISIBLE){
                 intent = Intent(this, MainActivity::class.java)
                 val requestModel = SignUpRequestModel(username.text.toString(),email.text.toString(),password.text.toString())
 
@@ -57,17 +57,19 @@ class SignUpActivity : AppCompatActivity() {
                 )
 
             }else if(password.text.toString() != confirmPassword.text.toString()){
-                Toast.makeText(applicationContext, "Password different from Confirm password", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Passwords don't matches", Toast.LENGTH_LONG).show()
             } else{
                 Toast.makeText(applicationContext, "Fill in all fields", Toast.LENGTH_LONG).show()
 
             }
         }
+
         username.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if(s.isEmpty()) check1.visibility = View.INVISIBLE
-                else check1.visibility = View.VISIBLE
+                if(s.isEmpty()) checkUsername.visibility = View.INVISIBLE
+                else checkUsername.visibility = View.VISIBLE
             }
+
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,
                 count: Int, after: Int
@@ -80,10 +82,11 @@ class SignUpActivity : AppCompatActivity() {
             ) {
             }
         })
+
         email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if(Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) check2.visibility = View.VISIBLE
-                else check2.visibility = View.INVISIBLE
+                if(Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) checkEmail.visibility = View.VISIBLE
+                else checkEmail.visibility = View.INVISIBLE
             }
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,
@@ -97,10 +100,11 @@ class SignUpActivity : AppCompatActivity() {
             ) {
             }
         })
+
         password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if(s.isEmpty()) check4.visibility = View.INVISIBLE
-                else check4.visibility = View.VISIBLE
+                if(s.isEmpty()) checkPassword.visibility = View.INVISIBLE
+                else checkPassword.visibility = View.VISIBLE
             }
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,
@@ -114,10 +118,11 @@ class SignUpActivity : AppCompatActivity() {
             ) {
             }
         })
+
         confirmPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if(s.toString() == password.text.toString()) check3.visibility = View.VISIBLE
-                else check3.visibility = View.INVISIBLE
+                if(s.toString() == password.text.toString()) checkConfirmPassword.visibility = View.VISIBLE
+                else checkConfirmPassword.visibility = View.INVISIBLE
             }
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,

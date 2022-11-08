@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Larble</string>
     <string name="login">Login</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="sign_up">sign up</string>
     <string name="larble">LARBLE</string>
     <string name="username">Username</string>
@@ -14,9 +14,9 @@
     <string name="easy">easy</string>
     <string name="medium">medium</string>
     <string name="hard">hard</string>
-    <string name="enter_the_code_of_a_valid_game">enter the code of a valid game</string>
-    <string name="new_game">new game</string>
-    <string name="play">play</string>
-    <string name="share_this_code_with_your_friend">share this code with your friend</string>
+    <string name="enter_the_code_of_a_valid_game">Enter the code of a valid game</string>
+    <string name="new_game">Create a game</string>
+    <string name="play">Join a game</string>
+    <string name="share_this_code_with_your_friend">Share this code with your friend</string>
     <string name="check">check</string>
 </resources>

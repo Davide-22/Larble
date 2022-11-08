@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
             }else{
-                Toast.makeText(applicationContext, "Insert a valid email and password", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Insert valid email and password", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -60,6 +60,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
     }
+
 }
