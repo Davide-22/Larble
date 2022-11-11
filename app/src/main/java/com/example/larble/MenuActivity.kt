@@ -1,11 +1,11 @@
 package com.example.larble
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,5 +41,11 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        finishAffinity()
+        finish()
     }
 }
