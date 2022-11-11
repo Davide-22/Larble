@@ -13,7 +13,7 @@ class SettingsActivity : AppCompatActivity() {
         logout = findViewById(R.id.log_out)
 
         logout?.setOnClickListener {
-            intent = Intent(this, MainActivity::class.java)
+            intent = Intent(this, LoginActivity::class.java)
             val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
             val myEdit = sharedPreferences.edit()
             myEdit.putString("token", "")

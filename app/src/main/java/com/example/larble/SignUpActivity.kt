@@ -32,7 +32,7 @@ class SignUpActivity : AppCompatActivity() {
 
         signUp.setOnClickListener {
             if(checkUsername.visibility==View.VISIBLE && checkEmail.visibility==View.VISIBLE && checkConfirmPassword.visibility==View.VISIBLE && checkPassword.visibility==View.VISIBLE){
-                intent = Intent(this, MainActivity::class.java)
+                intent = Intent(this, LoginActivity::class.java)
                 val requestModel = SignUpRequestModel(username.text.toString(),email.text.toString(),password.text.toString())
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
