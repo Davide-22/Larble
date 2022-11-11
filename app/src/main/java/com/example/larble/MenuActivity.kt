@@ -17,9 +17,9 @@ class MenuActivity : AppCompatActivity() {
         val scoreboard: ImageButton = findViewById(R.id.scoreboard)
 
         val text: TextView = findViewById(R.id.name)
-        val passedData:String = intent.getStringExtra("username").toString()
-        val name = "Ciao $passedData"
-        text.text = name
+        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val username: String? = sh.getString("username", "")
+        "Ciao $username".also { text.text = it }
 
         singlePlayer.setOnClickListener {
             intent = Intent(this, SinglePlayerActivity::class.java)

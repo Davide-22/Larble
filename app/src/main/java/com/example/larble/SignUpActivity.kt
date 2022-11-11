@@ -37,10 +37,10 @@ class SignUpActivity : AppCompatActivity() {
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 response.requestSignUp(requestModel).enqueue(
-                    object: Callback<SignUpResponseClass>{
+                    object: Callback<ResponseClass>{
                         override fun onResponse(
-                            call: Call<SignUpResponseClass>,
-                            response: Response<SignUpResponseClass>
+                            call: Call<ResponseClass>,
+                            response: Response<ResponseClass>
                         ){
                             if(response.body()!!.status=="true"){
                                 startActivity(intent)
@@ -49,7 +49,7 @@ class SignUpActivity : AppCompatActivity() {
                                     .show()
                             }
                         }
-                        override fun onFailure(call: Call<SignUpResponseClass>, t: Throwable) {
+                        override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
                             Toast.makeText(this@SignUpActivity, t.toString(), Toast.LENGTH_LONG)
                                 .show()
                         }
