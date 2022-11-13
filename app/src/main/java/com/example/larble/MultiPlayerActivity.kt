@@ -4,6 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MultiPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +20,28 @@ class MultiPlayerActivity : AppCompatActivity() {
 
         newGame.setOnClickListener {
             intent = Intent(this, NewGameActivity::class.java)
-            startActivity(intent)
+            val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val token: String = sh.getString("token", "").toString()
+            val requestModel = TokenRequestModel(token)
+
+            val response = ServiceBuilder.buildService(APIInterface::class.java)
+            response.create_multiplayer_game(requestModel).enqueue(
+                object: Callback<ResponseClass> {
+                    override fun onResponse(
+                        call: Call<ResponseClass>,
+                        response: Response<ResponseClass>
+                    ){
+                        if(response.body()!!.status=="true"){
+                            intent.putExtra("number", response.body()!!.msg)
+                            startActivity(intent)
+                        }
+                    }
+                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                        Toast.makeText(this@MultiPlayerActivity, t.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            )
         }
 
         existedGame.setOnClickListener {

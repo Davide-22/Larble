@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         intent = Intent(this@MainActivity, LoginActivity::class.java)
         val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val token: String? = sh.getString("token", "")
-        val requestModel = token?.let { VerifyRequestModel(it) }
+        val requestModel = token?.let { TokenRequestModel(it) }
 
         val response = ServiceBuilder.buildService(APIInterface::class.java)
         if (requestModel != null) {

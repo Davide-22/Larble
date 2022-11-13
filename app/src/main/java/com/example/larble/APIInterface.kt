@@ -13,5 +13,8 @@ interface APIInterface {
     fun requestLogin(@Body requestModel: LoginRequestModel): Call<LoginResponseClass>
 
     @POST("/verify")
-    fun verify(@Body requestModel: VerifyRequestModel): Call<ResponseClass>
+    fun verify(@Body requestModel: TokenRequestModel): Call<ResponseClass>
+
+    @POST("/create_multiplayer_game")
+    fun create_multiplayer_game(@Body requestModel: TokenRequestModel): Call<ResponseClass>
 }

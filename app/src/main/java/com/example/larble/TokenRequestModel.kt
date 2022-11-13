@@ -1,5 +1,5 @@
 package com.example.larble
 
-data class VerifyRequestModel(
+data class TokenRequestModel(
     val token: String
 )
