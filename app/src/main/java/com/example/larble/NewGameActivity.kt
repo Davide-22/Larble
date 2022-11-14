@@ -34,9 +34,11 @@ class NewGameActivity : AppCompatActivity() {
                                 response: Response<ResponseClass>
                             ){
                                 if(response.body()!!.status=="true"){
+                                    Toast.makeText(this@NewGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                        .show()
                                     result = response.body()!!.status
-                                    startActivity(intent)
                                 }
+
                             }
 
                             override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
@@ -48,6 +50,7 @@ class NewGameActivity : AppCompatActivity() {
                     Thread.sleep(3000)
                 }
             }
+            startActivity(intent)
         }
 
     }

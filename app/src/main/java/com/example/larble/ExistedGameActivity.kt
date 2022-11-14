@@ -23,7 +23,7 @@ class ExistedGameActivity : AppCompatActivity() {
             intent = Intent(this, MultiPlayerGameActivity::class.java)
             val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
             val token: String = sh.getString("token", "").toString()
-            val requestModel = GameCodeRequestModel(code.text.toString(),token)
+            val requestModel = GameCodeRequestModel(code.text.toString().toInt(),token)
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
             response.joinGame(requestModel).enqueue(
