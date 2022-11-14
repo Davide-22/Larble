@@ -34,6 +34,9 @@ class MultiPlayerActivity : AppCompatActivity() {
                         if(response.body()!!.status=="true"){
                             intent.putExtra("number", response.body()!!.msg)
                             startActivity(intent)
+                        }else{
+                            Toast.makeText(this@MultiPlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                .show()
                         }
                     }
                     override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
