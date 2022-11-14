@@ -17,4 +17,10 @@ interface APIInterface {
 
     @POST("/create_multiplayer_game")
     fun create_multiplayer_game(@Body requestModel: TokenRequestModel): Call<ResponseClass>
+
+    @POST("/check_for_player2")
+    fun checkForPlayer(@Body requestModel: GameCodeModel): Call<ResponseClass>
+
+    @POST("/join_game")
+    fun joinGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
 }
