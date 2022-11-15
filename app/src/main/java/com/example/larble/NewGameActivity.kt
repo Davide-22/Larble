@@ -42,4 +42,10 @@ class NewGameActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        result = true
+        intent = Intent(this, MultiPlayerActivity::class.java)
+        startActivity(intent)
+    }
 }
