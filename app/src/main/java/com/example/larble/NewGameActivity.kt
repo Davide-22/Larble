@@ -42,8 +42,4 @@ class NewGameActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        result = true
-    }
 }
