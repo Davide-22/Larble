@@ -1,17 +1,14 @@
 package com.example.larble
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.appcompat.app.AppCompatActivity
 
 class NewGameActivity : AppCompatActivity() {
-    private var result = ""
+    private var result = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newgame)
@@ -20,43 +17,33 @@ class NewGameActivity : AppCompatActivity() {
         val text: TextView = findViewById(R.id.number)
         text.text = intent.getStringExtra("number")
         val requestModel = intent.getStringExtra("number")?.let { GameCodeModel(it) }
-        val response = ServiceBuilder.buildService(APIInterface::class.java)
 
         game.setOnClickListener {
             intent = Intent(this, MultiPlayerGameActivity::class.java)
+            val service = ServiceBuilder.buildService(APIInterface::class.java)
 
-            if (requestModel != null) {
-                while(result == ""){
-                    response.checkForPlayer(requestModel).enqueue(
-                        object: Callback<ResponseClass> {
-                            override fun onResponse(
-                                call: Call<ResponseClass>,
-                                response: Response<ResponseClass>
-                            ){
-                                if(response.body()!!.status=="true"){
-                                    Toast.makeText(this@NewGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                        .show()
-                                    result = response.body()!!.status
-                                }
-
-                            }
-
-                            override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                Toast.makeText(this@NewGameActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
+            Thread {
+                while(!result) {
+                    try {
+                        val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
+                        val response = callSync?.execute()
+                        if (response != null) {
+                            if (response.body()!!.status == "true") {
+                                result = true
+                                startActivity(intent)
                             }
                         }
-                    )
-                    Thread.sleep(3000)
-                }
-            }
-            startActivity(intent)
-        }
 
+                    } catch (ex: Exception) {
+                        Log.e("error", Log.getStackTraceString(ex))
+                    }
+                }
+            }.start()
+        }
     }
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        result = "false"
+        result = true
     }
 }
