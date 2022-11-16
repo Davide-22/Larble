@@ -23,4 +23,7 @@ interface APIInterface {
 
     @POST("/join_game")
     fun joinGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
+
+    @POST("/delete_game")
+    fun deleteGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
 }

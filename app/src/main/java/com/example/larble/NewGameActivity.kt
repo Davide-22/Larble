@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class NewGameActivity : AppCompatActivity() {
     private var result = false
+    private var code = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newgame)
@@ -16,6 +21,7 @@ class NewGameActivity : AppCompatActivity() {
         val game: Button = findViewById(R.id.play2)
         val text: TextView = findViewById(R.id.number)
         text.text = intent.getStringExtra("number")
+        code = text.text.toString().toInt()
         val requestModel = intent.getStringExtra("number")?.let { GameCodeModel(it) }
 
         game.setOnClickListener {
@@ -37,6 +43,7 @@ class NewGameActivity : AppCompatActivity() {
                     } catch (ex: Exception) {
                         Log.e("error", Log.getStackTraceString(ex))
                     }
+                    Thread.sleep(2000)
                 }
             }.start()
         }
@@ -45,6 +52,25 @@ class NewGameActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         result = true
+        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val token: String = sh.getString("token", "").toString()
+        val requestModel = GameCodeRequestModel(code,token)
+
+        val response = ServiceBuilder.buildService(APIInterface::class.java)
+        response.deleteGame(requestModel).enqueue(
+            object: Callback<ResponseClass> {
+                override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                    Toast.makeText(this@NewGameActivity, t.toString(), Toast.LENGTH_LONG)
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<ResponseClass>,
+                    response: Response<ResponseClass>
+                ) {
+                }
+            }
+        )
         intent = Intent(this, MultiPlayerActivity::class.java)
         startActivity(intent)
     }
