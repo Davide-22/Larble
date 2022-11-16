@@ -52,4 +52,10 @@ class MultiPlayerActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        intent = Intent(this, MenuActivity::class.java)
+        startActivity(intent)
+    }
 }
