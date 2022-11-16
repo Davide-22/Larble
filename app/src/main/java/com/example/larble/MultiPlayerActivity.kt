@@ -3,6 +3,8 @@ package com.example.larble
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import retrofit2.Call
@@ -51,6 +53,22 @@ class MultiPlayerActivity : AppCompatActivity() {
             intent = Intent(this, ExistedGameActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.account -> {
+                intent = Intent(this@MultiPlayerActivity, AccountActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     @Deprecated("Deprecated in Java")

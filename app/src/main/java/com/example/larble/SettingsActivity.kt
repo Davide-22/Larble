@@ -2,25 +2,31 @@ package com.example.larble
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
-    private var logout: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        logout = findViewById(R.id.log_out)
-
-        logout?.setOnClickListener {
-            intent = Intent(this, LoginActivity::class.java)
-            val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-            val myEdit = sharedPreferences.edit()
-            myEdit.putString("token", "")
-            myEdit.putString("username", "")
-            myEdit.apply()
-            startActivity(intent)
-        }
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.account -> {
+                intent = Intent(this@SettingsActivity, AccountActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
