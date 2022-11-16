@@ -3,6 +3,7 @@ package com.example.larble
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
@@ -14,7 +15,7 @@ class AccountActivity: AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
-        val changePassword: Button = findViewById(R.id.button)
+        val changePassword: ImageButton = findViewById(R.id.edit_password)
 
         val logout: Button = findViewById(R.id.log_out)
 
