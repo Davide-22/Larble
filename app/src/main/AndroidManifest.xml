@@ -142,6 +142,16 @@
 
             </intent-filter>
         </activity>
+        <activity android:name=".AccountActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intenr.action.Account" />
+
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

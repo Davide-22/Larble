@@ -20,4 +20,6 @@
     <string name="share_this_code_with_your_friend">Share this code with your friend</string>
     <string name="check">check</string>
     <string name="log_out">Log out</string>
+    <string name="account">account</string>
+    <string name="change_password">Change Password</string>
 </resources>
