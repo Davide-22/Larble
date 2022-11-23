@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,12 @@ class AccountActivity: AppCompatActivity()  {
         "Score: $score".also { text.text = it }
 
         val profilePicture: String? = intent.getStringExtra("profile_picture")
+        val picture: ImageView = findViewById(R.id.picture)
+        if (profilePicture == null) {
+            picture.visibility = View.VISIBLE
+        }else{
+            picture.visibility = View.INVISIBLE
+        }
 
         logout.setOnClickListener {
             intent = Intent(this, LoginActivity::class.java)
