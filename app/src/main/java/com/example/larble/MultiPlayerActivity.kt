@@ -27,7 +27,7 @@ class MultiPlayerActivity : AppCompatActivity() {
             val requestModel = TokenRequestModel(token)
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
-            response.create_multiplayer_game(requestModel).enqueue(
+            response.createMultiplayerGame(requestModel).enqueue(
                 object: Callback<ResponseClass> {
                     override fun onResponse(
                         call: Call<ResponseClass>,

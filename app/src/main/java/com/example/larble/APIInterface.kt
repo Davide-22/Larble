@@ -16,7 +16,7 @@ interface APIInterface {
     fun verify(@Body requestModel: TokenRequestModel): Call<ResponseClass>
 
     @POST("/create_multiplayer_game")
-    fun create_multiplayer_game(@Body requestModel: TokenRequestModel): Call<ResponseClass>
+    fun createMultiplayerGame(@Body requestModel: TokenRequestModel): Call<ResponseClass>
 
     @POST("/check_for_player2")
     fun checkForPlayer(@Body requestModel: GameCodeModel): Call<ResponseClass>

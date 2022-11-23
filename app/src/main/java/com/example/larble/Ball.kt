@@ -10,11 +10,11 @@ import android.graphics.Canvas
  * Grenade is the opponent.
  */
 
-class Ball(var image: Bitmap) {
-    var x: Int = 0
-    var y: Int = 0
-    var w: Int = 0
-    var h: Int = 0
+class Ball(private var image: Bitmap) {
+    private var x: Int = 0
+    private var y: Int = 0
+    private var w: Int = 0
+    private var h: Int = 0
     private var xVelocity = 20
     private var yVelocity = 20
     private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
@@ -42,10 +42,10 @@ class Ball(var image: Bitmap) {
         // val randomNum = ThreadLocalRandom.current().nextInt(1, 5)
 
         if (x > screenWidth - image.width || x < image.width) {
-            xVelocity = xVelocity * -1
+            xVelocity *= -1
         }
         if (y > screenHeight - image.height || y < image.height) {
-            yVelocity = yVelocity * -1
+            yVelocity *= -1
         }
 
         x += (xVelocity)

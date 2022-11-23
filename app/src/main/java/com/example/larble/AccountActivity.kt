@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
