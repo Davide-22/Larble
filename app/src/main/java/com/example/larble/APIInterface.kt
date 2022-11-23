@@ -27,6 +27,12 @@ interface APIInterface {
     @POST("/delete_game")
     fun deleteGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
 
-    @POST("change_password")
+    @POST("/change_password")
     fun changePassword(@Body requestModel: PasswordRequestModel): Call<ResponseClass>
+
+    @POST("/change_username")
+    fun changeUsername(@Body requestModel: UsernameRequestModel): Call<ResponseClass>
+
+    @POST("/player_info")
+    fun playerInfo(@Body requestModel: TokenRequestModel): Call<PlayerClass>
 }

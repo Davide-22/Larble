@@ -24,4 +24,8 @@
     <string name="change_password">Change Password</string>
     <string name="old_password">Old password</string>
     <string name="new_password">New password</string>
+    <string name="Pass">**********</string>
+    <string name="pass">Password: *********</string>
+    <string name="change_username">change_username</string>
+    <string name="change_username1">change username</string>
 </resources>
