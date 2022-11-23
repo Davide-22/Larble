@@ -4,6 +4,8 @@ import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.Gravity
@@ -66,6 +68,7 @@ class AccountActivity: AppCompatActivity()  {
             val newUsername: EditText = view.findViewById(R.id.new_username)
             newUsername.setText(username)
             val change: Button = view.findViewById(R.id.change_username)
+            val checkUsername: ImageView = view.findViewById(R.id.check1)
 
             val popupWindow = PopupWindow(
                 view,
@@ -83,7 +86,7 @@ class AccountActivity: AppCompatActivity()  {
             popupWindow.exitTransition = slideOut
 
             change.setOnClickListener {
-                if(newUsername.text.isNotEmpty()){
+                if(checkUsername.visibility == View.VISIBLE){
                     val token: String? = sh.getString("token", "")
                     val requestModel = token?.let { it1 -> UsernameRequestModel(newUsername.text.toString(),it1) }
 
@@ -115,6 +118,9 @@ class AccountActivity: AppCompatActivity()  {
                             }
                         )
                     }
+                }else{
+                    Toast.makeText(this@AccountActivity, "Username same as before", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
@@ -125,6 +131,25 @@ class AccountActivity: AppCompatActivity()  {
                 0, // X offset
                 0 // Y offset
             )
+
+            newUsername.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                    if(s.toString() == username) checkUsername.visibility = View.INVISIBLE
+                    else checkUsername.visibility = View.VISIBLE
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+                }
+            })
         }
 
         changePassword.setOnClickListener {
@@ -138,6 +163,7 @@ class AccountActivity: AppCompatActivity()  {
             val newPassword: EditText= view.findViewById(R.id.new_password)
             val confirmPassword: EditText= view.findViewById(R.id.confirm_password)
             val change: Button = view.findViewById(R.id.change_password)
+            val checkPassword: ImageView = view.findViewById(R.id.check2)
 
 
             val popupWindow = PopupWindow(
@@ -159,7 +185,7 @@ class AccountActivity: AppCompatActivity()  {
             popupWindow.exitTransition = slideOut
 
             change.setOnClickListener {
-                if(newPassword.text.isNotEmpty() && newPassword.text.toString() == confirmPassword.text.toString()){
+                if(newPassword.text.isNotEmpty() && checkPassword.visibility == View.VISIBLE){
                     val token: String? = sh.getString("token", "")
                     val requestModel = token?.let { it1 -> PasswordRequestModel(it1, oldPassword.text.toString(), newPassword.text.toString()) }
 
@@ -186,6 +212,8 @@ class AccountActivity: AppCompatActivity()  {
                             }
                         )
                     }
+                }else{
+                    Toast.makeText(this@AccountActivity, "Invalid password entered", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -196,6 +224,25 @@ class AccountActivity: AppCompatActivity()  {
                 0, // X offset
                 0 // Y offset
             )
+
+            confirmPassword.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                    if(s.toString() == newPassword.text.toString()) checkPassword.visibility = View.VISIBLE
+                    else checkPassword.visibility = View.INVISIBLE
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+                }
+            })
         }
     }
 
