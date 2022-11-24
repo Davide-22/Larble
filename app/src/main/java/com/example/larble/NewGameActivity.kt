@@ -18,34 +18,30 @@ class NewGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newgame)
 
-        val game: Button = findViewById(R.id.play2)
         val text: TextView = findViewById(R.id.number)
         text.text = intent.getStringExtra("number")
         code = text.text.toString().toInt()
         val requestModel = intent.getStringExtra("number")?.let { GameCodeModel(it) }
 
-        game.setOnClickListener {
-            intent = Intent(this, MultiPlayerGameActivity::class.java)
-            val service = ServiceBuilder.buildService(APIInterface::class.java)
+        intent = Intent(this, MultiPlayerGameActivity::class.java)
+        val service = ServiceBuilder.buildService(APIInterface::class.java)
 
-            Thread {
-                while(!result) {
-                    try {
-                        val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
-                        val response = callSync?.execute()
-                        if (response != null) {
-                            if (response.body()!!.status == "true") {
-                                result = true
-                                startActivity(intent)
-                            }
-                        }
-
-                    } catch (ex: Exception) {
-                        Log.e("error", Log.getStackTraceString(ex))
+        Thread {
+            while(!result) {
+            try {
+                val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
+                val response = callSync?.execute()
+                if (response != null) {
+                    if (response.body()!!.status == "true") {
+                        result = true
+                        startActivity(intent)
                     }
-                    Thread.sleep(2000)
                 }
-            }.start()
+            } catch (ex: Exception) {
+                Log.e("error", Log.getStackTraceString(ex))
+            }
+                Thread.sleep(2000)
+            }
         }
     }
 

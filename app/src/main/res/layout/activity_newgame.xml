@@ -5,16 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/play2"
-        android:layout_width="150dp"
-        android:layout_height="74dp"
-        android:text="@string/play"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number" />
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="319dp"
@@ -63,6 +53,33 @@
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.217"
+        app:layout_constraintVertical_bias="0.127"
         tools:ignore="LabelFor,SpeakableTextPresentCheck,TextViewEdits" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="303dp"
+        android:layout_height="92dp"
+        android:text="@string/_1_2_players"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number"
+        app:layout_constraintVertical_bias="0.119" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="147dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/duck"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
