@@ -27,5 +27,6 @@
     <string name="change_username">change_username</string>
     <string name="change_username1">change username</string>
     <string name="picture">picture</string>
-    <string name="_1_2_players">1/2 PLAYERS</string>
+    <string name="_1_2_players">Players found 1/2</string>
+    <string name="searching_the_game">Searching the game</string>
 </resources>
