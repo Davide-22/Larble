@@ -51,6 +51,7 @@
         android:layout_height="70dp"
         android:text=""
         android:textAlignment="center"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/single_player"

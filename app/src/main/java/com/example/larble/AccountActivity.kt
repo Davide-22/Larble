@@ -3,7 +3,9 @@ package com.example.larble
 import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Slide
@@ -19,6 +21,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AccountActivity: AppCompatActivity()  {
+
+    private var picture: ImageView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
@@ -29,6 +33,11 @@ class AccountActivity: AppCompatActivity()  {
         val rootLayout = findViewById<ConstraintLayout>(R.id.accountLayout)
 
         val logout: Button = findViewById(R.id.log_out)
+        val photo: TextView = findViewById(R.id.plus)
+        photo.setOnClickListener{
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent,1)
+        }
 
         var text : TextView = findViewById(R.id.username)
         val username: String? = sh.getString("username", "")
@@ -47,12 +56,7 @@ class AccountActivity: AppCompatActivity()  {
         "Score: $score".also { text.text = it }
 
         val profilePicture: String? = intent.getStringExtra("profile_picture")
-        val picture: ImageView = findViewById(R.id.picture)
-        if (profilePicture == null) {
-            picture.visibility = View.VISIBLE
-        }else{
-            picture.visibility = View.INVISIBLE
-        }
+        picture= findViewById(R.id.picture)
 
         logout.setOnClickListener {
             intent = Intent(this, LoginActivity::class.java)
@@ -285,4 +289,16 @@ class AccountActivity: AppCompatActivity()  {
         intent = Intent(this, MenuActivity::class.java)
         startActivity(intent)
     }
+
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            val bundle: Bundle? = data?.extras
+            val photo: Bitmap = bundle?.get("data") as Bitmap
+            picture?.setImageBitmap(photo)
+        }
+    }
+
 }
