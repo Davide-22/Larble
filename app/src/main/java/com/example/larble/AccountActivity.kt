@@ -39,74 +39,74 @@ class AccountActivity: AppCompatActivity()  {
         val changeUsername: ImageButton = findViewById(R.id.edit_username)
         val changePassword: Button = findViewById(R.id.edit_password)
         val rootLayout = findViewById<ConstraintLayout>(R.id.accountLayout)
-
         val logout: Button = findViewById(R.id.log_out)
         val photo: TextView = findViewById(R.id.plus)
+
+        var text : TextView = findViewById(R.id.username)
+        var username: String? = sh!!.getString("username", "")
+        "Username: $username".also { text.text = it }
+        text = findViewById(R.id.email)
+        var insert: String? = intent.getStringExtra("email")
+        "Email: $insert".also { text.text = it }
+        text = findViewById(R.id.wins)
+        insert = intent.getStringExtra("wins")
+        "Wins: $insert".also { text.text = it }
+        text = findViewById(R.id.total_games)
+        insert= intent.getStringExtra("total_games")
+        "TotalGames: $insert".also { text.text = it }
+        text = findViewById(R.id.score)
+        insert= intent.getStringExtra("score")
+        "Score: $insert".also { text.text = it }
+
+        insert= intent.getStringExtra("profile_picture")
+        picture= findViewById(R.id.picture)
+        if(insert != null){
+            val decodeImage: ByteArray = Base64.decode(insert, Base64.DEFAULT)
+            val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
+            picture?.setImageBitmap(bitmap)
+        }
+
+        val inflater: LayoutInflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val view = inflater.inflate(R.layout.popup_window,null)
+
+        val popupWindow = PopupWindow(
+            view,
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT
+        )
+        popupWindow.isFocusable = true
+        popupWindow.elevation = 10.0F
+
+        val slideIn = Slide()
+        slideIn.slideEdge = Gravity.TOP
+        popupWindow.enterTransition = slideIn
+
+        val slideOut = Slide()
+        slideOut.slideEdge = Gravity.END
+        popupWindow.exitTransition = slideOut
+
         photo.setOnClickListener{
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraIntent,1)
         }
 
-        var text : TextView = findViewById(R.id.username)
-        val username: String? = sh!!.getString("username", "")
-        "Username: $username".also { text.text = it }
-        text = findViewById(R.id.email)
-        val email: String? = intent.getStringExtra("email")
-        "Email: $email".also { text.text = it }
-        text = findViewById(R.id.wins)
-        val wins: String? = intent.getStringExtra("wins")
-        "Wins: $wins".also { text.text = it }
-        text = findViewById(R.id.total_games)
-        val totalGames: String? = intent.getStringExtra("total_games")
-        "TotalGames: $totalGames".also { text.text = it }
-        text = findViewById(R.id.score)
-        val score: String? = intent.getStringExtra("score")
-        "Score: $score".also { text.text = it }
-
-        val profilePicture: String? = intent.getStringExtra("profile_picture")
-        picture= findViewById(R.id.picture)
-        if(profilePicture != null){
-            val decodeImage: ByteArray = Base64.decode(profilePicture, Base64.DEFAULT)
-            val baos: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
-            picture?.setImageBitmap(baos)
-        }
-
         logout.setOnClickListener {
             intent = Intent(this, LoginActivity::class.java)
             val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-            val myEdit = sharedPreferences.edit()
-            myEdit.putString("token", "")
-            myEdit.putString("username", "")
-            myEdit.apply()
+            sharedPreferences.edit().clear().apply()
             startActivity(intent)
         }
 
         changeUsername.setOnClickListener{
-            val inflater: LayoutInflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-            val view = inflater.inflate(R.layout.popup_window,null)
-
-            changePopUp(view,1)
 
             val newUsername: EditText = view.findViewById(R.id.new_username)
+            username = sh!!.getString("username", "")
             newUsername.setText(username)
+            changePopUp(view,1)
+
             val change: Button = view.findViewById(R.id.change_username)
             val checkUsername: ImageView = view.findViewById(R.id.check1)
-
-            val popupWindow = PopupWindow(
-                view,
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-            )
-            popupWindow.isFocusable = true
-
-            val slideIn = Slide()
-            slideIn.slideEdge = Gravity.TOP
-            popupWindow.enterTransition = slideIn
-
-            val slideOut = Slide()
-            slideOut.slideEdge = Gravity.END
-            popupWindow.exitTransition = slideOut
 
             change.setOnClickListener {
                 if(checkUsername.visibility == View.VISIBLE){
@@ -130,6 +130,7 @@ class AccountActivity: AppCompatActivity()  {
                                         myEdit.putString("username", newUsername.text.toString())
                                         myEdit.apply()
                                         popupWindow.dismiss()
+                                        checkUsername.visibility = View.INVISIBLE
                                         Toast.makeText(this@AccountActivity, "Username successfully changed", Toast.LENGTH_LONG).show()
                                     }
                                 }
@@ -175,9 +176,6 @@ class AccountActivity: AppCompatActivity()  {
         }
 
         changePassword.setOnClickListener {
-            val inflater: LayoutInflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-            val view = inflater.inflate(R.layout.popup_window,null)
 
             changePopUp(view,2)
 
@@ -187,27 +185,8 @@ class AccountActivity: AppCompatActivity()  {
             val change: Button = view.findViewById(R.id.change_password)
             val checkPassword: ImageView = view.findViewById(R.id.check2)
 
-
-            val popupWindow = PopupWindow(
-                view,
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-            )
-            popupWindow.isFocusable = true
-
-
-            popupWindow.elevation = 10.0F
-
-            val slideIn = Slide()
-            slideIn.slideEdge = Gravity.TOP
-            popupWindow.enterTransition = slideIn
-
-            val slideOut = Slide()
-            slideOut.slideEdge = Gravity.END
-            popupWindow.exitTransition = slideOut
-
             change.setOnClickListener {
-                if(newPassword.text.isNotEmpty() && checkPassword.visibility == View.VISIBLE){
+                if(checkPassword.visibility == View.VISIBLE){
                     val requestModel = token?.let { it1 -> PasswordRequestModel(it1, oldPassword.text.toString(), newPassword.text.toString()) }
 
                     val response = ServiceBuilder.buildService(APIInterface::class.java)
@@ -223,6 +202,10 @@ class AccountActivity: AppCompatActivity()  {
                                             .show()
                                     }else{
                                         popupWindow.dismiss()
+                                        checkPassword.visibility = View.INVISIBLE
+                                        oldPassword.setText("")
+                                        newPassword.setText("")
+                                        confirmPassword.setText("")
                                         Toast.makeText(this@AccountActivity, "Password successfully changed", Toast.LENGTH_LONG).show()
                                     }
                                 }
@@ -248,7 +231,7 @@ class AccountActivity: AppCompatActivity()  {
 
             confirmPassword.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {
-                    if(s.toString() == newPassword.text.toString()) checkPassword.visibility = View.VISIBLE
+                    if(s.toString() == newPassword.text.toString() && newPassword.text.toString() !="") checkPassword.visibility = View.VISIBLE
                     else checkPassword.visibility = View.INVISIBLE
                 }
 
@@ -308,9 +291,9 @@ class AccountActivity: AppCompatActivity()  {
         if(requestCode == 1 && resultCode == RESULT_OK){
             val bundle: Bundle? = data?.extras
             val photo: Bitmap = bundle?.get("data") as Bitmap
-            val baos = ByteArrayOutputStream()
-            photo.compress(Bitmap.CompressFormat.WEBP_LOSSY, 100, baos)
-            val imageBytes: ByteArray = baos.toByteArray()
+            val output = ByteArrayOutputStream()
+            photo.compress(Bitmap.CompressFormat.WEBP_LOSSY, 100, output)
+            val imageBytes: ByteArray = output.toByteArray()
             val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
             val requestModel = token?.let { ProfileRequestModel(it, encodedImage) }
 
@@ -326,8 +309,8 @@ class AccountActivity: AppCompatActivity()  {
                                 Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                     .show()
                             }else{
-                                Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
                                 picture?.setImageBitmap(photo)
+                                Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {

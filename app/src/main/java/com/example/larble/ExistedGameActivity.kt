@@ -24,7 +24,8 @@ class ExistedGameActivity : AppCompatActivity() {
         searching.visibility = View.INVISIBLE
         val duck: GifImageView = findViewById(R.id.duck)
         duck.visibility = View.INVISIBLE
-
+        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val token: String = sh.getString("token", "").toString()
 
         game.setOnClickListener {
             if(code.text.toString()!=""){
@@ -32,8 +33,6 @@ class ExistedGameActivity : AppCompatActivity() {
                 searching.visibility = View.VISIBLE
                 duck.visibility = View.VISIBLE
                 intent = Intent(this, MultiPlayerGameActivity::class.java)
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String = sh.getString("token", "").toString()
                 val requestModel = GameCodeRequestModel(code.text.toString().toInt(),token)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)

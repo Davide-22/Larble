@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MultiPlayerActivity : AppCompatActivity() {
+    private var sh :SharedPreferences? = null
+    private var token: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multiplayer)
@@ -19,12 +22,11 @@ class MultiPlayerActivity : AppCompatActivity() {
         val newGame: Button = findViewById(R.id.new_game)
         val existedGame: Button = findViewById(R.id.existed_game)
 
-
         newGame.setOnClickListener {
             intent = Intent(this, NewGameActivity::class.java)
-            val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-            val token: String = sh.getString("token", "").toString()
-            val requestModel = TokenRequestModel(token)
+            sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            token = sh!!.getString("token", "").toString()
+            val requestModel = TokenRequestModel(token!!)
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
             response.createMultiplayerGame(requestModel).enqueue(
@@ -63,8 +65,6 @@ class MultiPlayerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String? = sh.getString("token", "")
                 val requestModel = token?.let { TokenRequestModel(it) }
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)

@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +15,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MenuActivity : AppCompatActivity() {
+    private var sh: SharedPreferences? = null
+    private var username: String? = null
+    private var token: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
@@ -22,9 +26,11 @@ class MenuActivity : AppCompatActivity() {
         val settings: ImageButton = findViewById(R.id.settings)
         val scoreboard: ImageButton = findViewById(R.id.scoreboard)
 
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        username = sh!!.getString("username", "")
+        token = sh!!.getString("token", "")
+
         val text: TextView = findViewById(R.id.name)
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val username: String? = sh.getString("username", "")
         "Ciao $username".also { text.text = it }
 
         singlePlayer.setOnClickListener {
@@ -52,8 +58,6 @@ class MenuActivity : AppCompatActivity() {
     override fun onResume(){
         super.onResume()
         val text: TextView = findViewById(R.id.name)
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val username: String? = sh.getString("username", "")
         "Ciao $username".also { text.text = it }
     }
 
@@ -65,8 +69,6 @@ class MenuActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String? = sh.getString("token", "")
                 val requestModel = token?.let { TokenRequestModel(it) }
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
