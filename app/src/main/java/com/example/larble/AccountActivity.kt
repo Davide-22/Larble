@@ -3,13 +3,16 @@ package com.example.larble
 import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Base64
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,14 +22,19 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 
 class AccountActivity: AppCompatActivity()  {
 
     private var picture: ImageView? = null
+    private var sh: SharedPreferences? = null
+    private var token: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sh!!.getString("token", "")
 
         val changeUsername: ImageButton = findViewById(R.id.edit_username)
         val changePassword: Button = findViewById(R.id.edit_password)
@@ -40,7 +48,7 @@ class AccountActivity: AppCompatActivity()  {
         }
 
         var text : TextView = findViewById(R.id.username)
-        val username: String? = sh.getString("username", "")
+        val username: String? = sh!!.getString("username", "")
         "Username: $username".also { text.text = it }
         text = findViewById(R.id.email)
         val email: String? = intent.getStringExtra("email")
@@ -57,6 +65,11 @@ class AccountActivity: AppCompatActivity()  {
 
         val profilePicture: String? = intent.getStringExtra("profile_picture")
         picture= findViewById(R.id.picture)
+        if(profilePicture != null){
+            val decodeImage: ByteArray = Base64.decode(profilePicture, Base64.DEFAULT)
+            val baos: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
+            picture?.setImageBitmap(baos)
+        }
 
         logout.setOnClickListener {
             intent = Intent(this, LoginActivity::class.java)
@@ -97,7 +110,6 @@ class AccountActivity: AppCompatActivity()  {
 
             change.setOnClickListener {
                 if(checkUsername.visibility == View.VISIBLE){
-                    val token: String? = sh.getString("token", "")
                     val requestModel = token?.let { it1 -> UsernameRequestModel(newUsername.text.toString(),it1) }
 
                     val response = ServiceBuilder.buildService(APIInterface::class.java)
@@ -114,7 +126,7 @@ class AccountActivity: AppCompatActivity()  {
                                     }else{
                                         text = findViewById(R.id.username)
                                         "Username: ${newUsername.text}".also { text.text = it }
-                                        val myEdit = sh.edit()
+                                        val myEdit = sh!!.edit()
                                         myEdit.putString("username", newUsername.text.toString())
                                         myEdit.apply()
                                         popupWindow.dismiss()
@@ -196,7 +208,6 @@ class AccountActivity: AppCompatActivity()  {
 
             change.setOnClickListener {
                 if(newPassword.text.isNotEmpty() && checkPassword.visibility == View.VISIBLE){
-                    val token: String? = sh.getString("token", "")
                     val requestModel = token?.let { it1 -> PasswordRequestModel(it1, oldPassword.text.toString(), newPassword.text.toString()) }
 
                     val response = ServiceBuilder.buildService(APIInterface::class.java)
@@ -297,7 +308,35 @@ class AccountActivity: AppCompatActivity()  {
         if(requestCode == 1 && resultCode == RESULT_OK){
             val bundle: Bundle? = data?.extras
             val photo: Bitmap = bundle?.get("data") as Bitmap
-            picture?.setImageBitmap(photo)
+            val baos = ByteArrayOutputStream()
+            photo.compress(Bitmap.CompressFormat.WEBP_LOSSY, 100, baos)
+            val imageBytes: ByteArray = baos.toByteArray()
+            val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+            val requestModel = token?.let { ProfileRequestModel(it, encodedImage) }
+
+            val response = ServiceBuilder.buildService(APIInterface::class.java)
+            if (requestModel != null) {
+                response.insertPicture(requestModel).enqueue(
+                    object: Callback<ResponseClass> {
+                        override fun onResponse(
+                            call: Call<ResponseClass>,
+                            response: Response<ResponseClass>
+                        ){
+                            if(response.body()!!.status == "false"){
+                                Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                    .show()
+                            }else{
+                                Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
+                                picture?.setImageBitmap(photo)
+                            }
+                        }
+                        override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                            Toast.makeText(this@AccountActivity, t.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                )
+            }
         }
     }
 

@@ -35,4 +35,7 @@ interface APIInterface {
 
     @POST("/player_info")
     fun playerInfo(@Body requestModel: TokenRequestModel): Call<PlayerClass>
+
+    @POST("/change_profile_picture")
+    fun insertPicture(@Body requestModel: ProfileRequestModel): Call<ResponseClass>
 }
