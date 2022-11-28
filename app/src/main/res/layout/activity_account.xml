@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="329dp"
+        android:layout_height="86dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.079"
+        app:srcCompat="@drawable/larblelogo"
+        android:contentDescription="@string/logo" />
+
     <Button
         android:id="@+id/log_out"
         android:layout_width="141dp"
@@ -16,21 +28,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView12"
-        android:layout_width="319dp"
-        android:layout_height="85dp"
-        android:text="@string/larble"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
-
-    <TextView
         android:id="@+id/username"
         android:layout_width="203dp"
         android:layout_height="48dp"
@@ -39,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11"
         app:layout_constraintVertical_bias="0.202" />
 
     <TextView
@@ -125,16 +122,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11"
         app:layout_constraintVertical_bias="0.542"
         app:srcCompat="@drawable/account" />
 
     <TextView
         android:id="@+id/plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="54dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="40dp"
         android:clickable="true"
+        android:focusable="true"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:text="@string/plus"
@@ -145,7 +143,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/picture"
         app:layout_constraintStart_toStartOf="@+id/picture"
-        app:layout_constraintTop_toTopOf="@+id/picture"
-        android:focusable="true" />
+        app:layout_constraintTop_toTopOf="@+id/picture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

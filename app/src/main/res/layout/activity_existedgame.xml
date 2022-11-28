@@ -38,33 +38,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.162" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="317dp"
-        android:layout_height="131dp"
-        android:text="@string/larble"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="60sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="329dp"
+        android:layout_height="86dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintVertical_bias="0.122"
+        app:srcCompat="@drawable/larblelogo"
+        android:contentDescription="@string/logo" />
 
     <Button
         android:id="@+id/play"
         android:layout_width="150dp"
         android:layout_height="74dp"
         android:text="@string/play"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Code_number" />
+        app:layout_constraintTop_toBottomOf="@+id/Code_number"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/searching"
