@@ -59,8 +59,8 @@ class AccountActivity: AppCompatActivity()  {
         "Score: $insert".also { text.text = it }
 
         insert= intent.getStringExtra("profile_picture")
-        picture= findViewById(R.id.picture)
-        if(insert != null){
+        picture= findViewById(R.id.photo)
+        if(insert != null) {
             val decodeImage: ByteArray = Base64.decode(insert, Base64.DEFAULT)
             val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
             picture?.setImageBitmap(bitmap)
