@@ -6,14 +6,13 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="329dp"
-        android:layout_height="86dp"
+        android:layout_width="463dp"
+        android:layout_height="160dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122"
-        app:srcCompat="@drawable/larblelogo"
-        android:contentDescription="@string/logo" />
-
+        app:layout_constraintVertical_bias="0.066"
+        app:srcCompat="@drawable/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
