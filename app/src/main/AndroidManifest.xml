@@ -114,16 +114,7 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".SinglePlayerGameActivity"
-            android:exported="true">
 
-            <intent-filter>
-                <action android:name="android.intenr.action.SINGLEPLAYERGAME" />
-
-                <category android:name="android.intent.cateogyr.LAUNCHER" />
-
-            </intent-filter>
-        </activity>
 
         <activity android:name=".MultiPlayerGameActivity"
             android:exported="true">
@@ -153,6 +144,16 @@
 
                 <category android:name="android.intent.cateogyr.LAUNCHER" />
 
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".BallActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intenr.action.BALL" />
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
