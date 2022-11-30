@@ -20,15 +20,15 @@ class SinglePlayerActivity : AppCompatActivity() {
         val hard: Button = findViewById(R.id.hard)
 
         easy.setOnClickListener {
-            intent = Intent(this, SinglePlayerGameActivity::class.java)
+            intent = Intent(this, BallActivity::class.java)
             startActivity(intent)
         }
         medium.setOnClickListener {
-            intent = Intent(this, SinglePlayerGameActivity::class.java)
+            intent = Intent(this, BallActivity::class.java)
             startActivity(intent)
         }
         hard.setOnClickListener {
-            intent = Intent(this, SinglePlayerGameActivity::class.java)
+            intent = Intent(this, BallActivity::class.java)
             startActivity(intent)
         }
 
