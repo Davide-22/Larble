@@ -10,7 +10,7 @@ class BallView(context: Context) : View(context) {
     //var ball: Bitmap
     var xPos : Float = 0.0f
     var yPos : Float = 0.0f
-    val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball)
+    val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
     var ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
 
 
