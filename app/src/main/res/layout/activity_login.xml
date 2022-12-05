@@ -9,15 +9,16 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="329dp"
-        android:layout_height="86dp"
+        android:layout_width="463dp"
+        android:layout_height="160dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12"
-        app:srcCompat="@drawable/larblelogo"
-        android:contentDescription="@string/logo" />
+        app:layout_constraintVertical_bias="0.087"
+        app:srcCompat="@drawable/logo" />
+
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
@@ -33,8 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.112" />
-
+        app:layout_constraintVertical_bias="0.073" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_bias="0.122" />
 
     <Button
         android:id="@+id/sign_up"

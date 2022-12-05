@@ -7,25 +7,43 @@
 
     <ImageView
         android:id="@+id/imageView11"
-        android:layout_width="329dp"
-        android:layout_height="86dp"
+        android:layout_width="463dp"
+        android:layout_height="160dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079"
-        app:srcCompat="@drawable/larblelogo"
-        android:contentDescription="@string/logo" />
+        app:layout_constraintVertical_bias="0.061"
+        app:srcCompat="@drawable/logo" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/photo"
+        android:layout_width="93dp"
+        android:layout_height="85dp"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11"
+        app:layout_constraintVertical_bias="0.0"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:srcCompat="@drawable/account" />
 
     <Button
         android:id="@+id/log_out"
-        android:layout_width="141dp"
-        android:layout_height="73dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="136dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/log_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password"
+        app:layout_constraintVertical_bias="0.322" />
 
     <TextView
         android:id="@+id/username"
@@ -36,8 +54,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.202" />
+        app:layout_constraintTop_toBottomOf="@+id/photo"
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
         android:id="@+id/email"
@@ -49,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:layout_constraintVertical_bias="0.043" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/edit_username"
@@ -60,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.357"
+        app:layout_constraintVertical_bias="0.436"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <TextView
@@ -74,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/total_games"
@@ -86,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wins"
-        app:layout_constraintVertical_bias="0.041" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/score"
@@ -98,39 +116,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total_games"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/edit_password"
         android:layout_width="136dp"
         android:layout_height="69dp"
         android:text="@string/change_password"
-        app:layout_constraintBottom_toTopOf="@+id/log_out"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score"
-        app:layout_constraintVertical_bias="0.638" />
-
-    <ImageView
-        android:id="@+id/picture"
-        android:layout_width="88dp"
-        android:layout_height="75dp"
-        android:clickable="false"
-        android:contentDescription="@string/picture"
-        app:layout_constraintBottom_toTopOf="@+id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11"
-        app:layout_constraintVertical_bias="0.542"
-        app:srcCompat="@drawable/account" />
+        app:layout_constraintVertical_bias="0.064" />
 
     <TextView
         android:id="@+id/plus"
         android:layout_width="54dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="48dp"
         android:clickable="true"
         android:focusable="true"
         android:minWidth="48dp"
@@ -139,10 +142,13 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="34sp"
+        android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/picture"
-        app:layout_constraintStart_toStartOf="@+id/picture"
-        app:layout_constraintTop_toTopOf="@+id/picture" />
+        app:layout_constraintBottom_toBottomOf="@+id/photo"
+        app:layout_constraintEnd_toEndOf="@+id/photo"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="@+id/photo"
+        app:layout_constraintTop_toTopOf="@+id/photo"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

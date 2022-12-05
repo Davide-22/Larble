@@ -7,12 +7,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="329dp"
-        android:layout_height="86dp"
+        android:layout_width="486dp"
+        android:layout_height="219dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/larblelogo"
-        android:contentDescription="@string/logo" />
+        app:srcCompat="@drawable/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
