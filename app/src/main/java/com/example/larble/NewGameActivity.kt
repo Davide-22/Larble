@@ -3,7 +3,6 @@ package com.example.larble
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,21 +27,22 @@ class NewGameActivity : AppCompatActivity() {
 
         Thread {
             while(!result) {
-            try {
-                val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
-                val response = callSync?.execute()
-                if (response != null) {
-                    if (response.body()!!.status == "true") {
-                        result = true
-                        startActivity(intent)
+                try {
+                    val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
+                    val response = callSync?.execute()
+                    if (response != null) {
+                        if (response.body()!!.status == "true") {
+                            intent.putExtra("number", code.toString())
+                            startActivity(intent)
+                            result = true
+                        }
                     }
+                } catch (ex: Exception) {
+                    Log.d("error", Log.getStackTraceString(ex))
                 }
-            } catch (ex: Exception) {
-                Log.e("error", Log.getStackTraceString(ex))
-            }
                 Thread.sleep(2000)
             }
-        }
+        }.start()
     }
 
     @Deprecated("Deprecated in Java")

@@ -14,24 +14,27 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ExistedGameActivity : AppCompatActivity() {
+    private var duck: GifImageView? = null
+    private var game: Button? = null
+    private var searching: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_existedgame)
 
-        val game: Button = findViewById(R.id.play)
+        game = findViewById(R.id.play)
         val code: EditText = findViewById(R.id.Code_number)
-        val searching: TextView = findViewById(R.id.searching)
-        searching.visibility = View.INVISIBLE
-        val duck: GifImageView = findViewById(R.id.duck)
-        duck.visibility = View.INVISIBLE
+        searching = findViewById(R.id.searching)
+        searching?.visibility = View.INVISIBLE
+        duck = findViewById(R.id.duck)
+        duck?.visibility = View.INVISIBLE
         val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val token: String = sh.getString("token", "").toString()
 
-        game.setOnClickListener {
+        game?.setOnClickListener {
             if(code.text.toString()!=""){
-                game.visibility = View.INVISIBLE
-                searching.visibility = View.VISIBLE
-                duck.visibility = View.VISIBLE
+                game?.visibility = View.INVISIBLE
+                searching?.visibility = View.VISIBLE
+                duck?.visibility = View.VISIBLE
                 intent = Intent(this, MultiPlayerGameActivity::class.java)
                 val requestModel = GameCodeRequestModel(code.text.toString().toInt(),token)
 
@@ -43,21 +46,22 @@ class ExistedGameActivity : AppCompatActivity() {
                             response: Response<ResponseClass>
                         ){
                             if(response.body()!!.status=="true"){
+                                intent.putExtra("number", code.text.toString())
                                 startActivity(intent)
                             }else{
                                 Toast.makeText(this@ExistedGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                     .show()
-                                duck.visibility = View.INVISIBLE
-                                searching.visibility = View.INVISIBLE
-                                game.visibility = View.VISIBLE
+                                duck?.visibility = View.INVISIBLE
+                                searching?.visibility = View.INVISIBLE
+                                game?.visibility = View.VISIBLE
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
                             Toast.makeText(this@ExistedGameActivity, t.toString(), Toast.LENGTH_LONG)
                                 .show()
-                            duck.visibility = View.INVISIBLE
-                            searching.visibility = View.INVISIBLE
-                            game.visibility = View.VISIBLE
+                            duck?.visibility = View.INVISIBLE
+                            searching?.visibility = View.INVISIBLE
+                            game?.visibility = View.VISIBLE
                         }
                     }
                 )
@@ -67,5 +71,12 @@ class ExistedGameActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onResume(){
+        super.onResume()
+        duck?.visibility = View.INVISIBLE
+        searching?.visibility = View.INVISIBLE
+        game?.visibility = View.VISIBLE
     }
 }

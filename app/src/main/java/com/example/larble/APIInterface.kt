@@ -38,4 +38,7 @@ interface APIInterface {
 
     @POST("/change_profile_picture")
     fun insertPicture(@Body requestModel: ProfileRequestModel): Call<ResponseClass>
+
+    @POST("/handle_multiplayer_game")
+    fun takePosition(@Body requestModel: PositionRequestModel): Call<PositionResponseClass>
 }

@@ -7,21 +7,21 @@ import android.graphics.Canvas
 import android.view.View
 
 class BallView(context: Context) : View(context) {
-    //var ball: Bitmap
-    var xPos : Float = 0.0f
-    var yPos : Float = 0.0f
     val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball)
     var ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
-
+    var bitmaps: MutableList<Bitmap> = arrayListOf(ball)
+    var positions= FloatArray(4)
 
     fun setParam(x: Float, y: Float) {
-        xPos = x
-        yPos = y
+        positions[0] = x
+        positions[1] = y
     }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(ball, xPos, yPos, null)
+        for(i in 0 until bitmaps.size){
+            canvas.drawBitmap(bitmaps[i], positions[2*i], positions[(2*i)+1], null)
+        }
         invalidate()
-
     }
 }
