@@ -66,7 +66,6 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         val diagonal = sqrt(width.pow(2)+height.pow(2))
 
         Thread {
-            var i = 0
             while(true){
                 val requestModel =
                     intent?.getStringExtra("number")
@@ -88,13 +87,12 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                     Log.d("xSuo", x.toString())
                                     Log.d("ySuo", y.toString())
                                     if(ballView.bitmaps.size == 1){
-                                        val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball)
+                                        val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
                                         val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
                                         ballView.bitmaps.add(ball)
                                     }
                                     ballView.positions[2] = x*diagonal
                                     ballView.positions[3] = y*diagonal
-                                    i++
                                 }else{
                                     Toast.makeText(this@MultiPlayerGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                         .show()
@@ -107,6 +105,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     )
                 }
+                Thread.sleep(3)
             }
 
         }.start()
