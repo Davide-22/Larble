@@ -10,7 +10,7 @@ class BallView(context: Context) : View(context) {
     val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
     var ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
     var bitmaps: MutableList<Bitmap> = arrayListOf(ball)
-    var positions= FloatArray(4)
+    var positions= FloatArray(4){1.0f}
 
     fun setParam(x: Float, y: Float) {
         positions[0] = x

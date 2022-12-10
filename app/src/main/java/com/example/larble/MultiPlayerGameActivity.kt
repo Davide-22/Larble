@@ -16,6 +16,7 @@ import com.example.larble.requestModel.GameCodeRequestModel
 import com.example.larble.requestModel.PositionRequestModel
 import com.example.larble.responseModel.PositionResponseClass
 import com.example.larble.responseModel.ResponseClass
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,9 +41,12 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private var ballWidth = 0
 
     private lateinit var sensorManager: SensorManager
+    private var job: Job = Job()
+    private var result = true
 
 
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,13 +73,18 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         val token = sh!!.getString("token", "")
         val diagonal = sqrt(width.pow(2)+height.pow(2))
 
-        Thread {
-            while(true){
+        job = GlobalScope.launch {
+            while(result){
                 val requestModel =
                     intent?.getStringExtra("number")
                         ?.let { PositionRequestModel(token.toString(), it.toInt(), ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal) }
                 Log.d("xMio", ballView.positions[0].toString())
                 Log.d("yMio", ballView.positions[1].toString())
+                if(ballView.positions[0]==0.0f && ballView.positions[1]==0.0f){
+                    result = false
+                    intent = Intent(this@MultiPlayerGameActivity, MultiPlayerActivity::class.java)
+                    startActivity(intent)
+                }
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 if (requestModel != null) {
@@ -109,10 +118,9 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     )
                 }
-                Thread.sleep(3)
+                delay(10)
             }
-
-        }.start()
+        }
     }
     override fun onStart() {
         super.onStart()

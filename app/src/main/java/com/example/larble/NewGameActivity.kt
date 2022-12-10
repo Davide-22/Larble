@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.larble.requestModel.GameCodeModel
 import com.example.larble.requestModel.GameCodeRequestModel
 import com.example.larble.responseModel.ResponseClass
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +17,8 @@ import retrofit2.Response
 class NewGameActivity : AppCompatActivity() {
     private var result = false
     private var code = 0
+    private var job: Job = Job()
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newgame)
@@ -28,7 +31,7 @@ class NewGameActivity : AppCompatActivity() {
         intent = Intent(this, MultiPlayerGameActivity::class.java)
         val service = ServiceBuilder.buildService(APIInterface::class.java)
 
-        Thread {
+        job = GlobalScope.launch {
             while(!result) {
                 try {
                     val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
@@ -43,9 +46,9 @@ class NewGameActivity : AppCompatActivity() {
                 } catch (ex: Exception) {
                     Log.d("error", Log.getStackTraceString(ex))
                 }
-                Thread.sleep(2000)
+                delay(1000)
             }
-        }.start()
+        }
     }
 
     @Deprecated("Deprecated in Java")
