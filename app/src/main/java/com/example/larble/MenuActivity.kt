@@ -112,11 +112,7 @@ class MenuActivity : AppCompatActivity() {
                                     Toast.makeText(this@MenuActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
                                 }else{
                                     intent = Intent(this@MenuActivity, AccountActivity::class.java)
-                                    intent.putExtra("email", response.body()!!.email)
-                                    intent.putExtra("wins", response.body()!!.wins.toString())
-                                    intent.putExtra("total_games", response.body()!!.total_games.toString())
-                                    intent.putExtra("score", response.body()!!.score.toString())
-                                    intent.putExtra("profile_picture", response.body()!!.profile_picture)
+                                    intent.putExtra("account", response.body())
                                     startActivity(intent)
                                 }
                             }

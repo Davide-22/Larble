@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -17,11 +18,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.larble.requestModel.PasswordRequestModel
 import com.example.larble.requestModel.ProfileRequestModel
 import com.example.larble.requestModel.UsernameRequestModel
+import com.example.larble.responseModel.PlayerResponseClass
 import com.example.larble.responseModel.ResponseClass
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +36,7 @@ class AccountActivity: AppCompatActivity()  {
     private var picture: ImageView? = null
     private var sh: SharedPreferences? = null
     private var token: String? = null
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
@@ -46,26 +50,26 @@ class AccountActivity: AppCompatActivity()  {
         val logout: Button = findViewById(R.id.log_out)
         val photo: TextView = findViewById(R.id.plus)
 
+        val account: PlayerResponseClass = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            intent.getSerializableExtra("account", PlayerResponseClass::class.java)!!
+        else
+            intent.getSerializableExtra("account") as PlayerResponseClass
+
         var text : TextView = findViewById(R.id.username)
         var username: String? = sh!!.getString("username", "")
         "Username: $username".also { text.text = it }
         text = findViewById(R.id.email)
-        var insert: String? = intent.getStringExtra("email")
-        "Email: $insert".also { text.text = it }
+        "Email: ${account.email}".also { text.text = it }
         text = findViewById(R.id.wins)
-        insert = intent.getStringExtra("wins")
-        "Wins: $insert".also { text.text = it }
+        "Wins: ${account.wins}".also { text.text = it }
         text = findViewById(R.id.total_games)
-        insert= intent.getStringExtra("total_games")
-        "TotalGames: $insert".also { text.text = it }
+        "TotalGames: ${account.total_games}".also { text.text = it }
         text = findViewById(R.id.score)
-        insert= intent.getStringExtra("score")
-        "Score: $insert".also { text.text = it }
+        "Score: ${account.score}".also { text.text = it }
 
-        insert= intent.getStringExtra("profile_picture")
         picture= findViewById(R.id.photo)
-        if(insert != null) {
-            val decodeImage: ByteArray = Base64.decode(insert, Base64.DEFAULT)
+        if(account.profile_picture != null) {
+            val decodeImage: ByteArray = Base64.decode(account.profile_picture, Base64.DEFAULT)
             val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
             picture?.setImageBitmap(bitmap)
         }
@@ -296,7 +300,10 @@ class AccountActivity: AppCompatActivity()  {
             val bundle: Bundle? = data?.extras
             val photo: Bitmap = bundle?.get("data") as Bitmap
             val output = ByteArrayOutputStream()
-            photo.compress(Bitmap.CompressFormat.WEBP_LOSSY, 100, output)
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                photo.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, output)
+            else
+                photo.compress(Bitmap.CompressFormat.WEBP, 0, output)
             val imageBytes: ByteArray = output.toByteArray()
             val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
             val requestModel = token?.let { ProfileRequestModel(it, encodedImage) }
@@ -318,7 +325,7 @@ class AccountActivity: AppCompatActivity()  {
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                            Toast.makeText(this@AccountActivity, t.toString(), Toast.LENGTH_LONG)
+                            Toast.makeText(this@AccountActivity, "No Post", Toast.LENGTH_LONG)
                                 .show()
                         }
                     }
