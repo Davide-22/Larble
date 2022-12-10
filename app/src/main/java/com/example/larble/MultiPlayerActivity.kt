@@ -8,6 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
+import com.example.larble.requestModel.TokenRequestModel
+import com.example.larble.responseModel.PlayerResponseClass
+import com.example.larble.responseModel.ResponseClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,10 +73,10 @@ class MultiPlayerActivity : AppCompatActivity() {
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 if (requestModel != null) {
                     response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerClass> {
+                        object: Callback<PlayerResponseClass> {
                             override fun onResponse(
-                                call: Call<PlayerClass>,
-                                response: Response<PlayerClass>
+                                call: Call<PlayerResponseClass>,
+                                response: Response<PlayerResponseClass>
                             ){
                                 if(response.body()!!.status == "false"){
                                     Toast.makeText(this@MultiPlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
@@ -87,7 +90,7 @@ class MultiPlayerActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 }
                             }
-                            override fun onFailure(call: Call<PlayerClass>, t: Throwable) {
+                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
                                 Toast.makeText(this@MultiPlayerActivity, t.toString(), Toast.LENGTH_LONG)
                                     .show()
                             }

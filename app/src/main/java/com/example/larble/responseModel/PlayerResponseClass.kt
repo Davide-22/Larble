@@ -1,6 +1,6 @@
-package com.example.larble
+package com.example.larble.responseModel
 
-data class PlayerClass(
+data class PlayerResponseClass(
     val status: String,
     val msg: String,
     val email: String,

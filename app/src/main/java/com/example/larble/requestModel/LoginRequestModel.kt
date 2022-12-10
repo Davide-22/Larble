@@ -1,4 +1,4 @@
-package com.example.larble
+package com.example.larble.requestModel
 
 data class LoginRequestModel(
     val email:String,

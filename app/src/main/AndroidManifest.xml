@@ -104,7 +104,7 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".ScoreboardActivity"
+        <activity android:name=".LeaderboardActivity"
             android:exported="true">
 
             <intent-filter>

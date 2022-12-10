@@ -1,5 +1,7 @@
 package com.example.larble
 
+import com.example.larble.requestModel.*
+import com.example.larble.responseModel.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -34,11 +36,14 @@ interface APIInterface {
     fun changeUsername(@Body requestModel: UsernameRequestModel): Call<ResponseClass>
 
     @POST("/player_info")
-    fun playerInfo(@Body requestModel: TokenRequestModel): Call<PlayerClass>
+    fun playerInfo(@Body requestModel: TokenRequestModel): Call<PlayerResponseClass>
 
     @POST("/change_profile_picture")
     fun insertPicture(@Body requestModel: ProfileRequestModel): Call<ResponseClass>
 
     @POST("/handle_multiplayer_game")
     fun takePosition(@Body requestModel: PositionRequestModel): Call<PositionResponseClass>
+
+    @POST("/get_leaderboard")
+    fun leaderboard(@Body requestModel: TokenRequestModel): Call<LeaderboardResponseClass>
 }

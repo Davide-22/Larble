@@ -10,6 +10,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.larble.requestModel.TokenRequestModel
+import com.example.larble.responseModel.PlayerResponseClass
+import com.example.larble.responseModel.LeaderboardResponseClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,8 +52,34 @@ class MenuActivity : AppCompatActivity() {
         }
 
         scoreboard.setOnClickListener{
-            intent = Intent(this, ScoreboardActivity::class.java)
-            startActivity(intent)
+            intent = Intent(this, LeaderboardActivity::class.java)
+            val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val token: String? = sh.getString("token", "")
+            val requestModel = token?.let { TokenRequestModel(it) }
+
+            val response = ServiceBuilder.buildService(APIInterface::class.java)
+            if (requestModel != null) {
+                response.leaderboard(requestModel).enqueue(
+                    object: Callback<LeaderboardResponseClass> {
+                        override fun onResponse(
+                            call: Call<LeaderboardResponseClass>,
+                            response: Response<LeaderboardResponseClass>
+                        ){
+                            if(response.body()!!.status=="true"){
+                                intent.putExtra("leaderboard", response.body()!!.leaderboard)
+                                startActivity(intent)
+                            }else{
+                                Toast.makeText(this@MenuActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
+                        override fun onFailure(call: Call<LeaderboardResponseClass>, t: Throwable) {
+                            Toast.makeText(this@MenuActivity, t.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                )
+            }
         }
 
     }
@@ -74,10 +103,10 @@ class MenuActivity : AppCompatActivity() {
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 if (requestModel != null) {
                     response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerClass> {
+                        object: Callback<PlayerResponseClass> {
                             override fun onResponse(
-                                call: Call<PlayerClass>,
-                                response: Response<PlayerClass>
+                                call: Call<PlayerResponseClass>,
+                                response: Response<PlayerResponseClass>
                             ){
                                 if(response.body()!!.status == "false"){
                                     Toast.makeText(this@MenuActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
@@ -91,7 +120,7 @@ class MenuActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 }
                             }
-                            override fun onFailure(call: Call<PlayerClass>, t: Throwable) {
+                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
                                 Toast.makeText(this@MenuActivity, t.toString(), Toast.LENGTH_LONG)
                                     .show()
                             }

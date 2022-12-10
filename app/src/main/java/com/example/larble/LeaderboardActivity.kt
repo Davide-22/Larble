@@ -4,16 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.larble.requestModel.TokenRequestModel
+import com.example.larble.responseModel.PlayerResponseClass
+import com.example.larble.responseModel.LeaderboardClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ScoreboardActivity : AppCompatActivity() {
+class LeaderboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scoreboard)
+        setContentView(R.layout.activity_leaderboard)
+        val leaderboard: ArrayList<LeaderboardClass> = intent.getSerializableExtra("leaderboard") as ArrayList<LeaderboardClass>
+
+        val username: TextView = findViewById(R.id.textView1)
+        val wins: TextView = findViewById(R.id.textView16)
+        username.text=leaderboard[0].username
+        wins.text=leaderboard[0].wins.toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -31,15 +41,15 @@ class ScoreboardActivity : AppCompatActivity() {
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 if (requestModel != null) {
                     response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerClass> {
+                        object: Callback<PlayerResponseClass> {
                             override fun onResponse(
-                                call: Call<PlayerClass>,
-                                response: Response<PlayerClass>
+                                call: Call<PlayerResponseClass>,
+                                response: Response<PlayerResponseClass>
                             ){
                                 if(response.body()!!.status == "false"){
-                                    Toast.makeText(this@ScoreboardActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this@LeaderboardActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
                                 }else{
-                                    intent = Intent(this@ScoreboardActivity, AccountActivity::class.java)
+                                    intent = Intent(this@LeaderboardActivity, AccountActivity::class.java)
                                     intent.putExtra("email", response.body()!!.email)
                                     intent.putExtra("wins", response.body()!!.wins.toString())
                                     intent.putExtra("total_games", response.body()!!.total_games.toString())
@@ -48,8 +58,8 @@ class ScoreboardActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 }
                             }
-                            override fun onFailure(call: Call<PlayerClass>, t: Throwable) {
-                                Toast.makeText(this@ScoreboardActivity, t.toString(), Toast.LENGTH_LONG)
+                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
+                                Toast.makeText(this@LeaderboardActivity, t.toString(), Toast.LENGTH_LONG)
                                     .show()
                             }
                         }

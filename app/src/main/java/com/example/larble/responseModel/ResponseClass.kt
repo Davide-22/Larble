@@ -1,4 +1,4 @@
-package com.example.larble
+package com.example.larble.responseModel
 
 data class ResponseClass(
     val status: String,

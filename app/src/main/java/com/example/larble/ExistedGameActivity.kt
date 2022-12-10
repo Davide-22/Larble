@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.larble.requestModel.GameCodeRequestModel
+import com.example.larble.responseModel.ResponseClass
 import pl.droidsonroids.gif.GifImageView
 import retrofit2.Call
 import retrofit2.Callback

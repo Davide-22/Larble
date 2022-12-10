@@ -19,6 +19,10 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.larble.requestModel.PasswordRequestModel
+import com.example.larble.requestModel.ProfileRequestModel
+import com.example.larble.requestModel.UsernameRequestModel
+import com.example.larble.responseModel.ResponseClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
