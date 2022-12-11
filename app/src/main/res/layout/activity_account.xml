@@ -68,17 +68,19 @@
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/edit_username"
         android:layout_width="51dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
+        android:clickable="true"
         android:contentDescription="@string/change_username"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.436"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@drawable/pencil"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/wins"

@@ -44,7 +44,7 @@ class AccountActivity: AppCompatActivity()  {
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sh!!.getString("token", "")
 
-        val changeUsername: ImageButton = findViewById(R.id.edit_username)
+        val changeUsername: ImageView = findViewById(R.id.edit_username)
         val changePassword: Button = findViewById(R.id.edit_password)
         val rootLayout = findViewById<ConstraintLayout>(R.id.accountLayout)
         val logout: Button = findViewById(R.id.log_out)
