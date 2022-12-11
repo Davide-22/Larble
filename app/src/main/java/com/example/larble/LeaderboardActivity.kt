@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.larble.requestModel.TokenRequestModel
 import com.example.larble.responseModel.PlayerResponseClass
 import com.example.larble.responseModel.LeaderboardClass
@@ -18,12 +19,21 @@ class LeaderboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_leaderboard)
-        val leaderboard: ArrayList<LeaderboardClass> = intent.getSerializableExtra("leaderboard") as ArrayList<LeaderboardClass>
 
-        val username: TextView = findViewById(R.id.textView1)
-        val wins: TextView = findViewById(R.id.textView16)
-        username.text=leaderboard[0].username
-        wins.text=leaderboard[0].wins.toString()
+        val leaderboard: ArrayList<LeaderboardClass> = intent.getSerializableExtra("leaderboard") as ArrayList<LeaderboardClass>
+        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
+
+        recyclerview.layoutManager = LinearLayoutManager(this)
+
+        val data = ArrayList<ItemsLeaderboard>(15)
+
+        for (i in 0 until leaderboard.size) {
+            data.add(ItemsLeaderboard(R.drawable.account, leaderboard[i].username, leaderboard[i].wins.toString(), leaderboard[i].score.toString()))
+        }
+
+        val adapter = CustomAdapter(data)
+
+        recyclerview.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
