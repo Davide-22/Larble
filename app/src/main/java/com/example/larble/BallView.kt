@@ -12,6 +12,7 @@ class BallView(context: Context) : View(context) {
     var positions= FloatArray(4){1.0f}
     private var paint: Paint = Paint()
     private val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.red), PorterDuff.Mode.SRC_IN)
+    var firstPaint: Paint = Paint()
 
     fun setParam(x: Float, y: Float) {
         positions[0] = x
@@ -22,7 +23,7 @@ class BallView(context: Context) : View(context) {
         super.onDraw(canvas)
         for(i in 0 until bitmaps.size){
             if(i==0){
-                canvas.drawBitmap(bitmaps[i], positions[0], positions[1], null)
+                canvas.drawBitmap(bitmaps[i], positions[0], positions[1], firstPaint)
             }else{
                 paint.colorFilter = filter
                 paint.alpha = 50

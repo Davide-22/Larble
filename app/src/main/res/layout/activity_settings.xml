@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/main">
 
     <ImageView
         android:id="@+id/imageView8"
@@ -15,4 +16,114 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.066"
         app:srcCompat="@drawable/logo" />
+
+    <View
+        android:id="@+id/red"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:background="#FF0000"
+        android:clickable="true"
+        android:outlineProvider="none"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        android:focusable="true" />
+
+    <View
+        android:id="@+id/yellow"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:background="#fdc029"
+        android:visibility="visible"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/blue"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="0.501"
+        android:focusable="true" />
+
+    <View
+        android:id="@+id/blue"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:background="#0040FF"
+        android:visibility="visible"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/green"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="0.501"
+        android:focusable="true" />
+
+    <View
+        android:id="@+id/green"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:background="#59FF00"
+        android:visibility="visible"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/red"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="0.501"
+        android:focusable="true" />
+
+    <ImageView
+        android:id="@+id/check_yellow"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/check"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/yellow"
+        app:layout_constraintEnd_toEndOf="@+id/yellow"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/yellow"
+        app:layout_constraintTop_toTopOf="@+id/yellow"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/check" />
+
+    <ImageView
+        android:id="@+id/check_blue"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/blue"
+        app:layout_constraintEnd_toEndOf="@+id/blue"
+        app:layout_constraintStart_toStartOf="@+id/blue"
+        app:layout_constraintTop_toTopOf="@+id/blue"
+        app:srcCompat="@drawable/check"
+        android:contentDescription="@string/check"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/check_green"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/green"
+        app:layout_constraintEnd_toEndOf="@+id/green"
+        app:layout_constraintStart_toStartOf="@+id/green"
+        app:layout_constraintTop_toTopOf="@+id/green"
+        app:srcCompat="@drawable/check"
+        android:contentDescription="@string/check"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/check_red"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/red"
+        app:layout_constraintEnd_toEndOf="@+id/red"
+        app:layout_constraintStart_toStartOf="@+id/red"
+        app:layout_constraintTop_toTopOf="@+id/red"
+        app:srcCompat="@drawable/check"
+        android:contentDescription="@string/check"
+        android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

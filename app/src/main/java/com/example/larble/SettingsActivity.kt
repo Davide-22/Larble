@@ -1,21 +1,76 @@
 package com.example.larble
 
 import android.content.Intent
+import android.graphics.*
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.example.larble.requestModel.TokenRequestModel
 import com.example.larble.responseModel.PlayerResponseClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        val myLayout = findViewById<ConstraintLayout>(R.id.main)
+
+        val ballView = BallView(this)
+        val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
+        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 200, 200, true)
+        ballView.bitmaps[0] = ball
+        ballView.setParam(440f,600f)
+        myLayout.addView(ballView)
+
+        val checkRed: ImageView = findViewById(R.id.check_red)
+        val checkYellow: ImageView = findViewById(R.id.check_yellow)
+        val checkGreen: ImageView = findViewById(R.id.check_green)
+        val checkBlue: ImageView = findViewById(R.id.check_blue)
+        val red: View = findViewById(R.id.red)
+        val yellow: View = findViewById(R.id.yellow)
+        val green: View = findViewById(R.id.green)
+        val blue: View = findViewById(R.id.blue)
+
+        red.setOnClickListener{
+            checkRed.visibility=View.VISIBLE
+            checkYellow.visibility=View.INVISIBLE
+            checkGreen.visibility=View.INVISIBLE
+            checkBlue.visibility=View.INVISIBLE
+            val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+            ballView.firstPaint.colorFilter=filter
+        }
+        yellow.setOnClickListener{
+            checkRed.visibility=View.INVISIBLE
+            checkYellow.visibility=View.VISIBLE
+            checkGreen.visibility=View.INVISIBLE
+            checkBlue.visibility=View.INVISIBLE
+            ballView.firstPaint.colorFilter=null
+        }
+        green.setOnClickListener{
+            checkRed.visibility=View.INVISIBLE
+            checkYellow.visibility=View.INVISIBLE
+            checkGreen.visibility=View.VISIBLE
+            checkBlue.visibility=View.INVISIBLE
+            val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN)
+            ballView.firstPaint.colorFilter=filter
+        }
+        blue.setOnClickListener{
+            checkRed.visibility=View.INVISIBLE
+            checkYellow.visibility=View.INVISIBLE
+            checkGreen.visibility=View.INVISIBLE
+            checkBlue.visibility=View.VISIBLE
+            val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.blue), PorterDuff.Mode.SRC_IN)
+            ballView.firstPaint.colorFilter=filter
+        }
 
     }
 
