@@ -22,6 +22,7 @@ import retrofit2.Response
 class SettingsActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var myEdit: SharedPreferences.Editor
+    private lateinit var token: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -42,6 +43,7 @@ class SettingsActivity : AppCompatActivity() {
         ballView.setParam(440f,600f)
 
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sharedPreferences.getString("token", "").toString()
         myEdit = sharedPreferences.edit()
 
         val colorBall = sharedPreferences.getString("colorBall", "")
@@ -117,37 +119,29 @@ class SettingsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String? = sh.getString("token", "")
-                val requestModel = token?.let { TokenRequestModel(it) }
+                val requestModel = TokenRequestModel(token)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
-                if (requestModel != null) {
-                    response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerResponseClass> {
-                            override fun onResponse(
-                                call: Call<PlayerResponseClass>,
-                                response: Response<PlayerResponseClass>
-                            ){
-                                if(response.body()!!.status == "false"){
-                                    Toast.makeText(this@SettingsActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
-                                }else{
-                                    intent = Intent(this@SettingsActivity, AccountActivity::class.java)
-                                    intent.putExtra("email", response.body()!!.email)
-                                    intent.putExtra("wins", response.body()!!.wins.toString())
-                                    intent.putExtra("total_games", response.body()!!.total_games.toString())
-                                    intent.putExtra("score", response.body()!!.score.toString())
-                                    intent.putExtra("profile_picture", response.body()!!.profile_picture)
-                                    startActivity(intent)
-                                }
-                            }
-                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                                Toast.makeText(this@SettingsActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
+                response.playerInfo(requestModel).enqueue(
+                    object: Callback<PlayerResponseClass> {
+                        override fun onResponse(
+                            call: Call<PlayerResponseClass>,
+                            response: Response<PlayerResponseClass>
+                        ){
+                            if(response.body()!!.status == "false"){
+                                Toast.makeText(this@SettingsActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
+                            }else{
+                                intent = Intent(this@SettingsActivity, AccountActivity::class.java)
+                                intent.putExtra("account", response.body())
+                                startActivity(intent)
                             }
                         }
-                    )
-                }
+                        override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
+                            Toast.makeText(this@SettingsActivity, t.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                )
 
                 return true
             }

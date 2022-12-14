@@ -16,20 +16,20 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MultiPlayerActivity : AppCompatActivity() {
-    private var sh :SharedPreferences? = null
-    private var token: String? = null
+    private lateinit var sh :SharedPreferences
+    private lateinit var token: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multiplayer)
 
         val newGame: Button = findViewById(R.id.new_game)
         val existedGame: Button = findViewById(R.id.existed_game)
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sh.getString("token", "").toString()
 
         newGame.setOnClickListener {
             intent = Intent(this, NewGameActivity::class.java)
-            sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-            token = sh!!.getString("token", "").toString()
-            val requestModel = TokenRequestModel(token!!)
+            val requestModel = TokenRequestModel(token)
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
             response.createMultiplayerGame(requestModel).enqueue(
@@ -68,35 +68,29 @@ class MultiPlayerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
-                val requestModel = token?.let { TokenRequestModel(it) }
+                val requestModel = TokenRequestModel(token)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
-                if (requestModel != null) {
-                    response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerResponseClass> {
-                            override fun onResponse(
-                                call: Call<PlayerResponseClass>,
-                                response: Response<PlayerResponseClass>
-                            ){
-                                if(response.body()!!.status == "false"){
-                                    Toast.makeText(this@MultiPlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
-                                }else{
-                                    intent = Intent(this@MultiPlayerActivity, AccountActivity::class.java)
-                                    intent.putExtra("email", response.body()!!.email)
-                                    intent.putExtra("wins", response.body()!!.wins.toString())
-                                    intent.putExtra("total_games", response.body()!!.total_games.toString())
-                                    intent.putExtra("score", response.body()!!.score.toString())
-                                    intent.putExtra("profile_picture", response.body()!!.profile_picture)
-                                    startActivity(intent)
-                                }
-                            }
-                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                                Toast.makeText(this@MultiPlayerActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
+                response.playerInfo(requestModel).enqueue(
+                    object: Callback<PlayerResponseClass> {
+                        override fun onResponse(
+                            call: Call<PlayerResponseClass>,
+                            response: Response<PlayerResponseClass>
+                        ){
+                            if(response.body()!!.status == "false"){
+                                Toast.makeText(this@MultiPlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
+                            }else{
+                                intent = Intent(this@MultiPlayerActivity, AccountActivity::class.java)
+                                intent.putExtra("account", response.body())
+                                startActivity(intent)
                             }
                         }
-                    )
-                }
+                        override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
+                            Toast.makeText(this@MultiPlayerActivity, t.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                )
 
                 return true
             }
