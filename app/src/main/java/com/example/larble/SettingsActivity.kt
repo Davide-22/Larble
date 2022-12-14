@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.*
 import android.os.Bundle
 import android.view.Menu
@@ -19,20 +20,12 @@ import retrofit2.Response
 
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var myEdit: SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
-        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val myEdit = sharedPreferences.edit()
-
-        val ballView = BallView(this)
-        val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
-        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 200, 200, true)
-        ballView.bitmaps[0] = ball
-        ballView.setParam(440f,600f)
-        myLayout.addView(ballView)
-
         val checkRed: ImageView = findViewById(R.id.check_red)
         val checkYellow: ImageView = findViewById(R.id.check_yellow)
         val checkGreen: ImageView = findViewById(R.id.check_green)
@@ -42,6 +35,36 @@ class SettingsActivity : AppCompatActivity() {
         val green: View = findViewById(R.id.green)
         val blue: View = findViewById(R.id.blue)
 
+        val ballView = BallView(this)
+        val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
+        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 200, 200, true)
+        ballView.bitmaps[0] = ball
+        ballView.setParam(440f,600f)
+
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        myEdit = sharedPreferences.edit()
+
+        val colorBall = sharedPreferences.getString("colorBall", "")
+
+        when (colorBall) {
+            "#ea0b0b" -> {
+                checkRed.visibility=View.VISIBLE
+            }
+            "#59FF00" -> {
+                checkGreen.visibility=View.VISIBLE
+            }
+            "#0040FF" -> {
+                checkBlue.visibility=View.VISIBLE
+            }
+            else -> {
+                checkYellow.visibility=View.VISIBLE
+            }
+        }
+        if(colorBall!= ""){
+            ballView.firstPaint.colorFilter = PorterDuffColorFilter(Color.parseColor(colorBall), PorterDuff.Mode.SRC_IN)
+        }
+        myLayout.addView(ballView)
+
         red.setOnClickListener{
             checkRed.visibility=View.VISIBLE
             checkYellow.visibility=View.INVISIBLE
@@ -49,8 +72,7 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.INVISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
-            myEdit.putString("colorBall", R.color.red.toString())
-            myEdit.apply()
+            myEdit.putString("colorBall", "#ea0b0b")
         }
         yellow.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
@@ -58,6 +80,7 @@ class SettingsActivity : AppCompatActivity() {
             checkGreen.visibility=View.INVISIBLE
             checkBlue.visibility=View.INVISIBLE
             ballView.firstPaint.colorFilter=null
+            myEdit.putString("colorBall", "")
         }
         green.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
@@ -66,6 +89,7 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.INVISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
+            myEdit.putString("colorBall", "#59FF00")
         }
         blue.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
@@ -74,8 +98,15 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.VISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.blue), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
+            myEdit.putString("colorBall", "#0040FF")
+            myEdit.apply()
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        myEdit.apply()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

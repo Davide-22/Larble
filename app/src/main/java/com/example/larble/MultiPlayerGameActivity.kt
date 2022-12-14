@@ -2,8 +2,7 @@ package com.example.larble
 
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
@@ -51,7 +50,13 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val colorBall = sharedPreferences.getString("colorBall", "")
+
         ballView = BallView(this)
+        if(colorBall!=""){
+            ballView.firstPaint.colorFilter = PorterDuffColorFilter(Color.parseColor(colorBall), PorterDuff.Mode.SRC_IN)
+        }
         setContentView(ballView)
 
         ballHeight = ballView.height

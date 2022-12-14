@@ -2,7 +2,6 @@ package com.example.larble
 
 import android.content.res.Resources
 import android.graphics.Color.parseColor
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.hardware.Sensor
@@ -36,12 +35,11 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val color = sharedPreferences.getString("colorBall","")
+        val colorBall = sharedPreferences.getString("colorBall","")
 
         ballView = BallView(this)
-        if(color!=""){
-            val filter: ColorFilter = PorterDuffColorFilter(parseColor(color), PorterDuff.Mode.SRC_IN)
-            ballView.firstPaint.colorFilter = filter
+        if(colorBall!=""){
+            ballView.firstPaint.colorFilter = PorterDuffColorFilter(parseColor(colorBall), PorterDuff.Mode.SRC_IN)
         }
         setContentView(ballView)
 
@@ -82,8 +80,6 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
     private fun updateBall(ball : BallView, xAccel: Float, yAccel: Float) {
         var frameTime = 0.5f
-        println("x $xAccel")
-        println("y $yAccel")
         xVel += xAccel * frameTime
         yVel += yAccel * frameTime
 
