@@ -1,6 +1,10 @@
 package com.example.larble
 
 import android.content.res.Resources
+import android.graphics.Color.parseColor
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
@@ -9,31 +13,36 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 class BallActivity : AppCompatActivity(), SensorEventListener2 {
-    var xPos: Float = 0.0f
-    var xAccel: Float = 0.0f
-    var xVel: Float = 0.0f
+    private var xPos: Float = 0.0f
+    private var xAccel: Float = 0.0f
+    private var xVel: Float = 0.0f
 
-    var yPos: Float = 0.0f
-    var yAccel: Float = 0.0f
-    var yVel: Float = 0.0f
+    private var yPos: Float = 0.0f
+    private var yAccel: Float = 0.0f
+    private var yVel: Float = 0.0f
 
-    var xMax: Float = 0F
-    var yMax: Float = 0F
-    lateinit var ballView : BallView
+    private var xMax: Float = 0F
+    private var yMax: Float = 0F
+    private lateinit var ballView : BallView
 
-    var ballHeight = 0
-    var ballWidth = 0
+    private var ballHeight = 0
+    private var ballWidth = 0
 
 
 
-    lateinit var sensorManager: SensorManager
-
+    private lateinit var sensorManager: SensorManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val color = sharedPreferences.getString("colorBall","")
 
         ballView = BallView(this)
+        if(color!=""){
+            val filter: ColorFilter = PorterDuffColorFilter(parseColor(color), PorterDuff.Mode.SRC_IN)
+            ballView.firstPaint.colorFilter = filter
+        }
         setContentView(ballView)
 
         ballHeight = ballView.height
@@ -64,9 +73,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
         if (sensorEvent?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            xAccel = sensorEvent.values[0];
-            yAccel = -sensorEvent.values[1];
-            updateBall(ballView, xAccel, yAccel);
+            xAccel = sensorEvent.values[0]
+            yAccel = -sensorEvent.values[1]
+            updateBall(ballView, xAccel, yAccel)
         }
 
     }
@@ -79,13 +88,11 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         yVel += yAccel * frameTime
 
         if(yAccel < 0) {
-            frameTime = frameTime * 0.8f
+            frameTime *= 0.8f
         }
 
-
-
-        var xS = xVel / 2 * frameTime
-        var yS = yVel / 2 * frameTime
+        val xS = xVel / 2 * frameTime
+        val yS = yVel / 2 * frameTime
 
         xPos -= xS
         yPos -= yS

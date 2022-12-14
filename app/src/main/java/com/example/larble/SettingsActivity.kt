@@ -23,6 +23,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
+        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
 
         val ballView = BallView(this)
         val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
@@ -47,6 +49,8 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.INVISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
+            myEdit.putString("colorBall", R.color.red.toString())
+            myEdit.apply()
         }
         yellow.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
