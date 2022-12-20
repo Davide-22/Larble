@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.*
 import android.hardware.Sensor
@@ -43,6 +44,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private var job1: Job = Job()
     private var result = true
     private var win = false
+    private lateinit var sh: SharedPreferences
+    private lateinit var token: String
 
 
 
@@ -75,15 +78,15 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         val display = windowManager.defaultDisplay
         val width = display.width.toFloat()
         val height = display.height.toFloat()
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val token = sh!!.getString("token", "")
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sh.getString("token", "").toString()
         val diagonal = sqrt(width.pow(2)+height.pow(2))
 
         job = GlobalScope.launch {
             while(result){
                 val requestModel =
                     intent?.getStringExtra("number")
-                        ?.let { PositionRequestModel(token.toString(), it.toInt(), ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal) }
+                        ?.let { PositionRequestModel(token, it.toInt(), ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal) }
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 if (requestModel != null) {
                     response.takePosition(requestModel).enqueue(
@@ -127,8 +130,26 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                 if(win){
                     result = false
                     job.cancel()
-                    intent = Intent(this@MultiPlayerGameActivity, MultiPlayerActivity::class.java)
-                    startActivity(intent)
+                    val requestModel =
+                        intent.getStringExtra("number")?.toInt()?.let { GameCodeRequestModel(it,token) }
+
+                    val response = ServiceBuilder.buildService(APIInterface::class.java)
+                    if (requestModel != null) {
+                        response.deleteFinishedGame(requestModel).enqueue(
+                            object: Callback<ResponseClass> {
+                                override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                                    Toast.makeText(this@MultiPlayerGameActivity, t.toString(), Toast.LENGTH_LONG)
+                                        .show()
+                                }
+
+                                override fun onResponse(
+                                    call: Call<ResponseClass>,
+                                    response: Response<ResponseClass>
+                                ) {
+                                }
+                            }
+                        )
+                    }
                     break
                 }
             }
@@ -137,7 +158,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                 job.cancel()
                 val requestModel =
                     intent?.getStringExtra("number")
-                        ?.let { GameCodeRequestModel(it.toInt(), token.toString()) }
+                        ?.let { GameCodeRequestModel(it.toInt(), token) }
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 if (requestModel != null) {
                     response.winning(requestModel).enqueue(
@@ -158,9 +179,9 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     )
                 }
-                intent = Intent(this@MultiPlayerGameActivity, MultiPlayerActivity::class.java)
-                startActivity(intent)
             }
+            intent = Intent(this@MultiPlayerGameActivity, MultiPlayerActivity::class.java)
+            startActivity(intent)
         }
     }
     override fun onStart() {
@@ -188,16 +209,12 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
     private fun updateBall(ball : BallView, xAccel: Float, yAccel: Float) {
         var frameTime = 0.5f
-        //println("x $xAccel")
-        //println("y $yAccel")
         xVel += xAccel * frameTime
         yVel += yAccel * frameTime
 
         if(yAccel < 0) {
             frameTime *= 0.8f
         }
-
-
 
         val xS = xVel / 2 * frameTime
         val yS = yVel / 2 * frameTime
@@ -235,8 +252,6 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val token: String = sh.getString("token", "").toString()
         val requestModel =
             intent.getStringExtra("number")?.toInt()?.let { GameCodeRequestModel(it,token) }
 

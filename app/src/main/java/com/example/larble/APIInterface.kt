@@ -49,4 +49,7 @@ interface APIInterface {
 
     @POST("/winning_game")
     fun winning(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
+
+    @POST("/delete_finished_game")
+    fun deleteFinishedGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
 }
