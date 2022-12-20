@@ -17,6 +17,8 @@ import com.example.larble.responseModel.PlayerResponseClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -40,7 +42,13 @@ class SettingsActivity : AppCompatActivity() {
         val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
         val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 200, 200, true)
         ballView.bitmaps[0] = ball
-        ballView.setParam(440f,600f)
+        val display = windowManager.defaultDisplay
+        val width = display.width.toFloat()
+        val height = display.height.toFloat()
+        val diagonal = sqrt(width.pow(2)+height.pow(2))
+        val x = 0.19220635f
+        val y = 0.26073593f
+        ballView.setParam(x*diagonal,y*diagonal)
 
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sharedPreferences.getString("token", "").toString()

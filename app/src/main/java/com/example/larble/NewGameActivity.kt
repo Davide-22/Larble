@@ -54,6 +54,7 @@ class NewGameActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         result = true
+        job.cancel()
         val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val token: String = sh.getString("token", "").toString()
         val requestModel = GameCodeRequestModel(code,token)

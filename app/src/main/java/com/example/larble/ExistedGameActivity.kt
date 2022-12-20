@@ -26,9 +26,7 @@ class ExistedGameActivity : AppCompatActivity() {
         game = findViewById(R.id.play)
         val code: EditText = findViewById(R.id.Code_number)
         searching = findViewById(R.id.searching)
-        searching?.visibility = View.INVISIBLE
         duck = findViewById(R.id.duck)
-        duck?.visibility = View.INVISIBLE
         val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val token: String = sh.getString("token", "").toString()
 

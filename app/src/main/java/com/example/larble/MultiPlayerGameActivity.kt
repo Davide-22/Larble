@@ -95,16 +95,17 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                 if(response.body()!!.status=="true"){
                                     if(response.body()!!.win){
                                         win = response.body()!!.win
+                                    }else{
+                                        val x = response.body()!!.x
+                                        val y = response.body()!!.y
+                                        if(ballView.bitmaps.size == 1){
+                                            val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
+                                            val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
+                                            ballView.bitmaps.add(ball)
+                                        }
+                                        ballView.positions[2] = x*diagonal
+                                        ballView.positions[3] = y*diagonal
                                     }
-                                    val x = response.body()!!.x
-                                    val y = response.body()!!.y
-                                    if(ballView.bitmaps.size == 1){
-                                        val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
-                                        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
-                                        ballView.bitmaps.add(ball)
-                                    }
-                                    ballView.positions[2] = x*diagonal
-                                    ballView.positions[3] = y*diagonal
                                 }else{
                                     Toast.makeText(this@MultiPlayerGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                         .show()
