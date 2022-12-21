@@ -11,7 +11,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.larble.requestModel.TokenRequestModel
@@ -107,8 +106,6 @@ class MainActivity : AppCompatActivity() {
                             0, // X offset
                             0 // Y offset
                         )
-                        Toast.makeText(this@MainActivity, t.toString(), Toast.LENGTH_LONG)
-                            .show()
                     }
                 }
             )

@@ -57,11 +57,11 @@ class ExistedGameActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                            Toast.makeText(this@ExistedGameActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
                             duck?.visibility = View.INVISIBLE
                             searching?.visibility = View.INVISIBLE
                             game?.visibility = View.VISIBLE
+                            intent = Intent(this@ExistedGameActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

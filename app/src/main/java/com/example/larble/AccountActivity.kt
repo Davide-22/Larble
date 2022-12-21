@@ -143,8 +143,8 @@ class AccountActivity: AppCompatActivity()  {
                                     }
                                 }
                                 override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                    Toast.makeText(this@AccountActivity, t.toString(), Toast.LENGTH_LONG)
-                                        .show()
+                                    intent = Intent(this@AccountActivity, MainActivity::class.java)
+                                    startActivity(intent)
                                 }
                             }
                         )
@@ -218,8 +218,8 @@ class AccountActivity: AppCompatActivity()  {
                                     }
                                 }
                                 override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                    Toast.makeText(this@AccountActivity, t.toString(), Toast.LENGTH_LONG)
-                                        .show()
+                                    intent = Intent(this@AccountActivity, MainActivity::class.java)
+                                    startActivity(intent)
                                 }
                             }
                         )
@@ -325,8 +325,8 @@ class AccountActivity: AppCompatActivity()  {
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                            Toast.makeText(this@AccountActivity, "No Post", Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@AccountActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

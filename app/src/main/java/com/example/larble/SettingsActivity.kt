@@ -145,8 +145,8 @@ class SettingsActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                            Toast.makeText(this@SettingsActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@SettingsActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

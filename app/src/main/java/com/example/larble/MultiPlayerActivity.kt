@@ -47,8 +47,8 @@ class MultiPlayerActivity : AppCompatActivity() {
                         }
                     }
                     override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                        Toast.makeText(this@MultiPlayerActivity, t.toString(), Toast.LENGTH_LONG)
-                            .show()
+                        intent = Intent(this@MultiPlayerActivity, MainActivity::class.java)
+                        startActivity(intent)
                     }
                 }
             )
@@ -86,8 +86,8 @@ class MultiPlayerActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                            Toast.makeText(this@MultiPlayerActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@MultiPlayerActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

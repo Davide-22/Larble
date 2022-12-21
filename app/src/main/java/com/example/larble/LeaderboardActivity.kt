@@ -67,8 +67,8 @@ class LeaderboardActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                            Toast.makeText(this@LeaderboardActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@LeaderboardActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

@@ -68,8 +68,8 @@ class SinglePlayerActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                            Toast.makeText(this@SinglePlayerActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@SinglePlayerActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

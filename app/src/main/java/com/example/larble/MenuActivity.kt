@@ -74,8 +74,8 @@ class MenuActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<LeaderboardResponseClass>, t: Throwable) {
-                            Toast.makeText(this@MenuActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@MenuActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )
@@ -117,8 +117,8 @@ class MenuActivity : AppCompatActivity() {
                                 }
                             }
                             override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                                Toast.makeText(this@MenuActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
+                                intent = Intent(this@MenuActivity, MainActivity::class.java)
+                                startActivity(intent)
                             }
                         }
                     )

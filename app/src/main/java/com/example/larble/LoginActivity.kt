@@ -54,8 +54,8 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<LoginResponseClass>, t: Throwable) {
-                            Toast.makeText(this@LoginActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )
