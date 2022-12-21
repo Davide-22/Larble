@@ -173,8 +173,6 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                 }
                             }
                             override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                Toast.makeText(this@MultiPlayerGameActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
                             }
                         }
                     )
@@ -252,27 +250,5 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        val requestModel =
-            intent.getStringExtra("number")?.toInt()?.let { GameCodeRequestModel(it,token) }
-
-        val response = ServiceBuilder.buildService(APIInterface::class.java)
-        if (requestModel != null) {
-            response.deleteGame(requestModel).enqueue(
-                object: Callback<ResponseClass> {
-                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                        Toast.makeText(this@MultiPlayerGameActivity, t.toString(), Toast.LENGTH_LONG)
-                            .show()
-                    }
-
-                    override fun onResponse(
-                        call: Call<ResponseClass>,
-                        response: Response<ResponseClass>
-                    ) {
-                    }
-                }
-            )
-        }
-        intent = Intent(this, MultiPlayerActivity::class.java)
-        startActivity(intent)
     }
 }
