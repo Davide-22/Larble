@@ -99,7 +99,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView11"
         app:layout_constraintVertical_bias="0.0"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:srcCompat="@drawable/account" />
+        app:srcCompat="?android:icon" />
 
     <Button
         android:id="@+id/log_out"
@@ -126,14 +126,15 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_account_9"
         app:layout_constraintTop_toTopOf="@+id/guideline_account_2"
-        app:srcCompat="@drawable/pencil" />
+        app:srcCompat="@drawable/pencil"
+        app:tint="?android:textColorPrimary" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor= "?android:textColorPrimary"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_account_6"
         app:layout_constraintDimensionRatio="4.5:1"
@@ -148,7 +149,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor= "?android:textColorPrimary"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintDimensionRatio="4.5:1"
@@ -162,7 +163,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor= "?android:textColorPrimary"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/total_games"
         app:layout_constraintDimensionRatio="4.5:1"
@@ -176,7 +177,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor= "?android:textColorPrimary"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/score"
         app:layout_constraintDimensionRatio="4.5:1"
@@ -190,7 +191,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor= "?android:textColorPrimary"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/wins"
         app:layout_constraintDimensionRatio="4.5:1"

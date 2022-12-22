@@ -24,14 +24,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:srcCompat="@drawable/account" />
+            app:srcCompat="?android:icon" />
 
         <TextView
             android:id="@+id/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text=""
-            android:textColor="#000000"
+            android:textColor="?android:textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:paddingStart="5dp"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textAlignment="center"
-            android:textColor="#000000"
+            android:textColor="?android:textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textAlignment="center"
-            android:textColor="#000000"
+            android:textColor="?android:textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
