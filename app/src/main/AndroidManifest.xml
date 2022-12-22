@@ -10,9 +10,8 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/maze_background"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/maze_foreground"
+        android:icon="@mipmap/maze_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.Larble"
         tools:targetApi="31">
