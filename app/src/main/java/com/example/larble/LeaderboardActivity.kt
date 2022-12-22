@@ -33,7 +33,7 @@ class LeaderboardActivity : AppCompatActivity() {
         val data = ArrayList<ItemsLeaderboard>(15)
 
         for (i in 0 until leaderboard.size) {
-            data.add(ItemsLeaderboard(R.drawable.account, leaderboard[i].username, leaderboard[i].wins.toString(), leaderboard[i].score.toString()))
+            data.add(ItemsLeaderboard(leaderboard[i].profile_picture, leaderboard[i].username, leaderboard[i].wins.toString(), leaderboard[i].score.toString()))
         }
 
         val adapter = CustomAdapter(data)
