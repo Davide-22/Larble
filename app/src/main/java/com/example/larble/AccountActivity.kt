@@ -17,6 +17,7 @@ import android.util.Base64
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -31,22 +32,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 
+@Suppress("DEPRECATION")
 class AccountActivity: AppCompatActivity()  {
 
-    private var picture: ImageView? = null
-    private var sh: SharedPreferences? = null
-    private var token: String? = null
+    private lateinit var picture: ImageView
+    private lateinit var sh: SharedPreferences
+    private lateinit var token: String
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        token = sh!!.getString("token", "")
+        token = sh.getString("token", "").toString()
 
         val changeUsername: ImageView = findViewById(R.id.edit_username)
         val changePassword: Button = findViewById(R.id.edit_password)
-        val rootLayout = findViewById<ConstraintLayout>(R.id.accountLayout)
+        val rootLayout: ConstraintLayout = findViewById(R.id.accountLayout)
         val logout: Button = findViewById(R.id.log_out)
         val photo: TextView = findViewById(R.id.plus)
 
@@ -56,7 +58,7 @@ class AccountActivity: AppCompatActivity()  {
             intent.getSerializableExtra("account") as PlayerResponseClass
 
         var text : TextView = findViewById(R.id.username)
-        var username: String? = sh!!.getString("username", "")
+        var username: String = sh.getString("username", "").toString()
         "Username: $username".also { text.text = it }
         text = findViewById(R.id.email)
         "Email: ${account.email}".also { text.text = it }
@@ -71,12 +73,12 @@ class AccountActivity: AppCompatActivity()  {
         if(account.profile_picture != null) {
             val decodeImage: ByteArray = Base64.decode(account.profile_picture, Base64.DEFAULT)
             val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
-            picture?.setImageBitmap(bitmap)
+            picture.setImageBitmap(bitmap)
         }
 
         val inflater: LayoutInflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        val view = inflater.inflate(R.layout.popup_window,null)
+        val nullParent: ViewGroup? = null
+        val view = inflater.inflate(R.layout.popup_window,nullParent,false)
 
         val popupWindow = PopupWindow(
             view,
@@ -101,15 +103,14 @@ class AccountActivity: AppCompatActivity()  {
 
         logout.setOnClickListener {
             intent = Intent(this, LoginActivity::class.java)
-            val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-            sharedPreferences.edit().clear().apply()
+            sh.edit().clear().apply()
             startActivity(intent)
         }
 
         changeUsername.setOnClickListener{
 
             val newUsername: EditText = view.findViewById(R.id.new_username)
-            username = sh!!.getString("username", "")
+            username = sh.getString("username", "").toString()
             newUsername.setText(username)
             changePopUp(view,1)
 
@@ -118,37 +119,35 @@ class AccountActivity: AppCompatActivity()  {
 
             change.setOnClickListener {
                 if(checkUsername.visibility == View.VISIBLE){
-                    val requestModel = token?.let { it1 -> UsernameRequestModel(newUsername.text.toString(),it1) }
+                    val requestModel = UsernameRequestModel(newUsername.text.toString(), token)
 
                     val response = ServiceBuilder.buildService(APIInterface::class.java)
-                    if (requestModel != null) {
-                        response.changeUsername(requestModel).enqueue(
-                            object: Callback<ResponseClass> {
-                                override fun onResponse(
-                                    call: Call<ResponseClass>,
-                                    response: Response<ResponseClass>
-                                ){
-                                    if(response.body()!!.status == "false"){
-                                        Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                            .show()
-                                    }else{
-                                        text = findViewById(R.id.username)
-                                        "Username: ${newUsername.text}".also { text.text = it }
-                                        val myEdit = sh!!.edit()
-                                        myEdit.putString("username", newUsername.text.toString())
-                                        myEdit.apply()
-                                        popupWindow.dismiss()
-                                        checkUsername.visibility = View.INVISIBLE
-                                        Toast.makeText(this@AccountActivity, "Username successfully changed", Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                                override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                    intent = Intent(this@AccountActivity, MainActivity::class.java)
-                                    startActivity(intent)
+                    response.changeUsername(requestModel).enqueue(
+                        object: Callback<ResponseClass> {
+                            override fun onResponse(
+                                call: Call<ResponseClass>,
+                                response: Response<ResponseClass>
+                            ){
+                                if(response.body()!!.status == "false"){
+                                    Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                        .show()
+                                }else{
+                                    text = findViewById(R.id.username)
+                                    "Username: ${newUsername.text}".also { text.text = it }
+                                    val myEdit = sh.edit()
+                                    myEdit.putString("username", newUsername.text.toString())
+                                    myEdit.apply()
+                                    popupWindow.dismiss()
+                                    checkUsername.visibility = View.INVISIBLE
+                                    Toast.makeText(this@AccountActivity, "Username successfully changed", Toast.LENGTH_LONG).show()
                                 }
                             }
-                        )
-                    }
+                            override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                                intent = Intent(this@AccountActivity, MainActivity::class.java)
+                                startActivity(intent)
+                            }
+                        }
+                    )
                 }else{
                     Toast.makeText(this@AccountActivity, "Username same as before", Toast.LENGTH_LONG)
                         .show()
@@ -157,28 +156,22 @@ class AccountActivity: AppCompatActivity()  {
 
             TransitionManager.beginDelayedTransition(rootLayout)
             popupWindow.showAtLocation(
-                rootLayout, // Location to display popup window
-                Gravity.CENTER, // Layout position to display popup
-                0, // X offset
-                0 // Y offset
+                rootLayout,
+                Gravity.CENTER,
+                0,
+                0
             )
 
             newUsername.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
                 override fun afterTextChanged(s: Editable) {
                     if(s.toString() == username) checkUsername.visibility = View.INVISIBLE
                     else checkUsername.visibility = View.VISIBLE
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
                 }
             })
         }
@@ -195,35 +188,33 @@ class AccountActivity: AppCompatActivity()  {
 
             change.setOnClickListener {
                 if(checkPassword.visibility == View.VISIBLE){
-                    val requestModel = token?.let { it1 -> PasswordRequestModel(it1, oldPassword.text.toString(), newPassword.text.toString()) }
+                    val requestModel = PasswordRequestModel(token, oldPassword.text.toString(), newPassword.text.toString())
 
                     val response = ServiceBuilder.buildService(APIInterface::class.java)
-                    if (requestModel != null) {
-                        response.changePassword(requestModel).enqueue(
-                            object: Callback<ResponseClass> {
-                                override fun onResponse(
-                                    call: Call<ResponseClass>,
-                                    response: Response<ResponseClass>
-                                ){
-                                    if(response.body()!!.status == "false"){
-                                        Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                            .show()
-                                    }else{
-                                        popupWindow.dismiss()
-                                        checkPassword.visibility = View.INVISIBLE
-                                        oldPassword.setText("")
-                                        newPassword.setText("")
-                                        confirmPassword.setText("")
-                                        Toast.makeText(this@AccountActivity, "Password successfully changed", Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                                override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                    intent = Intent(this@AccountActivity, MainActivity::class.java)
-                                    startActivity(intent)
+                    response.changePassword(requestModel).enqueue(
+                        object: Callback<ResponseClass> {
+                            override fun onResponse(
+                                call: Call<ResponseClass>,
+                                response: Response<ResponseClass>
+                            ){
+                                if(response.body()!!.status == "false"){
+                                    Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                        .show()
+                                }else{
+                                    popupWindow.dismiss()
+                                    checkPassword.visibility = View.INVISIBLE
+                                    oldPassword.setText("")
+                                    newPassword.setText("")
+                                    confirmPassword.setText("")
+                                    Toast.makeText(this@AccountActivity, "Password successfully changed", Toast.LENGTH_LONG).show()
                                 }
                             }
-                        )
-                    }
+                            override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                                intent = Intent(this@AccountActivity, MainActivity::class.java)
+                                startActivity(intent)
+                            }
+                        }
+                    )
                 }else{
                     Toast.makeText(this@AccountActivity, "Invalid password entered", Toast.LENGTH_LONG).show()
                 }
@@ -231,10 +222,10 @@ class AccountActivity: AppCompatActivity()  {
 
             TransitionManager.beginDelayedTransition(rootLayout)
             popupWindow.showAtLocation(
-                rootLayout, // Location to display popup window
-                Gravity.CENTER, // Layout position to display popup
-                0, // X offset
-                0 // Y offset
+                rootLayout,
+                Gravity.CENTER,
+                0,
+                0
             )
 
             confirmPassword.addTextChangedListener(object : TextWatcher {
@@ -243,16 +234,10 @@ class AccountActivity: AppCompatActivity()  {
                     else checkPassword.visibility = View.INVISIBLE
                 }
 
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 }
 
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 }
             })
         }
@@ -306,32 +291,29 @@ class AccountActivity: AppCompatActivity()  {
                 photo.compress(Bitmap.CompressFormat.WEBP, 0, output)
             val imageBytes: ByteArray = output.toByteArray()
             val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
-            val requestModel = token?.let { ProfileRequestModel(it, encodedImage) }
+            val requestModel = ProfileRequestModel(token, encodedImage)
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
-            if (requestModel != null) {
-                response.insertPicture(requestModel).enqueue(
-                    object: Callback<ResponseClass> {
-                        override fun onResponse(
-                            call: Call<ResponseClass>,
-                            response: Response<ResponseClass>
-                        ){
-                            if(response.body()!!.status == "false"){
-                                Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                    .show()
-                            }else{
-                                picture?.setImageBitmap(photo)
-                                Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
-                            }
-                        }
-                        override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                            intent = Intent(this@AccountActivity, MainActivity::class.java)
-                            startActivity(intent)
+            response.insertPicture(requestModel).enqueue(
+                object: Callback<ResponseClass> {
+                    override fun onResponse(
+                        call: Call<ResponseClass>,
+                        response: Response<ResponseClass>
+                    ){
+                        if(response.body()!!.status == "false"){
+                            Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                .show()
+                        }else{
+                            picture.setImageBitmap(photo)
+                            Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
                         }
                     }
-                )
-            }
+                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                        intent = Intent(this@AccountActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            )
         }
     }
-
 }

@@ -8,6 +8,7 @@ import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var popupWindow : PopupWindow
     private lateinit var network : TextView
     private lateinit var server : TextView
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         val inflater: LayoutInflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val view = inflater.inflate(R.layout.network_popup,null)
+        val nullParent: ViewGroup? = null
+        val view = inflater.inflate(R.layout.network_popup,nullParent)
         network = view.findViewById(R.id.network)
         server = view.findViewById(R.id.server)
         val retry: Button = view.findViewById(R.id.retry)

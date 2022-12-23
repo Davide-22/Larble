@@ -7,5 +7,5 @@ data class PlayerResponseClass(
     val wins: Int,
     val total_games: Int,
     val score: Int,
-    val profile_picture: String
+    val profile_picture: String?
 ) : java.io.Serializable

@@ -25,6 +25,7 @@ class LeaderboardActivity : AppCompatActivity() {
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sh.getString("token", "").toString()
 
+        @Suppress("DEPRECATION", "UNCHECKED_CAST")
         val leaderboard: ArrayList<LeaderboardClass> = intent.getSerializableExtra("leaderboard") as ArrayList<LeaderboardClass>
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
 
