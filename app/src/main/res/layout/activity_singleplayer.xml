@@ -5,47 +5,87 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="463dp"
-        android:layout_height="160dp"
-        android:contentDescription="@string/logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068"
-        app:srcCompat="@drawable/logo" />
+    android:id="@+id/imageView10"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:contentDescription="@string/logo"
+    app:layout_constraintBottom_toBottomOf="@+id/guideline_singlePlayer_2"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/guideline_singlePlayer"
+    app:srcCompat="@drawable/logo" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_singlePlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_singlePlayer_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_singlePlayer_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_singlePlayer_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_singlePlayer_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.87" />
 
     <Button
         android:id="@+id/easy"
-        android:layout_width="217dp"
-        android:layout_height="78dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
         android:text="@string/easy"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView10"
-        app:layout_constraintVertical_bias="0.14" />
+        app:layout_constraintBottom_toTopOf="@+id/medium"
+        app:layout_constraintDimensionRatio="2.9:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_singlePlayer_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_singlePlayer_3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
     <Button
         android:id="@+id/medium"
-        android:layout_width="217dp"
-        android:layout_height="78dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/easy"
-        app:layout_constraintVertical_bias="0.094" />
+        app:layout_constraintBottom_toTopOf="@+id/hard"
+        app:layout_constraintDimensionRatio="2.9:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_singlePlayer_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_singlePlayer_3"
+        app:layout_constraintTop_toBottomOf="@+id/easy" />
 
     <Button
         android:id="@+id/hard"
-        android:layout_width="217dp"
-        android:layout_height="78dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/hard"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_singlePlayer_5"
+        app:layout_constraintDimensionRatio="2.9:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_singlePlayer_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_singlePlayer_3"
         app:layout_constraintTop_toBottomOf="@+id/medium"
         app:layout_constraintVertical_bias="0.154" />
 

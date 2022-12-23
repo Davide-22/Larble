@@ -6,37 +6,72 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="463dp"
-        android:layout_height="160dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_multiplayer_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.063"
+        app:layout_constraintTop_toTopOf="@id/guideline_multiplayer"
         app:srcCompat="@drawable/logo" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_multiplayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_multiplayer_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_multiplayer_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_multiplayer_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_multiplayer_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.87" />
 
     <Button
         android:id="@+id/new_game"
-        android:layout_width="280dp"
-        android:layout_height="95dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/new_game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
-        app:layout_constraintVertical_bias="0.165" />
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintBottom_toTopOf="@+id/existed_game"
+        app:layout_constraintEnd_toEndOf="@id/guideline_multiplayer_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_multiplayer_3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <Button
         android:id="@+id/existed_game"
-        android:layout_width="280dp"
-        android:layout_height="95dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/play"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_game"
-        app:layout_constraintVertical_bias="0.268" />
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_multiplayer_5"
+        app:layout_constraintEnd_toEndOf="@id/guideline_multiplayer_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_multiplayer_3"
+        app:layout_constraintTop_toBottomOf="@+id/new_game" />
 </androidx.constraintlayout.widget.ConstraintLayout>

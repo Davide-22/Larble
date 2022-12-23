@@ -52,8 +52,8 @@ class SignUpActivity : AppCompatActivity() {
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                            Toast.makeText(this@SignUpActivity, t.toString(), Toast.LENGTH_LONG)
-                                .show()
+                            intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                            startActivity(intent)
                         }
                     }
                 )

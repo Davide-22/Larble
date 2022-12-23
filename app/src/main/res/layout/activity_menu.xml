@@ -9,81 +9,127 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="463dp"
-        android:layout_height="160dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_menu_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.066"
+        app:layout_constraintTop_toTopOf="@id/guideline_menu"
         app:srcCompat="@drawable/logo" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_menu_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_menu_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_menu_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_menu_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_menu_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.87" />
 
     <Button
         android:id="@+id/multiplayer"
-        android:layout_width="177dp"
-        android:layout_height="72dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/multiplayer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/single_player"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_menu_5"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_menu_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_menu_3"
+        app:layout_constraintTop_toBottomOf="@+id/single_player" />
 
     <Button
         android:id="@+id/single_player"
-        android:layout_width="177dp"
-        android:layout_height="72dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/single_player"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintVertical_bias="0.097" />
+        app:layout_constraintBottom_toTopOf="@+id/multiplayer"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_menu_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_menu_3"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="243dp"
-        android:layout_height="70dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text=""
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor= "?android:textColorPrimary"
         android:textSize="20sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintBottom_toTopOf="@+id/single_player"
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_menu_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_menu_3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <ImageButton
         android:id="@+id/settings"
-        android:layout_width="81dp"
-        android:layout_height="68dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:backgroundTint="@color/primary_color"
         android:contentDescription="@string/settings"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_menu_6"
+        app:layout_constraintDimensionRatio="2:2.5"
         app:layout_constraintEnd_toStartOf="@+id/scoreboard"
-        app:layout_constraintHorizontal_bias="0.878"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multiplayer"
-        app:layout_constraintVertical_bias="0.198"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline_menu_3"
+        app:layout_constraintTop_toTopOf="@+id/guideline_menu_5"
         app:srcCompat="@android:drawable/ic_menu_manage"
         app:tint="#FFFFFF" />
 
     <ImageButton
         android:id="@+id/scoreboard"
-        android:layout_width="81dp"
-        android:layout_height="68dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:backgroundTint="@color/primary_color"
         android:contentDescription="@string/scoreboard"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.642"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multiplayer"
-        app:layout_constraintVertical_bias="0.198"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_menu_6"
+        app:layout_constraintDimensionRatio="2:2.5"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_menu_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/guideline_menu_5"
         app:srcCompat="?attr/actionModePasteDrawable"
         app:tint="#FFFFFF" />
 </androidx.constraintlayout.widget.ConstraintLayout>

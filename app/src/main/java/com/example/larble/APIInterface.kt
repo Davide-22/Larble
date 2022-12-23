@@ -46,4 +46,10 @@ interface APIInterface {
 
     @POST("/get_leaderboard")
     fun leaderboard(@Body requestModel: TokenRequestModel): Call<LeaderboardResponseClass>
+
+    @POST("/winning_game")
+    fun winning(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
+
+    @POST("/delete_finished_game")
+    fun deleteFinishedGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
 }

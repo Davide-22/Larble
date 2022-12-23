@@ -1,5 +1,8 @@
 package com.example.larble
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +22,11 @@ class CustomAdapter(private val mList: List<ItemsLeaderboard>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val itemsViewModel = mList[position]
-
-        holder.imageView.setImageResource(itemsViewModel.image)
+        if(itemsViewModel.profile_picture!= null){
+            val decodeImage: ByteArray = Base64.decode(itemsViewModel.profile_picture, Base64.DEFAULT)
+            val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
+            holder.photo.setImageBitmap(bitmap)
+        }
 
         holder.username.text = itemsViewModel.username
         holder.wins.text = itemsViewModel.wins
@@ -33,7 +39,7 @@ class CustomAdapter(private val mList: List<ItemsLeaderboard>) : RecyclerView.Ad
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageview)
+        val photo: ImageView = itemView.findViewById(R.id.photo)
         val username: TextView = itemView.findViewById(R.id.username)
         val wins: TextView = itemView.findViewById(R.id.wins)
         val score: TextView = itemView.findViewById(R.id.score)

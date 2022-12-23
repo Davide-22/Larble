@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -16,9 +17,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LeaderboardActivity : AppCompatActivity() {
+    private lateinit var sh :SharedPreferences
+    private lateinit var token: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_leaderboard)
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sh.getString("token", "").toString()
 
         val leaderboard: ArrayList<LeaderboardClass> = intent.getSerializableExtra("leaderboard") as ArrayList<LeaderboardClass>
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
@@ -28,7 +33,7 @@ class LeaderboardActivity : AppCompatActivity() {
         val data = ArrayList<ItemsLeaderboard>(15)
 
         for (i in 0 until leaderboard.size) {
-            data.add(ItemsLeaderboard(R.drawable.account, leaderboard[i].username, leaderboard[i].wins.toString(), leaderboard[i].score.toString()))
+            data.add(ItemsLeaderboard(leaderboard[i].profile_picture, leaderboard[i].username, leaderboard[i].wins.toString(), leaderboard[i].score.toString()))
         }
 
         val adapter = CustomAdapter(data)
@@ -44,42 +49,35 @@ class LeaderboardActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String? = sh.getString("token", "")
-                val requestModel = token?.let { TokenRequestModel(it) }
+                val requestModel = TokenRequestModel(token)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
-                if (requestModel != null) {
-                    response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerResponseClass> {
-                            override fun onResponse(
-                                call: Call<PlayerResponseClass>,
-                                response: Response<PlayerResponseClass>
-                            ){
-                                if(response.body()!!.status == "false"){
-                                    Toast.makeText(this@LeaderboardActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
-                                }else{
-                                    intent = Intent(this@LeaderboardActivity, AccountActivity::class.java)
-                                    intent.putExtra("email", response.body()!!.email)
-                                    intent.putExtra("wins", response.body()!!.wins.toString())
-                                    intent.putExtra("total_games", response.body()!!.total_games.toString())
-                                    intent.putExtra("score", response.body()!!.score.toString())
-                                    intent.putExtra("profile_picture", response.body()!!.profile_picture)
-                                    startActivity(intent)
-                                }
-                            }
-                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                                Toast.makeText(this@LeaderboardActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
+                response.playerInfo(requestModel).enqueue(
+                    object: Callback<PlayerResponseClass> {
+                        override fun onResponse(
+                            call: Call<PlayerResponseClass>,
+                            response: Response<PlayerResponseClass>
+                        ){
+                            if(response.body()!!.status == "false"){
+                                Toast.makeText(this@LeaderboardActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
+                            }else{
+                                intent = Intent(this@LeaderboardActivity, AccountActivity::class.java)
+                                intent.putExtra("account", response.body())
+                                startActivity(intent)
                             }
                         }
-                    )
-                }
+                        override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
+                            intent = Intent(this@LeaderboardActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                )
 
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.*
 import android.os.Bundle
 import android.view.Menu
@@ -16,21 +17,18 @@ import com.example.larble.responseModel.PlayerResponseClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var myEdit: SharedPreferences.Editor
+    private lateinit var token: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
-
-        val ballView = BallView(this)
-        val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
-        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 200, 200, true)
-        ballView.bitmaps[0] = ball
-        ballView.setParam(440f,600f)
-        myLayout.addView(ballView)
-
         val checkRed: ImageView = findViewById(R.id.check_red)
         val checkYellow: ImageView = findViewById(R.id.check_yellow)
         val checkGreen: ImageView = findViewById(R.id.check_green)
@@ -40,6 +38,43 @@ class SettingsActivity : AppCompatActivity() {
         val green: View = findViewById(R.id.green)
         val blue: View = findViewById(R.id.blue)
 
+        val ballView = BallView(this)
+        val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
+        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 200, 200, true)
+        ballView.bitmaps[0] = ball
+        val display = windowManager.defaultDisplay
+        val width = display.width.toFloat()
+        val height = display.height.toFloat()
+        val diagonal = sqrt(width.pow(2)+height.pow(2))
+        val x = 0.19220635f
+        val y = 0.26073593f
+        ballView.setParam(x*diagonal,y*diagonal)
+
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sharedPreferences.getString("token", "").toString()
+        myEdit = sharedPreferences.edit()
+
+        val colorBall = sharedPreferences.getString("colorBall", "")
+
+        when (colorBall) {
+            "#ea0b0b" -> {
+                checkRed.visibility=View.VISIBLE
+            }
+            "#59FF00" -> {
+                checkGreen.visibility=View.VISIBLE
+            }
+            "#0040FF" -> {
+                checkBlue.visibility=View.VISIBLE
+            }
+            else -> {
+                checkYellow.visibility=View.VISIBLE
+            }
+        }
+        if(colorBall!= ""){
+            ballView.firstPaint.colorFilter = PorterDuffColorFilter(Color.parseColor(colorBall), PorterDuff.Mode.SRC_IN)
+        }
+        myLayout.addView(ballView)
+
         red.setOnClickListener{
             checkRed.visibility=View.VISIBLE
             checkYellow.visibility=View.INVISIBLE
@@ -47,6 +82,7 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.INVISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
+            myEdit.putString("colorBall", "#ea0b0b")
         }
         yellow.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
@@ -54,6 +90,7 @@ class SettingsActivity : AppCompatActivity() {
             checkGreen.visibility=View.INVISIBLE
             checkBlue.visibility=View.INVISIBLE
             ballView.firstPaint.colorFilter=null
+            myEdit.putString("colorBall", "")
         }
         green.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
@@ -62,6 +99,7 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.INVISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
+            myEdit.putString("colorBall", "#59FF00")
         }
         blue.setOnClickListener{
             checkRed.visibility=View.INVISIBLE
@@ -70,8 +108,15 @@ class SettingsActivity : AppCompatActivity() {
             checkBlue.visibility=View.VISIBLE
             val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(this, R.color.blue), PorterDuff.Mode.SRC_IN)
             ballView.firstPaint.colorFilter=filter
+            myEdit.putString("colorBall", "#0040FF")
+            myEdit.apply()
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        myEdit.apply()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,37 +127,29 @@ class SettingsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String? = sh.getString("token", "")
-                val requestModel = token?.let { TokenRequestModel(it) }
+                val requestModel = TokenRequestModel(token)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
-                if (requestModel != null) {
-                    response.playerInfo(requestModel).enqueue(
-                        object: Callback<PlayerResponseClass> {
-                            override fun onResponse(
-                                call: Call<PlayerResponseClass>,
-                                response: Response<PlayerResponseClass>
-                            ){
-                                if(response.body()!!.status == "false"){
-                                    Toast.makeText(this@SettingsActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
-                                }else{
-                                    intent = Intent(this@SettingsActivity, AccountActivity::class.java)
-                                    intent.putExtra("email", response.body()!!.email)
-                                    intent.putExtra("wins", response.body()!!.wins.toString())
-                                    intent.putExtra("total_games", response.body()!!.total_games.toString())
-                                    intent.putExtra("score", response.body()!!.score.toString())
-                                    intent.putExtra("profile_picture", response.body()!!.profile_picture)
-                                    startActivity(intent)
-                                }
-                            }
-                            override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
-                                Toast.makeText(this@SettingsActivity, t.toString(), Toast.LENGTH_LONG)
-                                    .show()
+                response.playerInfo(requestModel).enqueue(
+                    object: Callback<PlayerResponseClass> {
+                        override fun onResponse(
+                            call: Call<PlayerResponseClass>,
+                            response: Response<PlayerResponseClass>
+                        ){
+                            if(response.body()!!.status == "false"){
+                                Toast.makeText(this@SettingsActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
+                            }else{
+                                intent = Intent(this@SettingsActivity, AccountActivity::class.java)
+                                intent.putExtra("account", response.body())
+                                startActivity(intent)
                             }
                         }
-                    )
-                }
+                        override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
+                            intent = Intent(this@SettingsActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                )
 
                 return true
             }

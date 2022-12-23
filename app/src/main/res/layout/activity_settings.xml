@@ -1,86 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/main">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="463dp"
-        android:layout_height="160dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_newGame_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.066"
+        app:layout_constraintTop_toTopOf="@id/guideline_newGame"
         app:srcCompat="@drawable/logo" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_newGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_newGame_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_newGame_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_newGame_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_newGame_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_newGame_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
     <View
         android:id="@+id/red"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
         android:background="#FF0000"
         android:clickable="true"
+        android:contentDescription="@string/red"
+        android:focusable="true"
         android:outlineProvider="none"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        android:focusable="true" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_newGame_4"
+        app:layout_constraintEnd_toStartOf="@+id/green"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_newGame_5"
+        app:layout_constraintTop_toTopOf="@+id/guideline_newGame_3" />
 
     <View
         android:id="@+id/yellow"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:background="#fdc029"
-        android:visibility="visible"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/yellow"
+        android:focusable="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_newGame_4"
+        app:layout_constraintEnd_toEndOf="@id/guideline_newGame_6"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/blue"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintVertical_bias="0.501"
-        android:focusable="true" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_newGame_3" />
 
     <View
         android:id="@+id/blue"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:background="#0040FF"
-        android:visibility="visible"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/blue"
+        android:focusable="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_newGame_4"
+        app:layout_constraintEnd_toStartOf="@+id/yellow"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/green"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintVertical_bias="0.501"
-        android:focusable="true" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_newGame_3" />
 
     <View
         android:id="@+id/green"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:background="#59FF00"
-        android:visibility="visible"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/green"
+        android:focusable="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_newGame_4"
+        app:layout_constraintEnd_toStartOf="@+id/blue"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/red"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintVertical_bias="0.501"
-        android:focusable="true" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_newGame_3" />
 
     <ImageView
         android:id="@+id/check_yellow"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/check"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/yellow"
@@ -93,8 +143,8 @@
 
     <ImageView
         android:id="@+id/check_blue"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/blue"
         app:layout_constraintEnd_toEndOf="@+id/blue"
         app:layout_constraintStart_toStartOf="@+id/blue"
@@ -105,8 +155,8 @@
 
     <ImageView
         android:id="@+id/check_green"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/green"
         app:layout_constraintEnd_toEndOf="@+id/green"
         app:layout_constraintStart_toStartOf="@+id/green"
@@ -117,8 +167,8 @@
 
     <ImageView
         android:id="@+id/check_red"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/red"
         app:layout_constraintEnd_toEndOf="@+id/red"
         app:layout_constraintStart_toStartOf="@+id/red"

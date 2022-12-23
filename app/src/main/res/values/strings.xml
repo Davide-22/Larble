@@ -35,4 +35,11 @@
     <string name="icon">icon</string>
     <string name="score">Score</string>
     <string name="wins">Wins</string>
+    <string name="blue">blue</string>
+    <string name="green">green</string>
+    <string name="red">red</string>
+    <string name="yellow">yellow</string>
+    <string name="retry">retry</string>
+    <string name="networkPopup">The device seems not to be connected to the internet.\n Connect the device to a network and try again</string>
+    <string name="serverPopup"> Connection with the server failed.\n Wait a few minutes and try again</string>
 </resources>
