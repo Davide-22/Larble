@@ -1,5 +1,6 @@
 package com.example.larble
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color.parseColor
 import android.graphics.PorterDuff
@@ -9,6 +10,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 
@@ -30,9 +33,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private var ballHeight = 0
     private var ballWidth = 0
 
-
-
     private lateinit var sensorManager: SensorManager
+    private lateinit var counter: CountDownTimer
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,31 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val colorBall = sharedPreferences.getString("colorBall","")
         setContentView(R.layout.activity_ball)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
+        val counterText: TextView = findViewById(R.id.counter)
+        val milliseconds: Long = when (intent.getStringExtra("difficulty").toString()) {
+            "easy" -> {
+                60000
+            }
+            "medium" -> {
+                45000
+            }
+            else -> {
+                30000
+            }
+        }
+        counter = object : CountDownTimer(milliseconds,1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = millisUntilFinished/60000
+                val seconds = millisUntilFinished/(1000*(minutes+1))
+                "$minutes:$seconds".also { counterText.text = it }
+            }
+
+            override fun onFinish() {
+                intent = Intent(this@BallActivity, SinglePlayerActivity::class.java)
+                startActivity(intent)
+            }
+
+        }
 
         ballView = BallView(this)
         mazeView = MazeView(this)
@@ -71,6 +98,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
             SensorManager.SENSOR_DELAY_GAME
         )
+        counter.start()
     }
     override fun onStop() {
         sensorManager.unregisterListener(this)
@@ -128,5 +156,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
     override fun onFlushCompleted(p0: Sensor?) {
         println("ciao")
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
     }
 }

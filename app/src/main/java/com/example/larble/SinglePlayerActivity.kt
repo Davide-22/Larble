@@ -28,14 +28,17 @@ class SinglePlayerActivity : AppCompatActivity() {
 
         easy.setOnClickListener {
             intent = Intent(this, BallActivity::class.java)
+            intent.putExtra("difficulty","easy")
             startActivity(intent)
         }
         medium.setOnClickListener {
             intent = Intent(this, BallActivity::class.java)
+            intent.putExtra("difficulty","medium")
             startActivity(intent)
         }
         hard.setOnClickListener {
             intent = Intent(this, BallActivity::class.java)
+            intent.putExtra("difficulty","hard")
             startActivity(intent)
         }
 
