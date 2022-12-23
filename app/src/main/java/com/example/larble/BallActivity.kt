@@ -1,5 +1,6 @@
 package com.example.larble
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -7,6 +8,7 @@ import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class BallActivity : AppCompatActivity(), SensorEventListener2 {
     var xPos: Float = 0.0f
@@ -20,21 +22,30 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     var xMax: Float = 0F
     var yMax: Float = 0F
     lateinit var ballView : BallView
+    lateinit var mazeView : MazeView
 
     var ballHeight = 0
     var ballWidth = 0
-
 
 
     lateinit var sensorManager: SensorManager
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_ball)
+        val myLayout = findViewById<ConstraintLayout>(R.id.main)
 
         ballView = BallView(this)
-        setContentView(ballView)
+        mazeView = MazeView(this)
+
+        //setContentView(ballView)
+
+        myLayout.addView(ballView)
+        myLayout.addView(mazeView)
+
 
         ballHeight = ballView.height
         ballWidth = ballView.width
@@ -42,8 +53,11 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         xMax = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
-        xPos = xMax/2
-        yPos = yMax/2
+
+
+        xPos = xMax
+        yPos = yMax
+
 
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -64,8 +78,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
         if (sensorEvent?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            xAccel = sensorEvent.values[0];
-            yAccel = -sensorEvent.values[1];
+            //xAccel = sensorEvent.values[0];
+            //yAccel = -sensorEvent.values[1];
             updateBall(ballView, xAccel, yAccel);
         }
 
@@ -73,8 +87,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
     private fun updateBall(ball : BallView, xAccel: Float, yAccel: Float) {
         var frameTime = 0.5f
-        println("x $xAccel")
-        println("y $yAccel")
+        //println("x $xAccel")
+        //println("y $yAccel")
         xVel += xAccel * frameTime
         yVel += yAccel * frameTime
 

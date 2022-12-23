@@ -14,6 +14,7 @@ class BallView(context: Context) : View(context) {
     private val filter: ColorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.red), PorterDuff.Mode.SRC_IN)
     var firstPaint: Paint = Paint()
 
+
     fun setParam(x: Float, y: Float) {
         positions[0] = x
         positions[1] = y
