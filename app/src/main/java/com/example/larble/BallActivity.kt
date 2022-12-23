@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private var xPos: Float = 0.0f
@@ -23,6 +24,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private var xMax: Float = 0F
     private var yMax: Float = 0F
     private lateinit var ballView : BallView
+    private lateinit var mazeView : MazeView
+
 
     private var ballHeight = 0
     private var ballWidth = 0
@@ -36,12 +39,18 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         super.onCreate(savedInstanceState)
         val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val colorBall = sharedPreferences.getString("colorBall","")
+        setContentView(R.layout.activity_ball)
+        val myLayout = findViewById<ConstraintLayout>(R.id.main)
 
         ballView = BallView(this)
+        mazeView = MazeView(this)
+
         if(colorBall!=""){
             ballView.firstPaint.colorFilter = PorterDuffColorFilter(parseColor(colorBall), PorterDuff.Mode.SRC_IN)
         }
-        setContentView(ballView)
+
+        myLayout.addView(ballView)
+        myLayout.addView(mazeView)
 
         ballHeight = ballView.height
         ballWidth = ballView.width
@@ -49,8 +58,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         xMax = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
-        xPos = xMax/2
-        yPos = yMax/2
+        xPos = xMax
+        yPos = yMax
 
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
