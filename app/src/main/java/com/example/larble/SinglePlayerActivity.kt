@@ -25,6 +25,21 @@ class SinglePlayerActivity : AppCompatActivity() {
         val hard: Button = findViewById(R.id.hard)
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sh.getString("token", "").toString()
+        val buttons = sh.getString("difficulty", "").toString()
+        if(buttons == ""){
+            val myEdit = sh.edit()
+            myEdit.putString("difficulty", "100")
+            myEdit.apply()
+        }
+        if(buttons == "110"){
+            medium.isEnabled=true
+            medium.isClickable=true
+        }else if(buttons == "111"){
+            medium.isEnabled=true
+            medium.isClickable=true
+            hard.isClickable=true
+            hard.isEnabled=true
+        }
 
         easy.setOnClickListener {
             intent = Intent(this, BallActivity::class.java)

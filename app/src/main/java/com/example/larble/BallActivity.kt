@@ -14,6 +14,9 @@ import android.os.CountDownTimer
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private var xPos: Float = 0.0f
@@ -37,6 +40,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private lateinit var counter: CountDownTimer
 
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
@@ -44,7 +48,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         setContentView(R.layout.activity_ball)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
         val counterText: TextView = findViewById(R.id.counter)
-        val milliseconds: Long = when (intent.getStringExtra("difficulty").toString()) {
+        val difficulty: String = intent.getStringExtra("difficulty").toString()
+        val milliseconds: Long = when (difficulty) {
             "easy" -> {
                 60000
             }
@@ -63,7 +68,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             }
 
             override fun onFinish() {
-                intent = Intent(this@BallActivity, SinglePlayerActivity::class.java)
+                intent = Intent(this@BallActivity, GameOverActivity::class.java)
+                intent.putExtra("result", "lose")
                 startActivity(intent)
             }
 
@@ -90,6 +96,18 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+
+        GlobalScope.launch{
+            while(ballView.positions[0]!=0f && ballView.positions[1]!=0f){
+
+            }
+            counter.cancel()
+            intent = Intent(this@BallActivity, GameOverActivity::class.java)
+            intent.putExtra("result", "win")
+            intent.putExtra("type", "single player")
+            intent.putExtra("difficulty", difficulty)
+            startActivity(intent)
+        }
     }
     override fun onStart() {
         super.onStart()

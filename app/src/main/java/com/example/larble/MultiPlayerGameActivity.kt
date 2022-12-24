@@ -126,6 +126,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         }
 
         job1 = GlobalScope.launch {
+            intent = Intent(this@MultiPlayerGameActivity, GameOverActivity::class.java)
             while(ballView.positions[0]!=0.0f && ballView.positions[1]!=0.0f){
                 if(win){
                     result = false
@@ -150,6 +151,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                             }
                         )
                     }
+                    intent.putExtra("result","lose")
+                    intent.putExtra("type", "multiplayer")
                     break
                 }
             }
@@ -177,8 +180,9 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     )
                 }
+                intent.putExtra("result","win")
+                intent.putExtra("type", "multiplayer")
             }
-            intent = Intent(this@MultiPlayerGameActivity, MultiPlayerActivity::class.java)
             startActivity(intent)
         }
     }

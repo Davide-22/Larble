@@ -155,6 +155,16 @@
                 <category android:name="android.intent.cateogyr.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".GameOverActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intenr.action.GameOver" />
+
+                <category android:name="android.intent.cateogyr.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

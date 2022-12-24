@@ -43,4 +43,5 @@
     <string name="networkPopup">The device seems not to be connected to the internet.\n Connect the device to a network and try again</string>
     <string name="serverPopup"> Connection with the server failed.\n Wait a few minutes and try again</string>
     <string name="hole">hole</string>
+    <string name="Continue">Continue</string>
 </resources>
