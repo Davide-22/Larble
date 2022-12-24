@@ -98,8 +98,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
         GlobalScope.launch{
-            while(ballView.positions[0]!=0f && ballView.positions[1]!=0f){
-
+            var cond = true
+            while(cond){
+                if(ballView.positions[0]==0f && ballView.positions[1]==0f) cond = false
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
