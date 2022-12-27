@@ -116,7 +116,8 @@
 
 
         <activity android:name=".MultiPlayerGameActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intenr.action.MULTIPLAYERGAME" />

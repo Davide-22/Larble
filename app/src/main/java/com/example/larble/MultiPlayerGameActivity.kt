@@ -11,6 +11,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.larble.requestModel.GameCodeRequestModel
 import com.example.larble.requestModel.PositionRequestModel
 import com.example.larble.responseModel.PositionResponseClass
@@ -34,7 +35,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
     private var xMax: Float = 0F
     private var yMax: Float = 0F
-    lateinit var ballView : BallView
+    private lateinit var ballView : BallView
+    private lateinit var mazeView: MazeView
 
     private var ballHeight = 0
     private var ballWidth = 0
@@ -52,15 +54,20 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val colorBall = sharedPreferences.getString("colorBall", "")
+        setContentView(R.layout.activity_ball)
+        val layout = findViewById<ConstraintLayout>(R.id.main)
+        val cells = intent.getSerializableExtra("labyrinth") as Array<Array<Cell>>
 
         ballView = BallView(this)
+        mazeView = MazeView(this)
+        mazeView.setCells(cells)
         if(colorBall!=""){
             ballView.firstPaint.colorFilter = PorterDuffColorFilter(Color.parseColor(colorBall), PorterDuff.Mode.SRC_IN)
         }
-        setContentView(ballView)
+        layout.addView(ballView)
+        layout.addView(mazeView)
 
         ballHeight = ballView.height
         ballWidth = ballView.width
@@ -68,8 +75,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         xMax = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
-        xPos = xMax/2
-        yPos = yMax/2
+        xPos = xMax
+        yPos = yMax
 
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -114,6 +121,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                         .show()
                                 }
                             }
+
                             override fun onFailure(call: Call<PositionResponseClass>, t: Throwable) {
                                 Toast.makeText(this@MultiPlayerGameActivity, t.toString(), Toast.LENGTH_LONG)
                                     .show()
@@ -127,7 +135,10 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
         job1 = GlobalScope.launch {
             intent = Intent(this@MultiPlayerGameActivity, GameOverActivity::class.java)
-            while(ballView.positions[0]!=0.0f && ballView.positions[1]!=0.0f){
+            while(true){
+                if(ballView.positions[0]==0f && ballView.positions[1]==0f) {
+                    break
+                }
                 if(win){
                     result = false
                     job.cancel()

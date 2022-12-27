@@ -16,12 +16,12 @@ class MazeView(context: Context) : View(context) {
 
 
     private var cellSize : Float = 0f
-    private var horizontalMargin : Float = 0f
-    private var verticalMargin : Float = 0f
+    //private var horizontalMargin : Float = 0f
+    //private var verticalMargin : Float = 0f
     private var wallThickness: Float = 7f
     private var wallPaint : Paint = Paint()
 
-    private var cells = Array(cols){Array<Cell>(rows){i -> Cell()}}
+    private var cells = Array(cols){Array(rows){Cell()}}
 
     //private var stack : Stack<Cell> = Stack<Cell>()
     private lateinit var current : Cell
@@ -41,7 +41,7 @@ class MazeView(context: Context) : View(context) {
 
         current = cells[0][0]
         current.visited = true
-        var stack : Stack<Cell> = Stack<Cell>()
+        val stack : Stack<Cell> = Stack<Cell>()
         //Recursive back-tracker
         do{
             next = getNeighbour(current)
@@ -59,11 +59,19 @@ class MazeView(context: Context) : View(context) {
 
     }
 
+    fun getCells(): Array<Array<Cell>> {
+        return cells
+    }
+
+    fun setCells(cell: Array<Array<Cell>>) {
+        cells = cell
+    }
+
     private fun getNeighbour(cell : Cell) : Cell {
 
-        var neighbours = ArrayList<Cell>()
+        val neighbours = ArrayList<Cell>()
         var index : Int
-        var debug = Cell()
+        val debug = Cell()
 
         //left neighbour
         if(cell.col > 0)
@@ -94,7 +102,6 @@ class MazeView(context: Context) : View(context) {
     }
 
     private fun removeWall(current : Cell, next : Cell) {
-        //println("removeWall chiamata")
         if(current.col == next.col && current.row == next.row+1) {
             current.topWall = false
             next.bottomWall = false
@@ -122,8 +129,8 @@ class MazeView(context: Context) : View(context) {
         createMaze()
 
         //Get size of canvas
-        var width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
-        var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
+        val width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
+        //var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
         cellSize = width/(5+1)
 

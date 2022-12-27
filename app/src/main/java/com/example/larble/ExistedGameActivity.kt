@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.larble.requestModel.GameCodeRequestModel
-import com.example.larble.responseModel.ResponseClass
+import com.example.larble.responseModel.LabyrinthResponseClass
 import pl.droidsonroids.gif.GifImageView
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,13 +40,14 @@ class ExistedGameActivity : AppCompatActivity() {
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 response.joinGame(requestModel).enqueue(
-                    object: Callback<ResponseClass> {
+                    object: Callback<LabyrinthResponseClass> {
                         override fun onResponse(
-                            call: Call<ResponseClass>,
-                            response: Response<ResponseClass>
+                            call: Call<LabyrinthResponseClass>,
+                            response: Response<LabyrinthResponseClass>
                         ){
                             if(response.body()!!.status=="true"){
                                 intent.putExtra("number", code.text.toString())
+                                intent.putExtra("labyrinth", response.body()!!.labyrinth)
                                 startActivity(intent)
                             }else{
                                 Toast.makeText(this@ExistedGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
@@ -56,7 +57,7 @@ class ExistedGameActivity : AppCompatActivity() {
                                 game?.visibility = View.VISIBLE
                             }
                         }
-                        override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                        override fun onFailure(call: Call<LabyrinthResponseClass>, t: Throwable) {
                             duck?.visibility = View.INVISIBLE
                             searching?.visibility = View.INVISIBLE
                             game?.visibility = View.VISIBLE

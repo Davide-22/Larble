@@ -1,6 +1,6 @@
 package com.example.larble
 
-class Cell() {
+class Cell : java.io.Serializable{
     var topWall: Boolean = true
     var leftWall: Boolean = true
     var rightWall: Boolean = true

@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
+import com.example.larble.requestModel.LabyrinthRequestModel
 import com.example.larble.requestModel.TokenRequestModel
 import com.example.larble.responseModel.PlayerResponseClass
 import com.example.larble.responseModel.ResponseClass
@@ -29,7 +30,8 @@ class MultiPlayerActivity : AppCompatActivity() {
 
         newGame.setOnClickListener {
             intent = Intent(this, NewGameActivity::class.java)
-            val requestModel = TokenRequestModel(token)
+            val mazeView = MazeView(this)
+            val requestModel = LabyrinthRequestModel(token,mazeView.getCells())
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
             response.createMultiplayerGame(requestModel).enqueue(
@@ -40,6 +42,7 @@ class MultiPlayerActivity : AppCompatActivity() {
                     ){
                         if(response.body()!!.status=="true"){
                             intent.putExtra("number", response.body()!!.msg)
+                            intent.putExtra("labyrinth", mazeView.getCells())
                             startActivity(intent)
                         }else{
                             Toast.makeText(this@MultiPlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG)

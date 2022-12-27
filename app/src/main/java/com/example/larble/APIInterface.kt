@@ -18,13 +18,13 @@ interface APIInterface {
     fun verify(@Body requestModel: TokenRequestModel): Call<ResponseClass>
 
     @POST("/create_multiplayer_game")
-    fun createMultiplayerGame(@Body requestModel: TokenRequestModel): Call<ResponseClass>
+    fun createMultiplayerGame(@Body requestModel: LabyrinthRequestModel): Call<ResponseClass>
 
     @POST("/check_for_player2")
     fun checkForPlayer(@Body requestModel: GameCodeModel): Call<ResponseClass>
 
     @POST("/join_game")
-    fun joinGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
+    fun joinGame(@Body requestModel: GameCodeRequestModel): Call<LabyrinthResponseClass>
 
     @POST("/delete_game")
     fun deleteGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
