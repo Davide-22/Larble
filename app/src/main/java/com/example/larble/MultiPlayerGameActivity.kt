@@ -48,7 +48,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private var win = false
     private lateinit var sh: SharedPreferences
     private lateinit var token: String
-
+    private var number: Int = 0
 
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -59,6 +59,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         setContentView(R.layout.activity_ball)
         val layout = findViewById<ConstraintLayout>(R.id.main)
         val cells = intent.getSerializableExtra("labyrinth") as Array<Array<Cell>>
+        number = intent.getStringExtra("number")?.toInt()!!
 
         ballView = BallView(this)
         mazeView = MazeView(this)
@@ -91,44 +92,40 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
         job = GlobalScope.launch {
             while(result){
-                val requestModel =
-                    intent?.getStringExtra("number")
-                        ?.let { PositionRequestModel(token, it.toInt(), ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal) }
+                val requestModel = PositionRequestModel(token, number, ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal)
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
-                if (requestModel != null) {
-                    response.takePosition(requestModel).enqueue(
-                        object: Callback<PositionResponseClass> {
-                            override fun onResponse(
-                                call: Call<PositionResponseClass>,
-                                response: Response<PositionResponseClass>
-                            ){
-                                if(response.body()!!.status=="true"){
-                                    if(response.body()!!.win){
-                                        win = response.body()!!.win
-                                    }else{
-                                        val x = response.body()!!.x
-                                        val y = response.body()!!.y
-                                        if(ballView.bitmaps.size == 1){
-                                            val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
-                                            val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
-                                            ballView.bitmaps.add(ball)
-                                        }
-                                        ballView.positions[2] = x*diagonal
-                                        ballView.positions[3] = y*diagonal
-                                    }
+                response.takePosition(requestModel).enqueue(
+                    object: Callback<PositionResponseClass> {
+                        override fun onResponse(
+                            call: Call<PositionResponseClass>,
+                            response: Response<PositionResponseClass>
+                        ){
+                            if(response.body()!!.status=="true"){
+                                if(response.body()!!.win){
+                                    win = response.body()!!.win
                                 }else{
-                                    Toast.makeText(this@MultiPlayerGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                        .show()
+                                    val x = response.body()!!.x
+                                    val y = response.body()!!.y
+                                    if(ballView.bitmaps.size == 1){
+                                        val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
+                                        val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
+                                        ballView.bitmaps.add(ball)
+                                    }
+                                    ballView.positions[2] = x*diagonal
+                                    ballView.positions[3] = y*diagonal
                                 }
-                            }
-
-                            override fun onFailure(call: Call<PositionResponseClass>, t: Throwable) {
-                                Toast.makeText(this@MultiPlayerGameActivity, t.toString(), Toast.LENGTH_LONG)
+                            }else{
+                                Toast.makeText(this@MultiPlayerGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                     .show()
                             }
                         }
-                    )
-                }
+
+                        override fun onFailure(call: Call<PositionResponseClass>, t: Throwable) {
+                            Toast.makeText(this@MultiPlayerGameActivity, t.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                )
                 delay(10)
             }
         }
