@@ -39,6 +39,11 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private lateinit var sensorManager: SensorManager
     private lateinit var counter: CountDownTimer
 
+    private var topWall: Float = -1f
+    private var bottomWall: Float = -1f
+    private var leftWall: Float = -1f
+    private var rightWall: Float = -1f
+
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,7 +105,13 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         GlobalScope.launch{
             var cond = true
             while(cond){
-                if(ballView.positions[0]==0f && ballView.positions[1]==0f) cond = false
+                val cell: Cell = mazeView.findCell(xPos,yPos)
+                val walls: Array<Float> = mazeView.setLimits(cell)
+                topWall = walls[0]
+                leftWall = walls[1]
+                bottomWall = walls[2]
+                rightWall = walls[3]
+                if(xPos==0f && yPos==0f) cond = false
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
@@ -163,6 +174,22 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             yVel = 0f
         } else if (yPos < ballHeight) {
             yPos = ballHeight.toFloat()
+            yVel = 0f
+        }
+
+        if (xPos > rightWall - ballWidth - 100f && rightWall!=-1f) {
+            xPos = rightWall - ballWidth - 100f
+            xVel = 0f
+
+        } else if (xPos < leftWall && leftWall!=-1f) {
+            xPos = leftWall+ballWidth.toFloat()
+            xVel = 0f
+        }
+        if (yPos < topWall + ballHeight - 180 && topWall!=-1f) {
+            yPos = topWall + ballHeight - 180
+            yVel = 0f
+        } else if (yPos > bottomWall && bottomWall!=-1f) {
+            yPos = bottomWall-ballHeight.toFloat()
             yVel = 0f
         }
         ball.setParam(xPos, yPos)

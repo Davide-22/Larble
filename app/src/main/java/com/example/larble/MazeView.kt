@@ -29,6 +29,9 @@ class MazeView(context: Context) : View(context) {
 
     private var random = Random()
 
+    private var width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
+    private var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
+
     private fun createMaze() {
         //Save position of cell
         for (i in cells.indices){
@@ -65,6 +68,26 @@ class MazeView(context: Context) : View(context) {
 
     fun setCells(cell: Array<Array<Cell>>) {
         cells = cell
+    }
+
+    fun findCell(x: Float, y: Float): Cell {
+        var colCell: Int = ((x / width) * cols).toInt()
+        if((x/width).toInt() == 1) colCell -= 1
+        var rowCell: Int = ((y / height) * rows).toInt()
+        if((y/height).toInt() == 1) rowCell -= 1
+        return cells[colCell][rowCell]
+    }
+
+    fun setLimits(cell: Cell): Array<Float> {
+        var top = -1f
+        var bottom = -1f
+        var left = -1f
+        var right = -1f
+        if (cell.topWall) top = (height / rows) * cell.row
+        if (cell.bottomWall) bottom = (height / rows) * (cell.row + 1)
+        if (cell.leftWall) left = (width / cols) * cell.col
+        if (cell.rightWall) right = (width / cols) * (cell.col + 1)
+        return arrayOf(top, left, bottom, right)
     }
 
     private fun getNeighbour(cell : Cell) : Cell {
@@ -127,10 +150,6 @@ class MazeView(context: Context) : View(context) {
         wallPaint.color = Color.BLACK
         wallPaint.strokeWidth = wallThickness
         createMaze()
-
-        //Get size of canvas
-        val width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
-        //var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
         cellSize = width/(5+1)
 
