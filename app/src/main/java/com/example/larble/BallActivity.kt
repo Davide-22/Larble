@@ -111,7 +111,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
                 leftWall = walls[1]
                 bottomWall = walls[2]
                 rightWall = walls[3]
-                if(xPos==0f && yPos==0f) cond = false
+                if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
@@ -177,7 +177,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             yVel = 0f
         }
 
-        if (xPos > rightWall - ballWidth - 100f && rightWall!=-1f) {
+        /*if (xPos > rightWall - ballWidth - 100f && rightWall!=-1f) {
             xPos = rightWall - ballWidth - 100f
             xVel = 0f
 
@@ -191,7 +191,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         } else if (yPos > bottomWall && bottomWall!=-1f) {
             yPos = bottomWall-ballHeight.toFloat()
             yVel = 0f
-        }
+        }*/
         ball.setParam(xPos, yPos)
     }
 

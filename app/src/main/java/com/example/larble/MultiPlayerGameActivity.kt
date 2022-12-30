@@ -107,7 +107,22 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         ){
                             if(response.body()!!.status=="true"){
                                 if(response.body()!!.win){
-                                    win = response.body()!!.win
+                                    if(!win){
+                                        win = response.body()!!.win
+                                        var x = response.body()!!.x*diagonal
+                                        var y = response.body()!!.y*diagonal
+                                        val pos: Array<Float> = arrayOf(x,y)
+                                        for(i in 1..9){
+                                            val t = (i.toFloat())/10
+                                            x = lastPos[0] + t*(pos[0]-lastPos[0])
+                                            y = lastPos[1] + t*(pos[1]-lastPos[1])
+                                            val newPos: Array<Float> = arrayOf(x,y)
+
+                                            positions.add(newPos)
+                                        }
+                                        positions.add(pos)
+                                        lastPos = pos
+                                    }
                                 }else{
                                     if(ballView.bitmaps.size == 1){
                                         val ballSrc = BitmapFactory.decodeResource(resources, R.drawable.ball2)
@@ -117,7 +132,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                     var x = response.body()!!.x*diagonal
                                     var y = response.body()!!.y*diagonal
                                     val pos: Array<Float> = arrayOf(x,y)
-                                    for(i in 2..8 step 2){
+                                    for(i in 1..9){
                                         val t = (i.toFloat())/10
                                         x = lastPos[0] + t*(pos[0]-lastPos[0])
                                         y = lastPos[1] + t*(pos[1]-lastPos[1])
@@ -140,7 +155,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     }
                 )
-                delay(50)
+                delay(90)
             }
         }
 
@@ -151,7 +166,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                     ballView.positions[2] = pos[0]
                     ballView.positions[3] = pos[1]
                 }
-                if(positions.size!=0) delay((50/positions.size).toLong())
+                if(positions.size!=0) delay((90/positions.size).toLong())
             }
             result = false
             job.cancel()
@@ -180,7 +195,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         job1 = GlobalScope.launch {
             intent = Intent(this@MultiPlayerGameActivity, GameOverActivity::class.java)
             while(true){
-                if(ballView.positions[0]==0f && ballView.positions[1]==0f) {
+                if(xPos in 0f..80.0F && yPos in 0f..80.0F) {
                     break
                 }
             }
