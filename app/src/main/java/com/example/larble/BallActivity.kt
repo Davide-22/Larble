@@ -71,12 +71,27 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished/60000
                 val seconds = millisUntilFinished/(1000*(minutes+1))
-                "$minutes:$seconds".also { counterText.text = it }
+                if(minutes < 10){
+                    if(seconds < 10){
+                        if(minutes == 0L){
+                            counterText.setTextColor(getColor(R.color.red))
+                        }
+                        "0$minutes:0$seconds".also { counterText.text = it }
+                    }else{
+                        "0$minutes:$seconds".also { counterText.text = it }
+                    }
+                }else{
+                    if(seconds < 10){
+                        "$minutes:0$seconds".also { counterText.text = it }
+                    }else{
+                        "$minutes:$seconds".also { counterText.text = it }
+                    }
+                }
             }
 
             override fun onFinish() {
                 intent = Intent(this@BallActivity, GameOverActivity::class.java)
-                intent.putExtra("result", "lose")
+                intent.putExtra("result", "lost")
                 startActivity(intent)
             }
 
