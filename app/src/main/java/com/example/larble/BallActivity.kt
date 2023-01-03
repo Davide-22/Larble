@@ -57,6 +57,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val milliseconds: Long = when (difficulty) {
             "easy" -> {
                 60000
+                //999999999999
             }
             "medium" -> {
                 45000
@@ -185,11 +186,11 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             xPos = leftWall+ballWidth.toFloat()
             xVel = 0f
         }
-        if (yPos < topWall + ballHeight - 180 && topWall!=-1f) {
-            yPos = topWall + ballHeight - 180
+        if (yPos < topWall + ballHeight && topWall!=-1f) {
+            yPos = topWall + ballHeight
             yVel = 0f
-        } else if (yPos > bottomWall && bottomWall!=-1f) {
-            yPos = bottomWall-ballHeight.toFloat()
+        } else if (yPos > bottomWall - ballHeight - 100f && bottomWall!=-1f) {
+            yPos = bottomWall - ballHeight - 100f
             yVel = 0f
         }
         ball.setParam(xPos, yPos)

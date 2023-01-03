@@ -13,4 +13,7 @@ class Cell : java.io.Serializable{
     var row: Int = -1
     var col: Int = -1
 
+    //var width : Float = 0f
+    //var height : Float = 0f
+
 }
