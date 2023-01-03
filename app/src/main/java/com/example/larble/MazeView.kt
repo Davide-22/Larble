@@ -11,11 +11,12 @@ import java.util.Stack
 
 class MazeView(context: Context) : View(context) {
 
-    private var rows: Int = 11
+    private var rows: Int = 10
     private var cols: Int = 6
 
 
-    private var cellSize : Float = 0f
+    private var xCellSize : Float = 0f
+    private var yCellSize : Float = 0f
     //private var horizontalMargin : Float = 0f
     //private var verticalMargin : Float = 0f
     private var wallThickness: Float = 7f
@@ -27,10 +28,16 @@ class MazeView(context: Context) : View(context) {
     private lateinit var current : Cell
     private lateinit var next : Cell
 
+    //Get size of canvas
+    //var width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
+    //var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
+
     private var random = Random()
 
     private var width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
     private var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
+
+
 
     private fun createMaze() {
         //Save position of cell
@@ -38,6 +45,9 @@ class MazeView(context: Context) : View(context) {
             for (j in cells[i].indices) {
                 cells[i][j].row = j
                 cells[i][j].col = i
+
+                //cells[i][j].width = width/cols*(i+1)
+                //cells[i][j].height = height/rows*(j+1)
             }
         }
 
@@ -114,7 +124,6 @@ class MazeView(context: Context) : View(context) {
                 neighbours.add(cells[cell.col][cell.row+1])
             }
 
-
         if(neighbours.size > 0) {
             //Ex: we have 3 neigh. unvisited, this index is could be 0,1,2.
             index = random.nextInt(neighbours.size)
@@ -151,7 +160,10 @@ class MazeView(context: Context) : View(context) {
         wallPaint.strokeWidth = wallThickness
         createMaze()
 
-        cellSize = width/(5+1)
+        xCellSize = width/(5+1)
+        yCellSize = height/10
+
+
 
         //If we need some margin for the maze, use these parameters
         //horizontalMargin = (width - cellSize)/2
@@ -162,40 +174,40 @@ class MazeView(context: Context) : View(context) {
             for (y in cells[x].indices) {
                 if (cells[x][y].topWall)
                     canvas?.drawLine(
-                        x * cellSize,
-                        y * cellSize,
-                        (x + 1) * cellSize,
-                        y * cellSize,
+                        x * xCellSize,
+                        y * yCellSize,
+                        (x + 1) * xCellSize,
+                        y * yCellSize,
                         wallPaint
                     )
 
 
                 if (cells[x][y].leftWall)
                     canvas?.drawLine(
-                        x * cellSize,
-                        y * cellSize,
-                        (x) * cellSize,
-                        (y + 1) * cellSize,
+                        x * xCellSize,
+                        y * yCellSize,
+                        (x) * xCellSize,
+                        (y + 1) * yCellSize,
                         wallPaint
                     )
 
 
                 if (cells[x][y].bottomWall)
                     canvas?.drawLine(
-                        x * cellSize,
-                        (y + 1) * cellSize,
-                        (x + 1) * cellSize,
-                        (y + 1) * cellSize,
+                        x * xCellSize,
+                        (y + 1) * yCellSize,
+                        (x + 1) * xCellSize,
+                        (y + 1) * yCellSize,
                         wallPaint
                     )
 
 
                 if (cells[x][y].rightWall)
                     canvas?.drawLine(
-                        (x + 1) * cellSize,
-                        y * cellSize,
-                        (x + 1) * cellSize,
-                        (y + 1) * cellSize,
+                        (x + 1) * xCellSize,
+                        y * yCellSize,
+                        (x + 1) * xCellSize,
+                        (y + 1) * yCellSize,
                         wallPaint
                     )
 
