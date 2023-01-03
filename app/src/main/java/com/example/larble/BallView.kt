@@ -7,7 +7,9 @@ import androidx.core.content.ContextCompat
 
 class BallView(context: Context) : View(context) {
     private val ballSrc: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ball2)
-    private var ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
+    private var h = 100
+    private var w = 100
+    private var ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, w, h, true)
     var bitmaps: MutableList<Bitmap> = arrayListOf(ball)
     var positions= FloatArray(4){1.0f}
     private var paint: Paint = Paint()

@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -33,8 +34,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private lateinit var mazeView : MazeView
 
 
-    private var ballHeight = 0
-    private var ballWidth = 0
+    private var ballHeight = 100f
+    private var ballWidth = 100f
 
     private lateinit var sensorManager: SensorManager
     private lateinit var counter: CountDownTimer
@@ -56,8 +57,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val difficulty: String = intent.getStringExtra("difficulty").toString()
         val milliseconds: Long = when (difficulty) {
             "easy" -> {
-                60000
-                //999999999999
+                //60000
+                999999999999
             }
             "medium" -> {
                 45000
@@ -91,8 +92,6 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         myLayout.addView(ballView)
         myLayout.addView(mazeView)
 
-        ballHeight = ballView.height
-        ballWidth = ballView.width
 
         xMax = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
@@ -106,13 +105,15 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         GlobalScope.launch{
             var cond = true
             while(cond){
-                val cell: Cell = mazeView.findCell(xPos,yPos)
+                val cell: Cell = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
                 val walls: Array<Float> = mazeView.setLimits(cell)
                 topWall = walls[0]
                 leftWall = walls[1]
                 bottomWall = walls[2]
                 rightWall = walls[3]
-                if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
+                //if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
+                //Log.d("RIGA ", cell.row.toString())
+                //Log.d("COLONNA ", cell.col.toString())
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
@@ -152,8 +153,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         yVel += yAccel * frameTime
 
         if(yAccel < 0) {
-            frameTime *= 0.8f
+            frameTime *= 0.5f
         }
+
 
         val xS = xVel / 2 * frameTime
         val yS = yVel / 2 * frameTime
@@ -162,37 +164,40 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         yPos -= yS
 
 
-        if (xPos > xMax - ballWidth - 100f) {
-            xPos = xMax - ballWidth - 100f
+
+        if (xPos > xMax ) {
+            xPos = xMax
             xVel = 0f
 
-        } else if (xPos < ballWidth) {
-            xPos = ballWidth.toFloat()
+        } else if (xPos < 0f) {
+            xPos = 0f
             xVel = 0f
         }
-        if (yPos > yMax - ballHeight - 180) {
-            yPos = yMax - ballHeight - 180
+        if (yPos > yMax - ballHeight - 80f) {
+            yPos = yMax - ballHeight - 80f
             yVel = 0f
-        } else if (yPos < ballHeight) {
-            yPos = ballHeight.toFloat()
+        } else if (yPos < 0f) {
+            yPos = 0f
             yVel = 0f
         }
 
-        /*if (xPos > rightWall - ballWidth - 100f && rightWall!=-1f) {
-            xPos = rightWall - ballWidth - 100f
-            xVel = 0f
+        if(xPos != xMax && yPos != yMax) {
+            if (xPos > rightWall - ballWidth && rightWall!=-1f) {
+                xPos = rightWall - ballWidth
+                xVel = 0f
 
-        } else if (xPos < leftWall && leftWall!=-1f) {
-            xPos = leftWall+ballWidth.toFloat()
-            xVel = 0f
+            } else if (xPos <= leftWall && leftWall!=-1f) {
+                xPos = leftWall
+                xVel = 0f
+            }
+            if (yPos <= topWall && topWall!=-1f) {
+                yPos = topWall
+                yVel = 0f
+            } else if (yPos > bottomWall - ballHeight && bottomWall!=-1f) {
+                yPos = bottomWall - ballHeight
+                yVel = 0f
+            }
         }
-        if (yPos < topWall + ballHeight && topWall!=-1f) {
-            yPos = topWall + ballHeight
-            yVel = 0f
-        } else if (yPos > bottomWall - ballHeight - 100f && bottomWall!=-1f) {
-            yPos = bottomWall - ballHeight - 100f
-            yVel = 0f
-        }*/
         ball.setParam(xPos, yPos)
     }
 

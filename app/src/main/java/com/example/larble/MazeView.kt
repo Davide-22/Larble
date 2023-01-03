@@ -83,8 +83,10 @@ class MazeView(context: Context) : View(context) {
     fun findCell(x: Float, y: Float): Cell {
         var colCell: Int = ((x / width) * cols).toInt()
         if((x/width).toInt() == 1) colCell -= 1
+
         var rowCell: Int = ((y / height) * rows).toInt()
         if((y/height).toInt() == 1) rowCell -= 1
+
         return cells[colCell][rowCell]
     }
 
