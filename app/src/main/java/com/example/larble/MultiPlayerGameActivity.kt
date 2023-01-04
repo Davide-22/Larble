@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.larble.requestModel.GameCodeRequestModel
@@ -225,6 +226,12 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
             }
             startActivity(intent)
         }
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        })
+
+
     }
     override fun onStart() {
         super.onStart()
@@ -290,9 +297,5 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
     override fun onFlushCompleted(p0: Sensor?) {
         println("ciao")
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
     }
 }

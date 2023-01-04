@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.larble.requestModel.LoginRequestModel
 import com.example.larble.responseModel.LoginResponseClass
@@ -70,12 +71,14 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        finishAffinity()
-        finish()
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAffinity()
+                finish()
+            }
+        })
+
     }
 
 }

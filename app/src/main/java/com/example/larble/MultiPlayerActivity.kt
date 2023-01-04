@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import com.example.larble.requestModel.LabyrinthRequestModel
 import com.example.larble.requestModel.TokenRequestModel
 import com.example.larble.responseModel.PlayerResponseClass
@@ -61,6 +62,14 @@ class MultiPlayerActivity : AppCompatActivity() {
             intent = Intent(this, ExistedGameActivity::class.java)
             startActivity(intent)
         }
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                intent = Intent(this@MultiPlayerActivity, MenuActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -99,11 +108,5 @@ class MultiPlayerActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        intent = Intent(this, MenuActivity::class.java)
-        startActivity(intent)
     }
 }

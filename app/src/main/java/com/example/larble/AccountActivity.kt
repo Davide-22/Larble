@@ -19,6 +19,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +34,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 
-@Suppress("DEPRECATION")
 class AccountActivity: AppCompatActivity()  {
 
     private lateinit var picture: ImageView
@@ -55,6 +56,7 @@ class AccountActivity: AppCompatActivity()  {
         val account: PlayerResponseClass = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             intent.getSerializableExtra("account", PlayerResponseClass::class.java)!!
         else
+            @Suppress("DEPRECATION")
             intent.getSerializableExtra("account") as PlayerResponseClass
 
         var text : TextView = findViewById(R.id.username)
@@ -96,9 +98,49 @@ class AccountActivity: AppCompatActivity()  {
         slideOut.slideEdge = Gravity.END
         popupWindow.exitTransition = slideOut
 
+        val camera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result ->
+            if(result.resultCode == RESULT_OK){
+                val bundle: Bundle? = result.data?.extras
+                @Suppress("DEPRECATION")
+                val photo1: Bitmap = bundle?.get("data") as Bitmap
+                val output = ByteArrayOutputStream()
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    photo1.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, output)
+                else
+                    @Suppress("DEPRECATION")
+                    photo1.compress(Bitmap.CompressFormat.WEBP, 0, output)
+                val imageBytes: ByteArray = output.toByteArray()
+                val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+                val requestModel = ProfileRequestModel(token, encodedImage)
+
+                val response = ServiceBuilder.buildService(APIInterface::class.java)
+                response.insertPicture(requestModel).enqueue(
+                    object: Callback<ResponseClass> {
+                        override fun onResponse(
+                            call: Call<ResponseClass>,
+                            response: Response<ResponseClass>
+                        ){
+                            if(response.body()!!.status == "false"){
+                                Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                .show()
+                            }else{
+                                picture.setImageBitmap(photo1)
+                                Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                        override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                            intent = Intent(this@AccountActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                )
+            }
+        }
+
         photo.setOnClickListener{
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent,1)
+            camera.launch(cameraIntent)
         }
 
         logout.setOnClickListener {
@@ -241,6 +283,13 @@ class AccountActivity: AppCompatActivity()  {
                 }
             })
         }
+
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                intent = Intent(this@AccountActivity, MenuActivity::class.java)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun changePopUp(view: View, type: Int){
@@ -269,51 +318,5 @@ class AccountActivity: AppCompatActivity()  {
             changePassword.visibility = View.VISIBLE
         }
 
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        intent = Intent(this, MenuActivity::class.java)
-        startActivity(intent)
-    }
-
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            val bundle: Bundle? = data?.extras
-            val photo: Bitmap = bundle?.get("data") as Bitmap
-            val output = ByteArrayOutputStream()
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                photo.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, output)
-            else
-                photo.compress(Bitmap.CompressFormat.WEBP, 0, output)
-            val imageBytes: ByteArray = output.toByteArray()
-            val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
-            val requestModel = ProfileRequestModel(token, encodedImage)
-
-            val response = ServiceBuilder.buildService(APIInterface::class.java)
-            response.insertPicture(requestModel).enqueue(
-                object: Callback<ResponseClass> {
-                    override fun onResponse(
-                        call: Call<ResponseClass>,
-                        response: Response<ResponseClass>
-                    ){
-                        if(response.body()!!.status == "false"){
-                            Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                .show()
-                        }else{
-                            picture.setImageBitmap(photo)
-                            Toast.makeText(this@AccountActivity, "Profile picture successfully changed", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                        intent = Intent(this@AccountActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-                }
-            )
-        }
     }
 }

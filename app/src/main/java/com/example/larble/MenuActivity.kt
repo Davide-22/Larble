@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.larble.requestModel.TokenRequestModel
 import com.example.larble.responseModel.PlayerResponseClass
@@ -81,6 +82,13 @@ class MenuActivity : AppCompatActivity() {
                 )
             }
         }
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAffinity()
+                finish()
+            }
+        })
+
 
     }
 

@@ -11,8 +11,8 @@ import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -57,8 +57,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val difficulty: String = intent.getStringExtra("difficulty").toString()
         val milliseconds: Long = when (difficulty) {
             "easy" -> {
-                //60000
-                999999999999
+                60000
             }
             "medium" -> {
                 45000
@@ -126,9 +125,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
                 leftWall = walls[1]
                 bottomWall = walls[2]
                 rightWall = walls[3]
-                //if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
-                //Log.d("RIGA ", cell.row.toString())
-                //Log.d("COLONNA ", cell.col.toString())
+                if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
@@ -137,6 +134,12 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             intent.putExtra("difficulty", difficulty)
             startActivity(intent)
         }
+
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
     }
     override fun onStart() {
         super.onStart()
@@ -223,9 +226,5 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
     override fun onFlushCompleted(p0: Sensor?) {
         println("ciao")
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.larble.requestModel.GameCodeModel
 import com.example.larble.requestModel.GameCodeRequestModel
@@ -50,32 +51,33 @@ class NewGameActivity : AppCompatActivity() {
                 delay(1000)
             }
         }
-    }
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                result = true
+                job.cancel()
+                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+                val token: String = sh.getString("token", "").toString()
+                val requestModel1 = GameCodeRequestModel(code,token)
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        result = true
-        job.cancel()
-        val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val token: String = sh.getString("token", "").toString()
-        val requestModel = GameCodeRequestModel(code,token)
+                val response = ServiceBuilder.buildService(APIInterface::class.java)
+                response.deleteGame(requestModel1).enqueue(
+                    object: Callback<ResponseClass> {
+                        override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                            intent = Intent(this@NewGameActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
 
-        val response = ServiceBuilder.buildService(APIInterface::class.java)
-        response.deleteGame(requestModel).enqueue(
-            object: Callback<ResponseClass> {
-                override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                    intent = Intent(this@NewGameActivity, MainActivity::class.java)
-                    startActivity(intent)
-                }
-
-                override fun onResponse(
-                    call: Call<ResponseClass>,
-                    response: Response<ResponseClass>
-                ) {
-                }
+                        override fun onResponse(
+                            call: Call<ResponseClass>,
+                            response: Response<ResponseClass>
+                        ) {
+                        }
+                    }
+                )
+                intent = Intent(this@NewGameActivity, MultiPlayerActivity::class.java)
+                startActivity(intent)
             }
-        )
-        intent = Intent(this, MultiPlayerActivity::class.java)
-        startActivity(intent)
+        })
+
     }
 }
