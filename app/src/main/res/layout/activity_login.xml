@@ -115,10 +115,25 @@
         android:text="@string/sign_up"
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/guideline_login_3"
+        app:layout_constraintDimensionRatio="2:1.4"
         app:layout_constraintEnd_toEndOf="@id/guideline_login_5"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintDimensionRatio="2:1.4"
         app:layout_constraintStart_toStartOf="@id/guideline_login_4"
         app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <Button
+        android:id="@+id/google_btn"
+        android:layout_width="165dp"
+        android:layout_height="57dp"
+        android:text="@string/google_login"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2:1.4"
+        app:layout_constraintEnd_toEndOf="@id/guideline_login_5"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@id/guideline_login_4"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up"
+        app:layout_constraintVertical_bias="0.2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

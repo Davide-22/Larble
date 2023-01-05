@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "641082759658",
+    "project_id": "larble-52606",
+    "storage_bucket": "larble-52606.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641082759658:android:f83420100290dcd8693a93",
+        "android_client_info": {
+          "package_name": "com.example.larble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641082759658-5gkf70us5tj5shvgsp0rklvjlk0c6ghf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeoIL8j8XLlAGF3W_h1SdKXFuE_y2cdkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641082759658-5gkf70us5tj5shvgsp0rklvjlk0c6ghf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
