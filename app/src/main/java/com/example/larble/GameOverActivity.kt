@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -9,19 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 
 class GameOverActivity : AppCompatActivity() {
 
+    private lateinit var sh: SharedPreferences
+    private lateinit var difficulty: String
+    private lateinit var result: String
+    private lateinit var type: String
+    private lateinit var buttons: String
+    private lateinit var textResult: TextView
+    private lateinit var button: Button
+    private lateinit var score: TextView
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_over)
-        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val difficulty : String= sharedPreferences.getString("difficulty", "").toString()
-        val myEdit = sharedPreferences.edit()
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        difficulty = sh.getString("difficulty", "").toString()
+        val myEdit = sh.edit()
 
-        val result: String = intent.getStringExtra("result").toString()
-        val type: String = intent.getStringExtra("type").toString()
-        val buttons: String = intent.getStringExtra("difficulty").toString()
-        val textResult: TextView = findViewById(R.id.result)
-        val score: TextView = findViewById(R.id.score)
-        val button : Button = findViewById(R.id.Continue)
+        result = intent.getStringExtra("result").toString()
+        type = intent.getStringExtra("type").toString()
+        buttons = intent.getStringExtra("difficulty").toString()
+        textResult = findViewById(R.id.result)
+        score = findViewById(R.id.score)
+        button = findViewById(R.id.Continue)
         "You $result".also { textResult.text = it }
         when (result) {
             "win" -> {

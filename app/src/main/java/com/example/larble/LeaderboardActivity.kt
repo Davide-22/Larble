@@ -19,6 +19,8 @@ import retrofit2.Response
 class LeaderboardActivity : AppCompatActivity() {
     private lateinit var sh :SharedPreferences
     private lateinit var token: String
+    private lateinit var adapter: CustomAdapter
+    private lateinit var recyclerview: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_leaderboard)
@@ -27,7 +29,7 @@ class LeaderboardActivity : AppCompatActivity() {
 
         @Suppress("DEPRECATION", "UNCHECKED_CAST")
         val leaderboard: ArrayList<LeaderboardClass> = intent.getSerializableExtra("leaderboard") as ArrayList<LeaderboardClass>
-        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerview = findViewById(R.id.recyclerview)
 
         recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -37,7 +39,7 @@ class LeaderboardActivity : AppCompatActivity() {
             data.add(ItemsLeaderboard(leaderboard[i].profile_picture, leaderboard[i].username, leaderboard[i].wins.toString(), leaderboard[i].score.toString()))
         }
 
-        val adapter = CustomAdapter(data)
+        adapter = CustomAdapter(data)
 
         recyclerview.adapter = adapter
     }
