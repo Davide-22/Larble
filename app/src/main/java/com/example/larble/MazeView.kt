@@ -63,9 +63,9 @@ class MazeView(context: Context) : View(context) {
                 stack.push(current)
                 current = next
                 current.visited = true
-            } else
+            } else if(!stack.empty()) {
                 current = stack.pop()
-
+            }
 
         }while(!stack.empty())
 
