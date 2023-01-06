@@ -20,12 +20,14 @@ import retrofit2.Response
 class MultiPlayerActivity : AppCompatActivity() {
     private lateinit var sh :SharedPreferences
     private lateinit var token: String
+    private lateinit var newGame: Button
+    private lateinit var existedGame: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multiplayer)
 
-        val newGame: Button = findViewById(R.id.new_game)
-        val existedGame: Button = findViewById(R.id.existed_game)
+        newGame = findViewById(R.id.new_game)
+        existedGame = findViewById(R.id.existed_game)
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sh.getString("token", "").toString()
 

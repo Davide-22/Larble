@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -18,16 +19,23 @@ class NewGameActivity : AppCompatActivity() {
     private var result = false
     private var code = 0
     private var job: Job = Job()
+    private lateinit var text: TextView
+    private lateinit var sh: SharedPreferences
+    private lateinit var token: String
+    private lateinit var number: String
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newgame)
 
         val cells : Array<Array<Cell>> = intent.getSerializableExtra("labyrinth") as Array<Array<Cell>>
-        val text: TextView = findViewById(R.id.number)
-        text.text = intent.getStringExtra("number")
+        number = intent.getStringExtra("number").toString()
+        text = findViewById(R.id.number)
+        text.text = number
         code = text.text.toString().toInt()
-        val requestModel = intent.getStringExtra("number")?.let { GameCodeModel(it) }
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token= sh.getString("token", "").toString()
+        val requestModel = GameCodeModel(number)
 
         intent = Intent(this, MultiPlayerGameActivity::class.java)
         val service = ServiceBuilder.buildService(APIInterface::class.java)
@@ -35,15 +43,13 @@ class NewGameActivity : AppCompatActivity() {
         job = GlobalScope.launch {
             while(!result) {
                 try {
-                    val callSync = requestModel?.let { it1 -> service.checkForPlayer(it1) }
-                    val response = callSync?.execute()
-                    if (response != null) {
-                        if (response.body()!!.status == "true") {
-                            intent.putExtra("number", code.toString())
-                            intent.putExtra("labyrinth",cells)
-                            startActivity(intent)
-                            result = true
-                        }
+                    val callSync = requestModel.let { it1 -> service.checkForPlayer(it1) }
+                    val response = callSync.execute()
+                    if (response.body()!!.status == "true") {
+                        intent.putExtra("number", code.toString())
+                        intent.putExtra("labyrinth",cells)
+                        startActivity(intent)
+                        result = true
                     }
                 } catch (ex: Exception) {
                     Log.d("error", Log.getStackTraceString(ex))
@@ -55,15 +61,13 @@ class NewGameActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 result = true
                 job.cancel()
-                val sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                val token: String = sh.getString("token", "").toString()
                 val requestModel1 = GameCodeRequestModel(code,token)
+                intent = Intent(this@NewGameActivity, MainActivity::class.java)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 response.deleteGame(requestModel1).enqueue(
                     object: Callback<ResponseClass> {
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                            intent = Intent(this@NewGameActivity, MainActivity::class.java)
                             startActivity(intent)
                         }
 
@@ -74,7 +78,6 @@ class NewGameActivity : AppCompatActivity() {
                         }
                     }
                 )
-                intent = Intent(this@NewGameActivity, MultiPlayerActivity::class.java)
                 startActivity(intent)
             }
         })

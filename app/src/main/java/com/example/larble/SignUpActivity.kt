@@ -19,18 +19,28 @@ import retrofit2.Callback
 
 
 class SignUpActivity : AppCompatActivity() {
+
+    private lateinit var signUp: Button
+    private lateinit var username: EditText
+    private lateinit var email: EditText
+    private lateinit var password: EditText
+    private lateinit var confirmPassword: EditText
+    private lateinit var checkUsername: ImageView
+    private lateinit var checkEmail: ImageView
+    private lateinit var checkConfirmPassword: ImageView
+    private lateinit var checkPassword: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
-        val signUp: Button = findViewById(R.id.sign_up1)
-        val username: EditText = findViewById(R.id.editTextTextPersonName2)
-        val email: EditText = findViewById(R.id.editTextTextEmailAddress2)
-        val password: EditText = findViewById(R.id.editTextTextPassword2)
-        val confirmPassword: EditText = findViewById(R.id.editTextTextPassword3)
-        val checkUsername: ImageView = findViewById(R.id.checkUsername)
-        val checkEmail: ImageView = findViewById(R.id.checkEmail)
-        val checkConfirmPassword: ImageView = findViewById(R.id.checkConfirmPassword)
-        val checkPassword: ImageView = findViewById(R.id.checkPassword)
+        signUp= findViewById(R.id.sign_up1)
+        username = findViewById(R.id.editTextTextPersonName2)
+        email = findViewById(R.id.editTextTextEmailAddress2)
+        password = findViewById(R.id.editTextTextPassword2)
+        confirmPassword = findViewById(R.id.editTextTextPassword3)
+        checkUsername = findViewById(R.id.checkUsername)
+        checkEmail = findViewById(R.id.checkEmail)
+        checkConfirmPassword = findViewById(R.id.checkConfirmPassword)
+        checkPassword = findViewById(R.id.checkPassword)
 
         signUp.setOnClickListener {
             if(checkUsername.visibility==View.VISIBLE && checkEmail.visibility==View.VISIBLE && checkConfirmPassword.visibility==View.VISIBLE && checkPassword.visibility==View.VISIBLE){

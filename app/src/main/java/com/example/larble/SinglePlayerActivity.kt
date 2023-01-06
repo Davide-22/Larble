@@ -18,15 +18,19 @@ import retrofit2.Response
 class SinglePlayerActivity : AppCompatActivity() {
     private lateinit var sh: SharedPreferences
     private lateinit var token: String
+    private lateinit var easy: Button
+    private lateinit var medium: Button
+    private lateinit var hard: Button
+    private lateinit var buttons: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_singleplayer)
-        val easy: Button = findViewById(R.id.easy)
-        val medium: Button = findViewById(R.id.medium)
-        val hard: Button = findViewById(R.id.hard)
+        easy = findViewById(R.id.easy)
+        medium = findViewById(R.id.medium)
+        hard = findViewById(R.id.hard)
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sh.getString("token", "").toString()
-        val buttons = sh.getString("difficulty", "").toString()
+        buttons = sh.getString("difficulty", "").toString()
         if(buttons == ""){
             val myEdit = sh.edit()
             myEdit.putString("difficulty", "100")

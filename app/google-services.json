@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "641082759658-2p95kra701k5bom2ju3nu9prrdoqfl6j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.larble",
+            "certificate_hash": "0f687fbcdbe1ea768fa301780559c2e80588d370"
+          }
+        },
+        {
+          "client_id": "641082759658-f6c1litqg5a728jk4us6upbrt4akbn1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.larble",
+            "certificate_hash": "a112c2dac8a2ee19baa99f78ff2c763ef4ed8f40"
+          }
+        },
+        {
           "client_id": "641082759658-5gkf70us5tj5shvgsp0rklvjlk0c6ghf.apps.googleusercontent.com",
           "client_type": 3
         }

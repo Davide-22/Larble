@@ -52,4 +52,7 @@ interface APIInterface {
 
     @POST("/delete_finished_game")
     fun deleteFinishedGame(@Body requestModel: GameCodeRequestModel): Call<ResponseClass>
+
+    @POST("/google_login")
+    fun loginGoogle(@Body requestModel: GoogleRequestModel): Call<ResponseClass>
 }

@@ -14,6 +14,7 @@ import android.text.TextWatcher
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Base64
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -29,38 +30,61 @@ import com.example.larble.requestModel.ProfileRequestModel
 import com.example.larble.requestModel.UsernameRequestModel
 import com.example.larble.responseModel.PlayerResponseClass
 import com.example.larble.responseModel.ResponseClass
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.net.URL
 
 class AccountActivity: AppCompatActivity()  {
 
     private lateinit var picture: ImageView
     private lateinit var sh: SharedPreferences
     private lateinit var token: String
+    private lateinit var mGoogleSignInClient : GoogleSignInClient
+    private lateinit var changeUsername: ImageView
+    private lateinit var changePassword: Button
+    private lateinit var rootLayout: ConstraintLayout
+    private lateinit var logout: Button
+    private lateinit var photo: TextView
+    private lateinit var account: PlayerResponseClass
+    private lateinit var text: TextView
+    private lateinit var username: String
+
+    @OptIn(DelicateCoroutinesApi::class)
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         token = sh.getString("token", "").toString()
 
-        val changeUsername: ImageView = findViewById(R.id.edit_username)
-        val changePassword: Button = findViewById(R.id.edit_password)
-        val rootLayout: ConstraintLayout = findViewById(R.id.accountLayout)
-        val logout: Button = findViewById(R.id.log_out)
-        val photo: TextView = findViewById(R.id.plus)
+        changeUsername = findViewById(R.id.edit_username)
+        changePassword = findViewById(R.id.edit_password)
+        rootLayout = findViewById(R.id.accountLayout)
+        logout = findViewById(R.id.log_out)
+        photo = findViewById(R.id.plus)
 
-        val account: PlayerResponseClass = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        account = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             intent.getSerializableExtra("account", PlayerResponseClass::class.java)!!
         else
             @Suppress("DEPRECATION")
             intent.getSerializableExtra("account") as PlayerResponseClass
 
-        var text : TextView = findViewById(R.id.username)
-        var username: String = sh.getString("username", "").toString()
+        text = findViewById(R.id.username)
+        username = sh.getString("username", "").toString()
         "Username: $username".also { text.text = it }
         text = findViewById(R.id.email)
         "Email: ${account.email}".also { text.text = it }
@@ -72,11 +96,26 @@ class AccountActivity: AppCompatActivity()  {
         "Score: ${account.score}".also { text.text = it }
 
         picture= findViewById(R.id.photo)
-        if(account.profile_picture != null) {
-            val decodeImage: ByteArray = Base64.decode(account.profile_picture, Base64.DEFAULT)
-            val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
-            picture.setImageBitmap(bitmap)
+        GlobalScope.launch {
+            if(account.profile_picture != null) {
+                if(sh.getString("google","") == true.toString()){
+                    try {
+                        val profile: InputStream =
+                            withContext(Dispatchers.IO) {
+                                URL(account.profile_picture.toString()).openStream()
+                            }
+                        picture.setImageBitmap(BitmapFactory.decodeStream(profile))
+                    } catch (e: Exception) {
+                        Log.d("error", e.toString())
+                    }
+                }else{
+                    val decodeImage: ByteArray = Base64.decode(account.profile_picture, Base64.DEFAULT)
+                    val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
+                    picture.setImageBitmap(bitmap)
+                }
+            }
         }
+
 
         val inflater: LayoutInflater = getSystemService( Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val nullParent: ViewGroup? = null
@@ -145,6 +184,9 @@ class AccountActivity: AppCompatActivity()  {
 
         logout.setOnClickListener {
             intent = Intent(this, LoginActivity::class.java)
+            if(sh.getString("google","") == true.toString()){
+                mGoogleSignInClient.signOut()
+            }
             sh.edit().clear().apply()
             startActivity(intent)
         }
@@ -152,7 +194,6 @@ class AccountActivity: AppCompatActivity()  {
         changeUsername.setOnClickListener{
 
             val newUsername: EditText = view.findViewById(R.id.new_username)
-            username = sh.getString("username", "").toString()
             newUsername.setText(username)
             changePopUp(view,1)
 

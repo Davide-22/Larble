@@ -9,6 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -51,20 +52,23 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private var win = false
     private lateinit var sh: SharedPreferences
     private lateinit var token: String
-    private var number: Int = 0
+    private lateinit var number: String
     private var positions: Queue<Array<Float>> = LinkedList()
     private lateinit var lastPos: Array<Float>
+    private lateinit var colorBall: String
+    private lateinit var layout: ConstraintLayout
 
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        val colorBall = sharedPreferences.getString("colorBall", "")
+        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        token = sh.getString("token", "").toString()
+        colorBall = sh.getString("colorBall", "").toString()
         setContentView(R.layout.activity_ball)
-        val layout = findViewById<ConstraintLayout>(R.id.main)
+        layout = findViewById(R.id.main)
         val cells = intent.getSerializableExtra("labyrinth") as Array<Array<Cell>>
-        number = intent.getStringExtra("number")?.toInt()!!
+        number = intent.getStringExtra("number").toString()
 
         ballView = BallView(this)
         mazeView = MazeView(this)
@@ -89,16 +93,14 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
 
-        val display = windowManager.defaultDisplay
-        val width = display.width.toFloat()
-        val height = display.height.toFloat()
-        sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-        token = sh.getString("token", "").toString()
+        val metrics: DisplayMetrics = this.resources.displayMetrics
+        val width = metrics.widthPixels.toFloat()
+        val height = metrics.heightPixels.toFloat()
         val diagonal = sqrt(width.pow(2)+height.pow(2))
 
         job = GlobalScope.launch {
             while(result){
-                val requestModel = PositionRequestModel(token, number, ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal)
+                val requestModel = PositionRequestModel(token, number.toInt(), ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal)
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 response.takePosition(requestModel).enqueue(
                     object: Callback<PositionResponseClass> {
@@ -171,7 +173,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
             }
             result = false
             job.cancel()
-            val requestModel = GameCodeRequestModel(number,token)
+            val requestModel = GameCodeRequestModel(number.toInt(),token)
 
             val response = ServiceBuilder.buildService(APIInterface::class.java)
             response.deleteFinishedGame(requestModel).enqueue(
@@ -204,7 +206,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                 result = false
                 job.cancel()
                 job2.cancel()
-                val requestModel = GameCodeRequestModel(number, token)
+                val requestModel = GameCodeRequestModel(number.toInt(), token)
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 response.winning(requestModel).enqueue(
                     object: Callback<ResponseClass> {
