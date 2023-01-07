@@ -16,7 +16,6 @@ class MazeView(context: Context) : View(context) {
     private var rows: Int = 10
     private var cols: Int = 6
 
-
     private var xCellSize : Float = 0f
     private var yCellSize : Float = 0f
     //private var horizontalMargin : Float = 0f
@@ -39,7 +38,7 @@ class MazeView(context: Context) : View(context) {
     private var width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
     private var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
-    var cont = 0
+    private var multiplayer: Boolean = false
 
     private fun createMaze() {
         //Save position of cell
@@ -61,7 +60,9 @@ class MazeView(context: Context) : View(context) {
         do{
             next = getNeighbour(current)
             if(next.debug != "yes") {
+                Log.d("current",current.bottomWall.toString())
                 removeWall(current, next)
+                Log.d("current",current.bottomWall.toString())
                 stack.push(current)
                 current = next
                 current.visited = true
@@ -75,11 +76,13 @@ class MazeView(context: Context) : View(context) {
     }
 
     fun getCells(): Array<Array<Cell>> {
+        createMaze()
         return cells
     }
 
     fun setCells(cell: Array<Array<Cell>>) {
         cells = cell
+        multiplayer = true
     }
 
     /*
@@ -235,7 +238,7 @@ class MazeView(context: Context) : View(context) {
             wallPaint.color = Color.BLACK
         }
         wallPaint.strokeWidth = wallThickness
-        createMaze()
+        if(!multiplayer) createMaze()
 
         xCellSize = width/(5+1)
         yCellSize = height/10
