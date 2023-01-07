@@ -47,6 +47,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
     private var leftWall: Float = -1f
     private var rightWall: Float = -1f
 
+    private var minutes: Long = 0L
+    private var seconds: Long = 0L
+
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +76,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         }
         counter = object : CountDownTimer(milliseconds,1000) {
             override fun onTick(millisUntilFinished: Long) {
-                val minutes = millisUntilFinished/60000
-                val seconds = millisUntilFinished/(1000*(minutes+1))
+                minutes = millisUntilFinished/60000
+                seconds = millisUntilFinished/(1000*(minutes+1))
                 if(minutes < 10){
                     if(seconds < 10){
                         if(minutes == 0L){
@@ -159,7 +162,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
             SensorManager.SENSOR_DELAY_GAME
         )
-        counter.start()
+        if(minutes==0L && seconds==0L){
+            counter.start()
+        }
     }
     override fun onStop() {
         sensorManager.unregisterListener(this)
