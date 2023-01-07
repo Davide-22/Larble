@@ -1,6 +1,7 @@
 package com.example.larble
 
 import android.content.Context
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
@@ -154,11 +155,19 @@ class MazeView(context: Context) : View(context) {
         }
     }
 
+    private fun isDarkTheme(): Boolean {
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
     override fun onDraw(canvas: Canvas?) {
         //We will draw the maze here
         //super.onDraw(canvas)
 
-        wallPaint.color = Color.BLACK
+        if(isDarkTheme()){
+            wallPaint.color = Color.WHITE
+        }else{
+            wallPaint.color = Color.BLACK
+        }
         wallPaint.strokeWidth = wallThickness
         createMaze()
 

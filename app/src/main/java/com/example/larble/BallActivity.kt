@@ -1,7 +1,9 @@
 package com.example.larble
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Color.parseColor
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -53,6 +55,9 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val colorBall = sharedPreferences.getString("colorBall","")
         setContentView(R.layout.activity_ball)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
+        if(isDarkTheme()){
+            myLayout.setBackgroundColor(Color.BLACK)
+        }
         val counterText: TextView = findViewById(R.id.counter)
         val difficulty: String = intent.getStringExtra("difficulty").toString()
         val milliseconds: Long = when (difficulty) {
@@ -141,6 +146,12 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             }
         })
     }
+
+
+    private fun isDarkTheme(): Boolean {
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
     override fun onStart() {
         super.onStart()
         sensorManager.registerListener(
