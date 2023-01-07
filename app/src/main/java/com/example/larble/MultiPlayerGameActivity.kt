@@ -42,8 +42,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private lateinit var ballView : BallView
     private lateinit var mazeView: MazeView
 
-    private var ballHeight = 0
-    private var ballWidth = 0
+    private var ballHeight = 100F
+    private var ballWidth = 100F
 
     private lateinit var sensorManager: SensorManager
     private var job: Job = Job()
@@ -58,6 +58,11 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private lateinit var lastPos: Array<Float>
     private lateinit var colorBall: String
     private lateinit var layout: ConstraintLayout
+
+    private var topWall: Float = -1f
+    private var bottomWall: Float = -1f
+    private var leftWall: Float = -1f
+    private var rightWall: Float = -1f
 
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -82,9 +87,6 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         }
         layout.addView(ballView)
         layout.addView(mazeView)
-
-        ballHeight = ballView.height
-        ballWidth = ballView.width
 
         xMax = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
@@ -201,10 +203,15 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
         job1 = GlobalScope.launch {
             intent = Intent(this@MultiPlayerGameActivity, GameOverActivity::class.java)
-            while(true){
-                if(xPos in 0f..80.0F && yPos in 0f..80.0F) {
-                    break
-                }
+            var cond = true
+            while(cond){
+                val cell: Array<Cell> = mazeView.findCell(xPos,yPos)
+                val walls: Array<Float> = mazeView.setLimits(cell, yVel, xVel)
+                topWall = walls[0]
+                leftWall = walls[1]
+                bottomWall = walls[2]
+                rightWall = walls[3]
+                if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
             }
             if(!win){
                 result = false
@@ -273,8 +280,9 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         yVel += yAccel * frameTime
 
         if(yAccel < 0) {
-            frameTime *= 0.8f
+            frameTime *= 0.5f
         }
+
 
         val xS = xVel / 2 * frameTime
         val yS = yVel / 2 * frameTime
@@ -283,20 +291,39 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         yPos -= yS
 
 
-        if (xPos > xMax - ballWidth - 100f) {
-            xPos = xMax - ballWidth - 100f
+
+        if (xPos > xMax ) {
+            xPos = xMax
             xVel = 0f
 
-        } else if (xPos < ballWidth) {
-            xPos = ballWidth.toFloat()
+        } else if (xPos < 0f) {
+            xPos = 0f
             xVel = 0f
         }
-        if (yPos > yMax - ballHeight - 180) {
-            yPos = yMax - ballHeight - 180
+        if (yPos > yMax - ballHeight - 80f) {
+            yPos = yMax - ballHeight - 80f
             yVel = 0f
-        } else if (yPos < ballHeight) {
-            yPos = ballHeight.toFloat()
+        } else if (yPos < 0f) {
+            yPos = 0f
             yVel = 0f
+        }
+
+        if(xPos != xMax && yPos != yMax) {
+            if (xPos > rightWall - ballWidth+1 && rightWall!=-1f) {
+                xPos = rightWall - ballWidth+1
+                xVel = 0f
+
+            } else if (xPos <= leftWall && leftWall!=-1f) {
+                xPos = leftWall
+                xVel = 0f
+            }
+            if (yPos <= topWall && topWall!=-1f) {
+                yPos = topWall
+                yVel = 0f
+            } else if (yPos > bottomWall - ballHeight+1 && bottomWall!=-1f) {
+                yPos = bottomWall - ballHeight+1
+                yVel = 0f
+            }
         }
         ball.setParam(xPos, yPos)
     }
