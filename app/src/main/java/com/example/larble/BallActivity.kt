@@ -130,10 +130,10 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             while(cond){
 
 
-                /*val cell: Array<Cell> = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
+                val cell: Array<Cell> = mazeView.findCell(xPos,yPos)
+                val walls: Array<Float> = mazeView.setLimits(cell, yVel, xVel)
+                /*val cell: Cell = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
                 val walls: Array<Float> = mazeView.setLimits(cell)*/
-                val cell: Cell = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
-                val walls: Array<Float> = mazeView.setLimits(cell)
                 topWall = walls[0]
                 leftWall = walls[1]
                 bottomWall = walls[2]
@@ -221,8 +221,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         }
 
         if(xPos != xMax && yPos != yMax) {
-            if (xPos > rightWall - ballWidth && rightWall!=-1f) {
-                xPos = rightWall - ballWidth
+            if (xPos > rightWall - ballWidth+1 && rightWall!=-1f) {
+                xPos = rightWall - ballWidth+1
                 xVel = 0f
 
             } else if (xPos <= leftWall && leftWall!=-1f) {
@@ -232,8 +232,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             if (yPos <= topWall && topWall!=-1f) {
                 yPos = topWall
                 yVel = 0f
-            } else if (yPos > bottomWall - ballHeight && bottomWall!=-1f) {
-                yPos = bottomWall - ballHeight
+            } else if (yPos > bottomWall - ballHeight+1 && bottomWall!=-1f) {
+                yPos = bottomWall - ballHeight+1
                 yVel = 0f
             }
         }
@@ -242,10 +242,10 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        println("ciao")
+        println("onAccuracyChanged")
     }
 
     override fun onFlushCompleted(p0: Sensor?) {
-        println("ciao")
+        println("onFlushCompleted")
     }
 }
