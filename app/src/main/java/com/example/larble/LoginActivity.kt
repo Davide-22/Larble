@@ -55,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
             val v: View = googleBtn.getChildAt(i)
             if (v is TextView) {
                 "Sign in".also { v.text = it }
-                return
             }
         }
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
