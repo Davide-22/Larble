@@ -127,6 +127,10 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         GlobalScope.launch{
             var cond = true
             while(cond){
+
+
+                /*val cell: Array<Cell> = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
+                val walls: Array<Float> = mazeView.setLimits(cell)*/
                 val cell: Cell = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
                 val walls: Array<Float> = mazeView.setLimits(cell)
                 topWall = walls[0]
