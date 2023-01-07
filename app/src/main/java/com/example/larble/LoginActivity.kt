@@ -4,8 +4,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,18 +16,19 @@ import com.example.larble.requestModel.GoogleRequestModel
 import com.example.larble.requestModel.LoginRequestModel
 import com.example.larble.responseModel.LoginResponseClass
 import com.example.larble.responseModel.ResponseClass
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity() {
@@ -37,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var googleBtn: Button
+    private lateinit var googleBtn: SignInButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,13 @@ class LoginActivity : AppCompatActivity() {
         email = findViewById(R.id.editTextTextEmailAddress)
         password = findViewById(R.id.editTextTextPassword)
         googleBtn = findViewById(R.id.google_btn)
+        for (i in 0 until googleBtn.childCount) {
+            val v: View = googleBtn.getChildAt(i)
+            if (v is TextView) {
+                "Sign in".also { v.text = it }
+                return
+            }
+        }
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
 
         FirebaseApp.initializeApp(this)

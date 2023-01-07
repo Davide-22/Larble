@@ -68,6 +68,27 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_login_9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_login_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_login_11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
@@ -109,11 +130,11 @@
         android:layout_height="0dp"
         android:text="@string/login"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/sign_up"
-        app:layout_constraintDimensionRatio="2.5:1.4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_login_8"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_login_9"
+        app:layout_constraintDimensionRatio="3:1.5"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_10"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline_login_7"
+        app:layout_constraintStart_toStartOf="@+id/guideline_login_4"
         app:layout_constraintTop_toTopOf="@+id/guideline_login_6" />
 
     <Button
@@ -121,28 +142,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/sign_up"
-        app:iconTint="#FFFFFF"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/google_btn"
-        app:layout_constraintDimensionRatio="2.5:1.4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_login_8"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_login_9"
+        app:layout_constraintDimensionRatio="3:1.5"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_5"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline_login_7"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_login_11"
+        app:layout_constraintTop_toTopOf="@+id/guideline_login_6" />
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/google_btn"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/google_login"
-        app:iconTint="#FFFFFF"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="2.5:1.5"
+        android:layout_height="wrap_content"
+        app:layout_constraintDimensionRatio="3:0"
         app:layout_constraintEnd_toStartOf="@+id/guideline_login_8"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline_login_7"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_login_9" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
