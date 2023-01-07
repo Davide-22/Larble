@@ -2,6 +2,7 @@ package com.example.larble
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.*
 import android.hardware.Sensor
@@ -67,6 +68,9 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         colorBall = sh.getString("colorBall", "").toString()
         setContentView(R.layout.activity_ball)
         layout = findViewById(R.id.main)
+        if(isDarkTheme()){
+            layout.setBackgroundColor(Color.BLACK)
+        }
         val cells = intent.getSerializableExtra("labyrinth") as Array<Array<Cell>>
         number = intent.getStringExtra("number").toString()
 
@@ -235,6 +239,11 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
 
 
     }
+
+    private fun isDarkTheme(): Boolean {
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
     override fun onStart() {
         super.onStart()
         sensorManager.registerListener(

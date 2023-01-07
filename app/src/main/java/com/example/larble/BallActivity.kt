@@ -58,10 +58,11 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val colorBall = sharedPreferences.getString("colorBall","")
         setContentView(R.layout.activity_ball)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
+        val counterText: TextView = findViewById(R.id.counter)
         if(isDarkTheme()){
             myLayout.setBackgroundColor(Color.BLACK)
+            counterText.setTextColor(Color.WHITE)
         }
-        val counterText: TextView = findViewById(R.id.counter)
         val difficulty: String = intent.getStringExtra("difficulty").toString()
         val milliseconds: Long = when (difficulty) {
             "easy" -> {
@@ -88,7 +89,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
                         "0$minutes:$seconds".also { counterText.text = it }
                     }
                 }else{
-                    if(seconds < 10){
+                    if(seconds <= 10){
                         "$minutes:0$seconds".also { counterText.text = it }
                     }else{
                         "$minutes:$seconds".also { counterText.text = it }
