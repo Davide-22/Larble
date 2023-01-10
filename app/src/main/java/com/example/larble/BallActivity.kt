@@ -120,7 +120,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
         xPos = xMax
-        yPos = yMax
+        yPos = yMax - ballHeight - 80f
 
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -129,11 +129,8 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             var cond = true
             while(cond){
 
-
                 val cell: Array<Cell> = mazeView.findCell(xPos,yPos)
                 val walls: Array<Float> = mazeView.setLimits(cell, yVel, xVel)
-                /*val cell: Cell = mazeView.findCell(xPos+ballWidth/2,yPos+ballHeight/2)
-                val walls: Array<Float> = mazeView.setLimits(cell)*/
                 topWall = walls[0]
                 leftWall = walls[1]
                 bottomWall = walls[2]

@@ -44,4 +44,5 @@
     <string name="serverPopup"> Connection with the server failed.\n Wait a few seconds and try again</string>
     <string name="hole">hole</string>
     <string name="Continue">Continue</string>
+    <string name="loading">Loading…</string>
 </resources>
