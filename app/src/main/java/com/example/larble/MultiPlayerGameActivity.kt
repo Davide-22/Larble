@@ -64,6 +64,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
     private var leftWall: Float = -1f
     private var rightWall: Float = -1f
 
+    private var counter: Int = 0
+
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,6 +117,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                             response: Response<PositionResponseClass>
                         ){
                             if(response.body()!!.status=="true"){
+                                counter = 0
                                 if(response.body()!!.win){
                                     if(!win){
                                         win = response.body()!!.win
@@ -153,8 +156,16 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                     lastPos = pos
                                 }
                             }else{
-                                Toast.makeText(this@MultiPlayerGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                    .show()
+                                counter +=1
+                                if(counter ==10 && !job1.isCancelled){
+                                    job1.cancel()
+                                    job2.cancel()
+                                    result = false
+                                    Toast.makeText(this@MultiPlayerGameActivity, "something went wrong", Toast.LENGTH_LONG)
+                                        .show()
+                                    intent = Intent(this@MultiPlayerGameActivity, MultiPlayerActivity::class.java)
+                                    startActivity(intent)
+                                }
                             }
                         }
 
@@ -164,7 +175,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     }
                 )
-                delay(90)
+                delay(60)
             }
         }
 
@@ -175,7 +186,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                     ballView.positions[2] = pos[0]
                     ballView.positions[3] = pos[1]
                 }
-                if(positions.size!=0) delay((90/positions.size).toLong())
+                delay((90/(positions.size+1)).toLong())
             }
             result = false
             job.cancel()
@@ -213,6 +224,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                 rightWall = walls[3]
                 if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
             }
+            setContentView(R.layout.activity_loading)
             if(!win){
                 result = false
                 job.cancel()
@@ -228,15 +240,20 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                             if(response.body()!!.status=="false"){
                                 Toast.makeText(this@MultiPlayerGameActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                     .show()
+                            }else{
+                                intent.putExtra("type", "multiplayer")
+                                if(response.body()!!.msg=="lost"){
+                                    intent.putExtra("result","lost :(")
+                                }else if(response.body()!!.msg=="ok"){
+                                    intent.putExtra("result","win!!!")
+                                }
+                                startActivity(intent)
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
                         }
                     }
                 )
-                intent.putExtra("result","win!!!")
-                intent.putExtra("type", "multiplayer")
-                startActivity(intent)
             }
         }
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {

@@ -148,7 +148,7 @@ class AccountActivity: AppCompatActivity()  {
                     photo1.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, output)
                 else
                     @Suppress("DEPRECATION")
-                    photo1.compress(Bitmap.CompressFormat.WEBP, 0, output)
+                    photo1.compress(Bitmap.CompressFormat.WEBP, 50, output)
                 val imageBytes: ByteArray = output.toByteArray()
                 val encodedImage: String = Base64.encodeToString(imageBytes, Base64.DEFAULT)
                 val requestModel = ProfileRequestModel(token, encodedImage)

@@ -33,8 +33,8 @@ class GameOverActivity : AppCompatActivity() {
         button = findViewById(R.id.Continue)
         "You $result".also { textResult.text = it }
         when (result) {
-            "win" -> {
-                if(type == "multiplayer") "Points:        +10".also { score.text = it }
+            "win!!!" -> {
+                if(type == "multiplayer") "Score:        +10".also { score.text = it }
                 else {
                     if(buttons == "easy" && difficulty=="100"){
                         myEdit.putString("difficulty", "110")
@@ -48,8 +48,8 @@ class GameOverActivity : AppCompatActivity() {
                     myEdit.apply()
                 }
             }
-            "lose" -> {
-                if(type == "multiplayer") "Points:         -5".also { score.text = it }
+            "lost :(" -> {
+                if(type == "multiplayer") "Score:         -5".also { score.text = it }
                 else "You have to train more".also {score.text = it }
             }
         }

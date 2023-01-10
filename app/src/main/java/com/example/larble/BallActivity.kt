@@ -99,7 +99,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
 
             override fun onFinish() {
                 intent = Intent(this@BallActivity, GameOverActivity::class.java)
-                intent.putExtra("result", "lost")
+                intent.putExtra("result", "lost :(")
                 startActivity(intent)
             }
 
@@ -142,7 +142,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
-            intent.putExtra("result", "win")
+            intent.putExtra("result", "win!!!")
             intent.putExtra("type", "single player")
             intent.putExtra("difficulty", difficulty)
             startActivity(intent)
