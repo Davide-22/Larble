@@ -92,9 +92,9 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         yMax = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
         xPos = xMax
-        yPos = yMax
+        yPos = yMax - ballHeight - 80f
 
-        lastPos = arrayOf(xMax,yMax)
+        lastPos = arrayOf(xPos,yPos)
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
@@ -196,7 +196,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                     }
                 }
             )
-            intent.putExtra("result","lost")
+            intent.putExtra("result","lost :(")
             intent.putExtra("type", "multiplayer")
             startActivity(intent)
         }
@@ -234,10 +234,10 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                         }
                     }
                 )
-                intent.putExtra("result","win")
+                intent.putExtra("result","win!!!")
                 intent.putExtra("type", "multiplayer")
+                startActivity(intent)
             }
-            startActivity(intent)
         }
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
