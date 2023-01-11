@@ -84,6 +84,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewGameActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
 
             <intent-filter>
@@ -94,6 +95,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ExistedGameActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
 
             <intent-filter>
@@ -117,6 +119,7 @@
 
         <activity android:name=".MultiPlayerGameActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
             <intent-filter>

@@ -28,7 +28,10 @@ class NewGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newgame)
 
-        val cells : Array<Array<Cell>> = intent.getSerializableExtra("labyrinth") as Array<Array<Cell>>
+        var cells  = intent.getSerializableExtra("labyrinth")
+        if(cells != null){
+            cells = cells as Array<Array<Cell>>
+        }
         number = intent.getStringExtra("number").toString()
         text = findViewById(R.id.number)
         text.text = number

@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import android.view.View
 import java.util.Random
 import java.util.Stack
@@ -18,20 +17,13 @@ class MazeView(context: Context) : View(context) {
 
     private var xCellSize : Float = 0f
     private var yCellSize : Float = 0f
-    //private var horizontalMargin : Float = 0f
-    //private var verticalMargin : Float = 0f
     private var wallThickness: Float = 7f
     private var wallPaint : Paint = Paint()
 
     private var cells = Array(cols){Array(rows){Cell()}}
 
-    //private var stack : Stack<Cell> = Stack<Cell>()
     private lateinit var current : Cell
     private lateinit var next : Cell
-
-    //Get size of canvas
-    //var width : Float = Resources.getSystem().displayMetrics.widthPixels.toFloat()
-    //var height : Float = Resources.getSystem().displayMetrics.heightPixels.toFloat()
 
     private var random = Random()
 
@@ -60,9 +52,7 @@ class MazeView(context: Context) : View(context) {
         do{
             next = getNeighbour(current)
             if(next.debug != "yes") {
-                Log.d("current",current.bottomWall.toString())
                 removeWall(current, next)
-                Log.d("current",current.bottomWall.toString())
                 stack.push(current)
                 current = next
                 current.visited = true
@@ -84,16 +74,6 @@ class MazeView(context: Context) : View(context) {
         cells = cell
         multiplayer = true
     }
-
-    /*
-    fun findCell(x: Float, y: Float): Cell {
-        var colCell: Int = ((x / width) * cols).toInt()
-        if((x/width).toInt() == 1) colCell -= 1
-
-        var rowCell: Int = ((y / height) * rows).toInt()
-        if((y/height).toInt() == 1) rowCell -= 1
-        return cells[colCell][rowCell]
-    }*/
 
 
     fun findCell(x: Float, y: Float): Array<Cell> {
@@ -138,19 +118,6 @@ class MazeView(context: Context) : View(context) {
             cells[colCellBotLeft][rowCellBotLeft],
             cells[colCellCenter][rowCellCenter])
     }
-
-    /*
-    fun setLimits(cell: Cell): Array<Float> {
-        var top = -1f
-        var bottom = -1f
-        var left = -1f
-        var right = -1f
-        if (cell.topWall) top = (height / rows) * cell.row
-        if (cell.bottomWall) bottom = (height / rows) * (cell.row + 1)
-        if (cell.leftWall) left = (width / cols) * cell.col
-        if (cell.rightWall) right = (width / cols) * (cell.col + 1)
-        return arrayOf(top, left, bottom, right)
-    }*/
 
 
     fun setLimits(cell_ar: Array<Cell>, yVel: Float, xVel: Float): Array<Float> {
@@ -197,7 +164,6 @@ class MazeView(context: Context) : View(context) {
             }
 
         if(neighbours.size > 0) {
-            //Ex: we have 3 neigh. unvisited, this index is could be 0,1,2.
             index = random.nextInt(neighbours.size)
             return neighbours[index]
         }
@@ -229,8 +195,6 @@ class MazeView(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas?) {
-        //We will draw the maze here
-        //super.onDraw(canvas)
 
         if(isDarkTheme()){
             wallPaint.color = Color.WHITE
@@ -242,13 +206,6 @@ class MazeView(context: Context) : View(context) {
 
         xCellSize = width/(5+1)
         yCellSize = height/10
-
-
-
-        //If we need some margin for the maze, use these parameters
-        //horizontalMargin = (width - cellSize)/2
-        //verticalMargin = (height - rows*cellSize)/2
-        //canvas?.translate(horizontalMargin, verticalMargin)
 
         for (x in cells.indices) {
             for (y in cells[x].indices) {
