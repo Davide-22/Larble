@@ -29,15 +29,13 @@ class CustomAdapter(private val mList: List<ItemsLeaderboard>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val itemsViewModel = mList[position]
-        GlobalScope.launch {
+        var google: Bitmap? = null
+        val job: Job = GlobalScope.launch(Dispatchers.IO) {
             if(itemsViewModel.profile_picture!= null){
                 if(URLUtil.isValidUrl(itemsViewModel.profile_picture) && Patterns.WEB_URL.matcher(itemsViewModel.profile_picture).matches()){
                     try {
-                        val profile: InputStream =
-                            withContext(Dispatchers.IO) {
-                                URL(itemsViewModel.profile_picture).openStream()
-                            }
-                        holder.photo.setImageBitmap(BitmapFactory.decodeStream(profile))
+                        val profile : InputStream= URL(itemsViewModel.profile_picture).openStream()
+                        google = BitmapFactory.decodeStream(profile)
                     } catch (e: Exception) {
                         Log.d("error", e.toString())
                     }
@@ -46,6 +44,14 @@ class CustomAdapter(private val mList: List<ItemsLeaderboard>) : RecyclerView.Ad
                     val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
                     holder.photo.setImageBitmap(bitmap)
                 }
+            }
+        }
+
+
+        GlobalScope.launch(Dispatchers.Main) {
+            job.join()
+            if(google != null){
+                holder.photo.setImageBitmap(google)
             }
         }
 
