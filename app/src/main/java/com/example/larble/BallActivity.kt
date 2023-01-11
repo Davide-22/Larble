@@ -80,7 +80,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
                 minutes = millisUntilFinished/60000
                 seconds = millisUntilFinished/(1000*(minutes+1))
                 if(minutes < 10){
-                    if(seconds < 10){
+                    if(seconds < 11){
                         if(minutes == 0L){
                             counterText.setTextColor(getColor(R.color.red))
                         }
