@@ -66,6 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/multiplayer"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_menu_5"
         app:layout_constraintDimensionRatio="2.5:1"
         app:layout_constraintEnd_toEndOf="@id/guideline_menu_4"
@@ -78,6 +79,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/single_player"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/multiplayer"
         app:layout_constraintDimensionRatio="2.5:1"
         app:layout_constraintEnd_toEndOf="@id/guideline_menu_4"
@@ -108,14 +110,15 @@
         android:backgroundTint="@color/primary_color"
         android:contentDescription="@string/settings"
         android:minHeight="48dp"
+        android:padding="11dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@id/guideline_menu_6"
         app:layout_constraintDimensionRatio="2:2.5"
         app:layout_constraintEnd_toStartOf="@+id/scoreboard"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline_menu_3"
         app:layout_constraintTop_toTopOf="@+id/guideline_menu_5"
-        app:srcCompat="@android:drawable/ic_menu_manage"
-        app:tint="#FFFFFF" />
+        app:srcCompat="@drawable/ball2" />
 
     <ImageButton
         android:id="@+id/scoreboard"
@@ -124,6 +127,7 @@
         android:backgroundTint="@color/primary_color"
         android:contentDescription="@string/scoreboard"
         android:minHeight="48dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/guideline_menu_6"
         app:layout_constraintDimensionRatio="2:2.5"
         app:layout_constraintEnd_toStartOf="@+id/guideline_menu_4"
