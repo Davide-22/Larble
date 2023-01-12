@@ -247,7 +247,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                 if(response.body()!!.msg=="lost"){
                                     intent.putExtra("result","lost :(")
                                 }else if(response.body()!!.msg=="ok"){
-                                    intent.putExtra("result","win!!!")
+                                    intent.putExtra("result","won!!!")
                                 }
                                 startActivity(intent)
                             }

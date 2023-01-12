@@ -139,7 +139,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
-            intent.putExtra("result", "win!!!")
+            intent.putExtra("result", "won!!!")
             intent.putExtra("type", "single player")
             intent.putExtra("difficulty", difficulty)
             startActivity(intent)

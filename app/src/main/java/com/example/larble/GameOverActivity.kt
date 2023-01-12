@@ -33,7 +33,7 @@ class GameOverActivity : AppCompatActivity() {
         button = findViewById(R.id.Continue)
         "You $result".also { textResult.text = it }
         when (result) {
-            "win!!!" -> {
+            "won!!!" -> {
                 if(type == "multiplayer") "Score:        +10".also { score.text = it }
                 else {
                     if(buttons == "easy" && difficulty=="100"){
