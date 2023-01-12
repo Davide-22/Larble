@@ -96,7 +96,8 @@ class AccountActivity: AppCompatActivity()  {
         "Score: ${account.score}".also { text.text = it }
 
         picture= findViewById(R.id.photo)
-        GlobalScope.launch {
+        var google: Bitmap? = null
+        val job: Job = GlobalScope.launch {
             if(account.profile_picture != null) {
                 if(sh.getString("google","") == true.toString()){
                     try {
@@ -104,7 +105,7 @@ class AccountActivity: AppCompatActivity()  {
                             withContext(Dispatchers.IO) {
                                 URL(account.profile_picture.toString()).openStream()
                             }
-                        picture.setImageBitmap(BitmapFactory.decodeStream(profile))
+                        google = BitmapFactory.decodeStream(profile)
                     } catch (e: Exception) {
                         Log.d("error", e.toString())
                     }
@@ -113,6 +114,13 @@ class AccountActivity: AppCompatActivity()  {
                     val bitmap: Bitmap = BitmapFactory.decodeByteArray(decodeImage, 0, decodeImage.size)
                     picture.setImageBitmap(bitmap)
                 }
+            }
+        }
+
+        GlobalScope.launch(Dispatchers.Main) {
+            job.join()
+            if(google != null){
+                picture.setImageBitmap(google)
             }
         }
 
