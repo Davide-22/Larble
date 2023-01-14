@@ -54,7 +54,13 @@ class SignUpActivity : AppCompatActivity() {
                             call: Call<ResponseClass>,
                             response: Response<ResponseClass>
                         ){
-                            if(response.body()!!.status=="true"){
+                            if(response.body()== null){
+                                Toast.makeText(this@SignUpActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                intent = Intent(this@SignUpActivity, MenuActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else if(response.body()!!.status=="true"){
                                 startActivity(intent)
                             }else{
                                 Toast.makeText(this@SignUpActivity, response.body()!!.msg, Toast.LENGTH_LONG)

@@ -149,7 +149,13 @@ class SettingsActivity : AppCompatActivity() {
                             call: Call<PlayerResponseClass>,
                             response: Response<PlayerResponseClass>
                         ){
-                            if(response.body()!!.status == "false"){
+                            if(response.body()== null){
+                                Toast.makeText(this@SettingsActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                intent = Intent(this@SettingsActivity, MenuActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else if(response.body()!!.status == "false"){
                                 Toast.makeText(this@SettingsActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
                             }else{
                                 intent = Intent(this@SettingsActivity, AccountActivity::class.java)

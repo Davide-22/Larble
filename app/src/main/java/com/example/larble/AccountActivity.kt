@@ -168,7 +168,13 @@ class AccountActivity: AppCompatActivity()  {
                             call: Call<ResponseClass>,
                             response: Response<ResponseClass>
                         ){
-                            if(response.body()!!.status == "false"){
+                            if(response.body()== null){
+                                Toast.makeText(this@AccountActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                intent = Intent(this@AccountActivity, MenuActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else if(response.body()!!.status == "false"){
                                 Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                 .show()
                             }else{
@@ -219,7 +225,13 @@ class AccountActivity: AppCompatActivity()  {
                                 call: Call<ResponseClass>,
                                 response: Response<ResponseClass>
                             ){
-                                if(response.body()!!.status == "false"){
+                                if(response.body()== null){
+                                    Toast.makeText(this@AccountActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                        .show()
+                                    intent = Intent(this@AccountActivity, MenuActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                else if(response.body()!!.status == "false"){
                                     Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                         .show()
                                 }else{
@@ -288,7 +300,13 @@ class AccountActivity: AppCompatActivity()  {
                                 call: Call<ResponseClass>,
                                 response: Response<ResponseClass>
                             ){
-                                if(response.body()!!.status == "false"){
+                                if(response.body()== null){
+                                    Toast.makeText(this@AccountActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                        .show()
+                                    intent = Intent(this@AccountActivity, MenuActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                else if(response.body()!!.status == "false"){
                                     Toast.makeText(this@AccountActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                         .show()
                                 }else{

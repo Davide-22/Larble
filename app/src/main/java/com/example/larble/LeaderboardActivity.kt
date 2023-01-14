@@ -61,7 +61,13 @@ class LeaderboardActivity : AppCompatActivity() {
                             call: Call<PlayerResponseClass>,
                             response: Response<PlayerResponseClass>
                         ){
-                            if(response.body()!!.status == "false"){
+                            if(response.body()== null){
+                            Toast.makeText(this@LeaderboardActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                .show()
+                            intent = Intent(this@LeaderboardActivity, MenuActivity::class.java)
+                            startActivity(intent)
+                            }
+                            else if(response.body()!!.status == "false"){
                                 Toast.makeText(this@LeaderboardActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
                             }else{
                                 intent = Intent(this@LeaderboardActivity, AccountActivity::class.java)

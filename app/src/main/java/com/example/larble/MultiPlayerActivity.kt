@@ -43,7 +43,13 @@ class MultiPlayerActivity : AppCompatActivity() {
                         call: Call<ResponseClass>,
                         response: Response<ResponseClass>
                     ){
-                        if(response.body()!!.status=="true"){
+                        if(response.body()== null){
+                            Toast.makeText(this@MultiPlayerActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                .show()
+                            intent = Intent(this@MultiPlayerActivity, MenuActivity::class.java)
+                            startActivity(intent)
+                        }
+                        else if(response.body()!!.status=="true"){
                             intent.putExtra("number", response.body()!!.msg)
                             intent.putExtra("labyrinth", mazeView.getCells())
                             startActivity(intent)
@@ -91,7 +97,13 @@ class MultiPlayerActivity : AppCompatActivity() {
                             call: Call<PlayerResponseClass>,
                             response: Response<PlayerResponseClass>
                         ){
-                            if(response.body()!!.status == "false"){
+                            if(response.body()== null){
+                                Toast.makeText(this@MultiPlayerActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                intent = Intent(this@MultiPlayerActivity, MenuActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else if(response.body()!!.status == "false"){
                                 Toast.makeText(this@MultiPlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
                             }else{
                                 intent = Intent(this@MultiPlayerActivity, AccountActivity::class.java)

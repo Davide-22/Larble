@@ -67,7 +67,11 @@ class MenuActivity : AppCompatActivity() {
                         call: Call<LeaderboardResponseClass>,
                         response: Response<LeaderboardResponseClass>
                     ){
-                        if(response.body()!!.status=="true"){
+                        if(response.body()== null){
+                            Toast.makeText(this@MenuActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        else if(response.body()!!.status=="true"){
                             intent.putExtra("leaderboard", response.body()!!.leaderboard)
                             startActivity(intent)
                         }else{
@@ -114,7 +118,11 @@ class MenuActivity : AppCompatActivity() {
                             call: Call<PlayerResponseClass>,
                             response: Response<PlayerResponseClass>
                         ){
-                            if(response.body()!!.status == "false"){
+                            if(response.body()== null){
+                                Toast.makeText(this@MenuActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                            else if(response.body()!!.status == "false"){
                                 Toast.makeText(this@MenuActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
                             }else{
                                 intent = Intent(this@MenuActivity, AccountActivity::class.java)

@@ -101,7 +101,13 @@ class LoginActivity : AppCompatActivity() {
                             call: Call<LoginResponseClass>,
                             response: Response<LoginResponseClass>
                         ){
-                            if(response.body()!!.status=="true"){
+                            if(response.body()== null){
+                                Toast.makeText(this@LoginActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                intent = Intent(this@LoginActivity, MenuActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else if(response.body()!!.status=="true"){
                                 intent.putExtra("username", response.body()!!.username)
                                 val myEdit = sharedPreferences.edit()
                                 myEdit.putString("token", response.body()!!.msg)
@@ -162,7 +168,13 @@ class LoginActivity : AppCompatActivity() {
                                 call: Call<ResponseClass>,
                                 response: Response<ResponseClass>
                             ){
-                                if(response.body()!!.status=="true"){
+                                if(response.body()== null){
+                                    Toast.makeText(this@LoginActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                        .show()
+                                    intent = Intent(this@LoginActivity, MenuActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                else if(response.body()!!.status=="true"){
                                     intent.putExtra("username", account.displayName)
                                     myEdit.putString("token", response.body()!!.msg)
                                     myEdit.apply()

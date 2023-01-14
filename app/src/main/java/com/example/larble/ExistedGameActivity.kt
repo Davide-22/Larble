@@ -49,7 +49,13 @@ class ExistedGameActivity : AppCompatActivity() {
                             call: Call<LabyrinthResponseClass>,
                             response: Response<LabyrinthResponseClass>
                         ){
-                            if(response.body()!!.status=="true"){
+                            if(response.body()== null){
+                                Toast.makeText(this@ExistedGameActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                intent = Intent(this@ExistedGameActivity, MenuActivity::class.java)
+                                startActivity(intent)
+                            }
+                            else if(response.body()!!.status=="true"){
                                 intent.putExtra("number", code.text.toString())
                                 intent.putExtra("labyrinth", response.body()!!.labyrinth)
                                 startActivity(intent)
