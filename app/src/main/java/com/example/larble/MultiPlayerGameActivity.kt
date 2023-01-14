@@ -75,6 +75,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         colorBall = sh.getString("colorBall", "").toString()
         setContentView(R.layout.activity_ball)
         layout = findViewById(R.id.main)
+        layout.setWillNotDraw(false)
         if(isDarkTheme()){
             layout.setBackgroundColor(Color.BLACK)
         }

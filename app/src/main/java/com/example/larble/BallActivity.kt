@@ -58,6 +58,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
         val colorBall = sharedPreferences.getString("colorBall","")
         setContentView(R.layout.activity_ball)
         val myLayout = findViewById<ConstraintLayout>(R.id.main)
+        myLayout.setWillNotDraw(false)
         val counterText: TextView = findViewById(R.id.counter)
         if(isDarkTheme()){
             myLayout.setBackgroundColor(Color.BLACK)
