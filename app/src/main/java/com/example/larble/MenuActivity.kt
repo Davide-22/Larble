@@ -27,6 +27,7 @@ class MenuActivity : AppCompatActivity() {
     private lateinit var settings: ImageButton
     private lateinit var scoreboard: ImageButton
     private lateinit var text: TextView
+    private var clicked: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
@@ -35,6 +36,7 @@ class MenuActivity : AppCompatActivity() {
         settings = findViewById(R.id.settings)
         scoreboard = findViewById(R.id.scoreboard)
 
+        clicked = false
         sh = getSharedPreferences("MySharedPref", MODE_PRIVATE)
         username = sh.getString("username", "").toString()
         token = sh.getString("token", "").toString()
@@ -43,48 +45,66 @@ class MenuActivity : AppCompatActivity() {
         "Ciao $username".also { text.text = it }
 
         singlePlayer.setOnClickListener {
-            intent = Intent(this, SinglePlayerActivity::class.java)
-            startActivity(intent)
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, SinglePlayerActivity::class.java)
+                startActivity(intent)
+                clicked = false
+            }
         }
 
         multiPlayer.setOnClickListener {
-            intent = Intent(this, MultiPlayerActivity::class.java)
-            startActivity(intent)
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, MultiPlayerActivity::class.java)
+                startActivity(intent)
+                clicked = false
+            }
         }
 
         settings.setOnClickListener{
-            intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                clicked = false
+            }
         }
 
         scoreboard.setOnClickListener{
-            intent = Intent(this, LeaderboardActivity::class.java)
-            val requestModel = TokenRequestModel(token)
-            val response = ServiceBuilder.buildService(APIInterface::class.java)
-            response.leaderboard(requestModel).enqueue(
-                object: Callback<LeaderboardResponseClass> {
-                    override fun onResponse(
-                        call: Call<LeaderboardResponseClass>,
-                        response: Response<LeaderboardResponseClass>
-                    ){
-                        if(response.body()== null){
-                            Toast.makeText(this@MenuActivity, "Connection with the server failed", Toast.LENGTH_LONG)
-                                .show()
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, LeaderboardActivity::class.java)
+                val requestModel = TokenRequestModel(token)
+                val response = ServiceBuilder.buildService(APIInterface::class.java)
+                response.leaderboard(requestModel).enqueue(
+                    object: Callback<LeaderboardResponseClass> {
+                        override fun onResponse(
+                            call: Call<LeaderboardResponseClass>,
+                            response: Response<LeaderboardResponseClass>
+                        ){
+                            if(response.body()== null){
+                                Toast.makeText(this@MenuActivity, "Connection with the server failed", Toast.LENGTH_LONG)
+                                    .show()
+                                clicked = false
+                            }
+                            else if(response.body()!!.status=="true"){
+                                clicked = false
+                                intent.putExtra("leaderboard", response.body()!!.leaderboard)
+                                startActivity(intent)
+                            }else{
+                                Toast.makeText(this@MenuActivity, response.body()!!.msg, Toast.LENGTH_LONG)
+                                    .show()
+                                clicked = false
+                            }
                         }
-                        else if(response.body()!!.status=="true"){
-                            intent.putExtra("leaderboard", response.body()!!.leaderboard)
+                        override fun onFailure(call: Call<LeaderboardResponseClass>, t: Throwable) {
+                            intent = Intent(this@MenuActivity, MainActivity::class.java)
                             startActivity(intent)
-                        }else{
-                            Toast.makeText(this@MenuActivity, response.body()!!.msg, Toast.LENGTH_LONG)
-                                .show()
                         }
                     }
-                    override fun onFailure(call: Call<LeaderboardResponseClass>, t: Throwable) {
-                        intent = Intent(this@MenuActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-                }
-            )
+                )
+            }
         }
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

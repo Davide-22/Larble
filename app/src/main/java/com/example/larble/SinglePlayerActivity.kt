@@ -22,6 +22,7 @@ class SinglePlayerActivity : AppCompatActivity() {
     private lateinit var medium: Button
     private lateinit var hard: Button
     private lateinit var buttons: String
+    private var clicked: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_singleplayer)
@@ -47,25 +48,39 @@ class SinglePlayerActivity : AppCompatActivity() {
         }
 
         easy.setOnClickListener {
-            intent = Intent(this, BallActivity::class.java)
-            intent.putExtra("difficulty","easy")
-            startActivity(intent)
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, BallActivity::class.java)
+                intent.putExtra("difficulty","easy")
+                startActivity(intent)
+                clicked = false
+            }
         }
         medium.setOnClickListener {
-            intent = Intent(this, BallActivity::class.java)
-            intent.putExtra("difficulty","medium")
-            startActivity(intent)
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, BallActivity::class.java)
+                intent.putExtra("difficulty","medium")
+                startActivity(intent)
+                clicked = false
+            }
         }
         hard.setOnClickListener {
-            intent = Intent(this, BallActivity::class.java)
-            intent.putExtra("difficulty","hard")
-            startActivity(intent)
+            if(!clicked){
+                clicked = true
+                intent = Intent(this, BallActivity::class.java)
+                intent.putExtra("difficulty","hard")
+                startActivity(intent)
+                clicked = false
+            }
         }
 
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                clicked = true
                 intent = Intent(this@SinglePlayerActivity, MenuActivity::class.java)
                 startActivity(intent)
+                clicked = false
             }
         })
 
@@ -80,6 +95,7 @@ class SinglePlayerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
+                clicked = true
                 val requestModel = TokenRequestModel(token)
 
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
@@ -94,18 +110,22 @@ class SinglePlayerActivity : AppCompatActivity() {
                                     .show()
                                 intent = Intent(this@SinglePlayerActivity, MenuActivity::class.java)
                                 startActivity(intent)
+                                clicked = false
                             }
                             else if(response.body()!!.status == "false"){
                                 Toast.makeText(this@SinglePlayerActivity, response.body()!!.msg, Toast.LENGTH_LONG).show()
+                                clicked = false
                             }else{
                                 intent = Intent(this@SinglePlayerActivity, AccountActivity::class.java)
                                 intent.putExtra("account", response.body())
                                 startActivity(intent)
+                                clicked = false
                             }
                         }
                         override fun onFailure(call: Call<PlayerResponseClass>, t: Throwable) {
                             intent = Intent(this@SinglePlayerActivity, MainActivity::class.java)
                             startActivity(intent)
+                            clicked = false
                         }
                     }
                 )

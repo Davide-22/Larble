@@ -29,6 +29,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var checkEmail: ImageView
     private lateinit var checkConfirmPassword: ImageView
     private lateinit var checkPassword: ImageView
+    private var clicked: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
@@ -43,7 +44,8 @@ class SignUpActivity : AppCompatActivity() {
         checkPassword = findViewById(R.id.checkPassword)
 
         signUp.setOnClickListener {
-            if(checkUsername.visibility==View.VISIBLE && checkEmail.visibility==View.VISIBLE && checkConfirmPassword.visibility==View.VISIBLE && checkPassword.visibility==View.VISIBLE){
+            if(checkUsername.visibility==View.VISIBLE && checkEmail.visibility==View.VISIBLE && checkConfirmPassword.visibility==View.VISIBLE && checkPassword.visibility==View.VISIBLE && !clicked){
+                clicked = true
                 intent = Intent(this, LoginActivity::class.java)
                 val requestModel = SignUpRequestModel(username.text.toString(),email.text.toString(),password.text.toString())
 
@@ -59,25 +61,31 @@ class SignUpActivity : AppCompatActivity() {
                                     .show()
                                 intent = Intent(this@SignUpActivity, MenuActivity::class.java)
                                 startActivity(intent)
+                                clicked = false
                             }
                             else if(response.body()!!.status=="true"){
                                 startActivity(intent)
+                                clicked = false
                             }else{
                                 Toast.makeText(this@SignUpActivity, response.body()!!.msg, Toast.LENGTH_LONG)
                                     .show()
+                                clicked = false
                             }
                         }
                         override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
                             intent = Intent(this@SignUpActivity, MainActivity::class.java)
                             startActivity(intent)
+                            clicked = false
                         }
                     }
                 )
 
             }else if(password.text.toString() != confirmPassword.text.toString()){
                 Toast.makeText(applicationContext, "Passwords don't matches", Toast.LENGTH_LONG).show()
+                clicked = false
             } else{
                 Toast.makeText(applicationContext, "Fill in all fields", Toast.LENGTH_LONG).show()
+                clicked = false
 
             }
         }
