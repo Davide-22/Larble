@@ -24,8 +24,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 
 class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
@@ -105,11 +103,10 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
         val metrics: DisplayMetrics = this.resources.displayMetrics
         val width = metrics.widthPixels.toFloat()
         val height = metrics.heightPixels.toFloat()
-        val diagonal = sqrt(width.pow(2)+height.pow(2))
 
         job = GlobalScope.launch {
             while(result){
-                val requestModel = PositionRequestModel(token, number.toInt(), ballView.positions[0]/ diagonal, ballView.positions[1]/diagonal)
+                val requestModel = PositionRequestModel(token, number.toInt(), ballView.positions[0]/ width, ballView.positions[1]/height)
                 val response = ServiceBuilder.buildService(APIInterface::class.java)
                 response.takePosition(requestModel).enqueue(
                     object: Callback<PositionResponseClass> {
@@ -122,8 +119,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                 if(response.body()!!.win){
                                     if(!win){
                                         win = response.body()!!.win
-                                        var x = response.body()!!.x*diagonal
-                                        var y = response.body()!!.y*diagonal
+                                        var x = response.body()!!.x*width
+                                        var y = response.body()!!.y*height
                                         val pos: Array<Float> = arrayOf(x,y)
                                         for(i in 1..9){
                                             val t = (i.toFloat())/10
@@ -142,8 +139,8 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                                         val ball : Bitmap = Bitmap.createScaledBitmap(ballSrc, 100, 100, true)
                                         ballView.bitmaps.add(ball)
                                     }
-                                    var x = response.body()!!.x*diagonal
-                                    var y = response.body()!!.y*diagonal
+                                    var x = response.body()!!.x*width
+                                    var y = response.body()!!.y*height
                                     val pos: Array<Float> = arrayOf(x,y)
                                     for(i in 1..9){
                                         val t = (i.toFloat())/10
