@@ -223,7 +223,7 @@ class MultiPlayerGameActivity : AppCompatActivity(), SensorEventListener2 {
                 leftWall = walls[1]
                 bottomWall = walls[2]
                 rightWall = walls[3]
-                if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
+                if(xPos in 0f..80.0F && yPos in 0f..110.0F) cond = false
             }
             withContext(Dispatchers.Main){
                 setContentView(R.layout.activity_loading)
