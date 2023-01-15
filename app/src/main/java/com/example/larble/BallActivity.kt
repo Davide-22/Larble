@@ -81,10 +81,10 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
                 minutes = millisUntilFinished/60000
                 seconds = millisUntilFinished/(1000*(minutes+1))
                 if(minutes < 10){
-                    if(seconds < 11){
-                        if(minutes == 0L){
-                            counterText.setTextColor(getColor(R.color.red))
-                        }
+                    if(minutes == 0L && seconds<11){
+                        counterText.setTextColor(getColor(R.color.red))
+                    }
+                    if(seconds < 10){
                         "0$minutes:0$seconds".also { counterText.text = it }
                     }else{
                         "0$minutes:$seconds".also { counterText.text = it }
@@ -136,7 +136,7 @@ class BallActivity : AppCompatActivity(), SensorEventListener2 {
                 leftWall = walls[1]
                 bottomWall = walls[2]
                 rightWall = walls[3]
-                if(xPos in 0f..80.0F && yPos in 0f..80.0F) cond = false
+                if(xPos in 0f..80.0F && yPos in 0f..110.0F) cond = false
             }
             counter.cancel()
             intent = Intent(this@BallActivity, GameOverActivity::class.java)
